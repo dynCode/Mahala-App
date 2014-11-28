@@ -46,7 +46,7 @@
             if (user && pass) {
                 modal.show();
                 $scope.data.errorCode = 'Processing, please wait...';
-                $http.post('api/app-results.php', {"reqType" : "login", "user" : user, "pass" : pass})
+                $http.post('http://www.mahala.mobi/newMobi/api/app-results.php', {"reqType" : "login", "user" : user, "pass" : pass})
                 .success(function(data, status){
                     
                     if (data['error'] == 0) {
@@ -84,7 +84,7 @@
             if (mobile) {
                 modal.show();
                 $scope.data.errorCode = 'Processing, please wait...';
-                $http.post('api/app-results.php', {"reqType" : "redeemAir", "mobile" : mobile, "cardNum" : $scope.MPacc})
+                $http.post('http://www.mahala.mobi/newMobi/api/app-results.php', {"reqType" : "redeemAir", "mobile" : mobile, "cardNum" : $scope.MPacc})
                 .success(function(data, status){
                     modal.hide();
                     $scope.data.result = data['html'];
@@ -107,7 +107,7 @@
             if (mobile) {
                 modal.show();
                 $scope.data.errorCode = 'Processing, please wait...';
-                $http.post('api/app-results.php', {"reqType" : "redeemElc", "mobile" : mobile, "cardNum" : $scope.MPacc})
+                $http.post('http://www.mahala.mobi/newMobi/api/app-results.php', {"reqType" : "redeemElc", "mobile" : mobile, "cardNum" : $scope.MPacc})
                 .success(function(data, status){
                     modal.hide();
                     $scope.data.result = data['html'];
@@ -130,7 +130,7 @@
             if (mobile) {
                 modal.show();
                 $scope.data.errorCode = 'Processing, please wait...';
-                $http.post('api/app-results.php', {"reqType" : "redeemFood", "mobile" : mobile, "cardNum" : $scope.MPacc})
+                $http.post('http://www.mahala.mobi/newMobi/api/app-results.php', {"reqType" : "redeemFood", "mobile" : mobile, "cardNum" : $scope.MPacc})
                 .success(function(data, status){
                     modal.hide();
                     $scope.data.result = data['html'];
@@ -153,7 +153,7 @@
             if (mobile) {
                 modal.show();
                 $scope.data.errorCode = 'Processing, please wait...';
-                $http.post('api/app-results.php', {"reqType" : "redeemMovie", "mobile" : mobile, "cardNum" : $scope.MPacc})
+                $http.post('http://www.mahala.mobi/newMobi/api/app-results.php', {"reqType" : "redeemMovie", "mobile" : mobile, "cardNum" : $scope.MPacc})
                 .success(function(data, status){
                     modal.hide();
                     $scope.data.result = data['html'];
@@ -172,7 +172,7 @@
         };
         
         // buile points name dropdown
-        $http.get('api/pointsDD.php')
+        $http.get('http://www.mahala.mobi/newMobi/api/pointsDD.php')
         .success(function (result, status) {
             $scope.pointsDD = result;
         })
@@ -189,7 +189,7 @@
             
             modal.show();
             $scope.data.errorCode = 'Processing, please wait...';
-            $http.post('api/app-results.php', {"reqType" : "PointPartnerName", "partnerName" : partnerName})
+            $http.post('http://www.mahala.mobi/newMobi/api/app-results.php', {"reqType" : "PointPartnerName", "partnerName" : partnerName})
             .success(function(data, status){
                 modal.hide();
                 //console.log(data);
@@ -204,7 +204,7 @@
         };
         
         // buile points category dropdown
-        $http.get('api/pointsCatDD.php')
+        $http.get('http://www.mahala.mobi/newMobi/api/pointsCatDD.php')
         .success(function (result, status) {
             $scope.pointsCatDD = result;
         })
@@ -221,7 +221,7 @@
             
             modal.show();
             $scope.data.errorCode = 'Processing, please wait...';
-            $http.post('api/app-results.php', {"reqType" : "PointPartnerCat", "partnerCat" : partnerCat})
+            $http.post('http://www.mahala.mobi/newMobi/api/app-results.php', {"reqType" : "PointPartnerCat", "partnerCat" : partnerCat})
             .success(function(data, status){
                 modal.hide();
                 console.log(data);
@@ -236,7 +236,7 @@
         };       
         
         // buile points province dropdown
-        $http.get('api/pointsProvDD.php')
+        $http.get('http://www.mahala.mobi/newMobi/api/pointsProvDD.php')
         .success(function (result, status) {
             $scope.pointsProvDD = result;
         })
@@ -253,7 +253,7 @@
             
             modal.show();
             $scope.data.errorCode = 'Processing, please wait...';
-            $http.post('api/pointsCityDD.php', {"partnerProv" : partnerProv})
+            $http.post('http://www.mahala.mobi/newMobi/api/pointsCityDD.php', {"partnerProv" : partnerProv})
             .success(function(data, status){
                 modal.hide();
                 //console.log(data);
@@ -275,7 +275,7 @@
             
             modal.show();
             $scope.data.errorCode = 'Processing, please wait...';
-            $http.post('api/app-results.php', {"reqType" : "PointPartnerCity", "partnerCity" : partnerCity})
+            $http.post('http://www.mahala.mobi/newMobi/api/app-results.php', {"reqType" : "PointPartnerCity", "partnerCity" : partnerCity})
             .success(function(data, status){
                 modal.hide();
                 //console.log(data);
@@ -293,7 +293,7 @@
         $scope.pointsVoucher = function(partnerId) {
             console.log(partnerId);
             $scope.data.errorCode = 'Processing, please wait...';
-            $http.post('api/app-results.php', {"reqType" : "PartnerVoucher", "partnerId" : partnerId})
+            $http.post('http://www.mahala.mobi/newMobi/api/app-results.php', {"reqType" : "PartnerVoucher", "partnerId" : partnerId})
             .success(function(data, status){
                 modal.hide();
                 console.log(data);
@@ -320,7 +320,7 @@
         }
         
         // buile discount name dropdown
-        $http.get('api/discountDD.php')
+        $http.get('http://www.mahala.mobi/newMobi/api/discountDD.php')
         .success(function (result, status) {
             $scope.discountDD = result;
         })
@@ -337,7 +337,7 @@
             
             modal.show();
             $scope.data.errorCode = 'Processing, please wait...';
-            $http.post('api/app-results.php', {"reqType" : "DiscountPartnerName", "partnerName" : partnerName})
+            $http.post('http://www.mahala.mobi/newMobi/api/app-results.php', {"reqType" : "DiscountPartnerName", "partnerName" : partnerName})
             .success(function(data, status){
                 modal.hide();
                 //console.log(data);
@@ -352,7 +352,7 @@
         };
         
         // build discount category dropdown
-        $http.get('api/discountCatDD.php')
+        $http.get('http://www.mahala.mobi/newMobi/api/discountCatDD.php')
         .success(function (result, status) {
             $scope.discountCatDD = result;
         })
@@ -369,7 +369,7 @@
             
             modal.show();
             $scope.data.errorCode = 'Processing, please wait...';
-            $http.post('api/app-results.php', {"reqType" : "DiscountPartnerCat", "partnerCat" : partnerCat})
+            $http.post('http://www.mahala.mobi/newMobi/api/app-results.php', {"reqType" : "DiscountPartnerCat", "partnerCat" : partnerCat})
             .success(function(data, status){
                 modal.hide();
                 console.log(data);
@@ -384,7 +384,7 @@
         };       
         
         // buile discount province dropdown
-        $http.get('api/discountProvDD.php')
+        $http.get('http://www.mahala.mobi/newMobi/api/discountProvDD.php')
         .success(function (result, status) {
             $scope.discountProvDD = result;
         })
@@ -401,7 +401,7 @@
             
             modal.show();
             $scope.data.errorCode = 'Processing, please wait...';
-            $http.post('api/discountCityDD.php', {"partnerProv" : partnerProv})
+            $http.post('http://www.mahala.mobi/newMobi/api/discountCityDD.php', {"partnerProv" : partnerProv})
             .success(function(data, status){
                 modal.hide();
                 //console.log(data);
@@ -423,7 +423,7 @@
             
             modal.show();
             $scope.data.errorCode = 'Processing, please wait...';
-            $http.post('api/app-results.php', {"reqType" : "DiscountPartnerCity", "partnerCity" : partnerCity})
+            $http.post('http://www.mahala.mobi/newMobi/api/app-results.php', {"reqType" : "DiscountPartnerCity", "partnerCity" : partnerCity})
             .success(function(data, status){
                 modal.hide();
                 //console.log(data);
@@ -441,7 +441,7 @@
         $scope.discountVoucher = function(partnerId) {
             console.log(partnerId);
             $scope.data.errorCode = 'Processing, please wait...';
-            $http.post('api/app-results.php', {"reqType" : "DiscountPartnerVoucher", "partnerId" : partnerId})
+            $http.post('http://www.mahala.mobi/newMobi/api/app-results.php', {"reqType" : "DiscountPartnerVoucher", "partnerId" : partnerId})
             .success(function(data, status){
                 modal.hide();
                 console.log(data);
