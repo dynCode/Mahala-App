@@ -1,0 +1,49 @@
+<ons-page>
+    <ons-toolbar>
+        <div class="left">
+            <ons-back-button>Back</ons-back-button>
+        </div>
+        <div class="center">Voucher</div>
+        <div class="right">
+            <ons-toolbar-button ng-click="menu.toggle()">
+                <ons-icon icon="ion-navicon" size="28px" fixed-width="false"></ons-icon>
+            </ons-toolbar-button>
+        </div>
+    </ons-toolbar>
+    <div class="topBanner">
+        <div class="subImgBlock">
+            <img src="images/sub_header.png" style="max-width: 380px; width: 100%;" />
+        </div>
+    </div>
+    <div style="padding: 0 20px;">
+        <table width='100%' style='border:none'>
+            <tr>
+                <td colspan='2' style='border-bottom:2px solid #cd242d;' align='center'><img src="http://www.mahala.mobi/components/com_jumi/files/mahala_WSDL/logos/{{partner_logo}}"></td>
+            </tr>
+            <tr>
+                <td>Deal:</td><td>{{voucher_description}}</td>
+            </tr>
+            <tr>
+                <td>Tel:</td><td>{{partner_tel}}</td>
+            </tr>
+            <tr>
+                <td>Address:</td><td>{{partner_address}}</td>
+            </tr>
+            <tr>
+                <td>Date:</td><td>{{voucher_date}}</td>
+            </tr>
+            <tr>
+                <td>Loyalty no:</td><td>{{MPacc}}</td>
+            </tr>
+            <tr>
+                <td colspan='2' align='center'><img src='http://www.mahala.mobi/components/com_jumi/files/mahala_WSDL/test_1D.php?text={{MPacc}}' width='270px' /></td>
+            </tr>
+        </table>
+        <p style='color:#cd242d'>Terms and Conditions apply.</p>
+        <p>For any assistance call 084 196 3733 (FREE)<br />www.mahalas.co.za | info@mahalas.co.za</p>
+        <div style='float:right;'>
+            <p style='font-size:10px;'>In Conjunction with:</p>
+            <img src='http://www.mahala.mobi/components/com_jumi/files/mahala_WSDL/partnerLogo.png' width='80%'/>
+        </div>
+    </div>
+</ons-page>

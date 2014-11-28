@@ -1,0 +1,44 @@
+<ons-page>
+    <ons-toolbar>
+        <div class="center">Welcome</div>
+        <div ng-show="loggedIn">
+            <div class="right">
+                <ons-toolbar-button ng-click="menu.toggle()">
+                    <ons-icon icon="ion-navicon" size="28px" fixed-width="false"></ons-icon>
+                </ons-toolbar-button>
+            </div>
+        </div>
+    </ons-toolbar>
+    <div class="topBanner">
+        <div class="imgBlock">
+            <img src="images/app_header.png" style="max-width: 380px; width: 100%;" />
+        </div>
+    </div>
+    <ons-list class="dropShadow">
+        <div ng-hide="loggedIn">
+            <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/login.html', { animation : 'slide' } )">
+                LOGIN
+            </ons-list-item>
+        </div>
+        <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/partners.html', { animation : 'slide' } )">
+            PARTNERS
+        </ons-list-item>
+        <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/howItWorks.html', { animation : 'slide' } )">
+            HOW IT WORKS
+        </ons-list-item>
+        <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/wantToJoin.html', { animation : 'slide' } )">
+            WANT TO JOIN
+        </ons-list-item>
+        <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/contactUs.html', { animation : 'slide' } )">
+            CONTACT US
+        </ons-list-item>
+        <div ng-show="loggedIn">
+            <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/user/welcome.html', { animation : 'slide' } )">
+                MEMBERS AREA
+            </ons-list-item>
+            <ons-list-item modifier="chevron" ng-click="logout()">
+                LOG OUT
+            </ons-list-item>
+        </div>
+    </ons-list>
+</ons-page>

@@ -1,0 +1,38 @@
+<ons-page>
+    <ons-toolbar>
+        <div class="left">
+            <ons-back-button>Back</ons-back-button>
+        </div>
+        <div class="center">Login</div>
+        <div class="right">
+            <ons-toolbar-button ng-click="menu.toggle()">
+                <ons-icon icon="ion-navicon" size="28px" fixed-width="false"></ons-icon>
+            </ons-toolbar-button>
+        </div>
+    </ons-toolbar>
+    <div class="topBanner">
+        <div class="imgBlock">
+            <img src="images/app_header.png" style="max-width: 380px; width: 100%;" />
+        </div>
+    </div>
+    <div class="formShadow">
+        <div class="formList">
+            <div class="formListLable">LOYALTY NO:</div><div class="formListInput"><input ng-model="data.loyaltyNum" type="text" class="text-input" placeholder="Loyalty Number" /></div>
+        </div>
+        <div class="formList">
+            <div class="formListLable">PASSWORD:</div><div class="formListInput"><input ng-model="data.password" type="password" class="text-input" placeholder="Password" /></div>
+        </div>
+    </div>
+    <div style="padding:20px">
+        <ons-button modifier="large" id="btnLogIn" ng-click="LogIn()" style="width:100%">LOG IN</ons-button>
+        <p>FIRST TIME? To log in, use your loyalty number printed on your card as your password as well. To change your password contact 084 196 3733 or click here to complete a request form.</p>
+    </div>
+    <pre>
+        {{data.result}}
+    </pre>
+    <ons-modal var="modal" ng-click="modal.hide()">
+        <br>
+        <br>{{data.errorCode}}
+        <br>
+    </ons-modal>
+</ons-page>

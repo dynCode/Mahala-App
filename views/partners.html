@@ -1,0 +1,28 @@
+<ons-page>
+    <ons-toolbar>
+        <div class="left">
+            <ons-back-button>Back</ons-back-button>
+        </div>
+        <div class="center">Partners</div>
+        <div class="right">
+            <ons-toolbar-button ng-click="menu.toggle()">
+                <ons-icon icon="ion-navicon" size="28px" fixed-width="false"></ons-icon>
+            </ons-toolbar-button>
+        </div>
+    </ons-toolbar>
+    <div class="topBanner">
+        <div class="subImgBlock">
+            <img src="images/sub_header.png" style="max-width: 380px; width: 100%;" />
+        </div>
+    </div>
+    <h2 class="myHeader"><span>OUR PARTNERS</span></h2>
+    <ons-list>
+        <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/partners/points.html', { animation : 'fade' } )">
+            POINT PARTNERS
+        </ons-list-item>
+        <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/partners/discount.html', { animation : 'fade' } )">
+            DISCOUNT PARTNERS
+        </ons-list-item>
+    </ons-list>
+    
+</ons-page>

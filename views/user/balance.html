@@ -1,0 +1,39 @@
+<ons-page>
+    <ons-toolbar>
+        <div class="left">
+            <ons-back-button>Back</ons-back-button>
+        </div>
+        <div class="center">Your Balance</div>
+        <div class="right">
+            <ons-toolbar-button ng-click="menu.toggle()">
+                <ons-icon icon="ion-navicon" size="28px" fixed-width="false"></ons-icon>
+            </ons-toolbar-button>
+        </div>
+    </ons-toolbar>
+    <div class="topBanner">
+        <div class="subImgBlock">
+            <img src="images/sub_header.png" style="max-width: 380px; width: 100%;" />
+        </div>
+    </div>
+    <h2 class="myHeader"><span>YOUR BALANCE</span></h2>
+    <div class="formShadow">
+        <div class="formList">
+            <div class="formListLable">CURRENT BALANCE:</div><div class="formListRight" style="width: 40%;">{{CurrentBalance}}</div>
+        </div>
+        <div class="formList">
+            <div class="formListLable">RAND AVAILABLE:</div><div class="formListRight" style="width: 40%;">{{RandValue}}</div>
+        </div>
+        <div class="formList">
+            <div class="formListLable">USED POINTS:</div><div class="formListRight" style="width: 40%;">{{UsedUnits}}</div>
+        </div>
+        <div class="formList">
+            <div class="formListLable">TIER LEVEL:</div><div class="formListRight" style="width: 40%;">{{CurrTierDescription}}</div>
+        </div>
+        <div class="formList">
+            <div class="formListLable">COMMUNITY:</div><div class="formListRight" style="width: 40%;">{{Community}}</div>
+        </div>
+        <div class="formList">
+            <div class="formListLable">CARD NO:</div><div class="formListRight" style="width: 60%;">{{CardNumber}}</div>
+        </div>
+    </div>
+</ons-page>

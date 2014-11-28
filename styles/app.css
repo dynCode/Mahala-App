@@ -1,0 +1,120 @@
+// top banner
+.topBanner {
+  color: white;
+  height: 250px;
+  text-align: center;
+}
+
+.imgBlock {
+    text-align: center;
+    position: relative;
+    z-index: -1;
+    margin-bottom: -5px;
+}
+
+.subImgBlock {
+    border-bottom: 2px dashed #c69a48;
+    text-align: center;
+}
+
+//list items
+.list__item {
+    text-align: center;
+}
+.list__item--chevron {
+    box-shadow: 0px -5px 10px -1px rgba(187,187,187,1);
+    text-align: center;
+}
+
+//partner list
+.list__item--partnerList {
+    box-shadow: none;
+    text-align: left;
+}
+
+.list > .list-item-container {
+    line-height: 1;
+    padding: 15px 0px 15px 15px;
+}
+
+.thumbnail {
+    width: 80px;
+    //height: 100%;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    background-color: #eee;
+}
+
+.name {
+    font-weight: bold;
+    line-height: 16px;
+    font-size: 15px;
+    margin-bottom: 5px;
+}
+
+.location {
+    font-size: 14px;
+    opacity: 0.4;
+    margin-bottom: 5px;
+}
+
+.desc {
+    line-height: 1.2;
+    font-size: 12px;
+    font-style: italic;
+}
+
+.myHeader {
+    font-size: 25px;
+    font-weight: normal;
+    color: #6f6f6f;
+    text-align: center;
+}
+
+.myHeader span {
+    border-bottom: 1px solid #C82126;
+}
+
+//form style
+.formShadow {
+    box-shadow: 0px 0px 10px 5px rgb(187, 187, 187);
+}
+
+.formList {
+    height:40px; 
+    display: block; 
+    box-shadow: 0px -5px 10px -1px rgba(187,187,187,1); 
+    padding: 10px 20px;
+}
+
+.formListLable {
+    float:left; 
+    line-height: 40px;
+}
+
+.formListRight {
+    float:right; 
+    line-height: 40px; 
+}
+
+.formListInput {
+    float:right; 
+    line-height: 40px; 
+    width: 60%;
+}
+
+.formListInput > input[type=text], input[type=password], select {
+    border-radius: 0px;
+    background: #eee;
+    border-color: #eee;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 5px;
+    width:100%; 
+    vertical-align: middle
+}
+
+//side menu
+.page--menu-page__content {
+    background-color: #bbb;
+}
