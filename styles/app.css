@@ -75,6 +75,13 @@
     border-bottom: 1px solid #C82126;
 }
 
+.listHeadings {
+    margin: 0;
+    font-weight: normal;
+    text-align: left;
+    padding: 15px;
+}
+
 //form style
 .formShadow {
     box-shadow: 0px 0px 10px 5px rgb(187, 187, 187);

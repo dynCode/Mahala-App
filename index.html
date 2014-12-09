@@ -17,13 +17,18 @@
         <script src="phonegap.js"></script> 
         <script src="js/app.js"></script>  
         <script>
-            ons.ready(function() {
+            ons.ready(function() {  
             });
         </script>
     </head>
     <body ng-controller="AppController">
         <ons-sliding-menu behind-page="views/menu.html" above-page="views/tab-bar.html" side="right" type="reveal" max-slide-distance="250px" swipable="true" var="menu">
         </ons-sliding-menu>   
+        <ons-modal var="modal" ng-click="modal.hide()">
+            <br>
+            <br>{{data.errorCode}}
+            <br>
+        </ons-modal>
     </body>
 </html>
 

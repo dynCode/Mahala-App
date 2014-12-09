@@ -38,6 +38,9 @@
         $scope.partner_address = '';
         $scope.voucher_date = '';
         
+        //Category Partner Lists
+        $scope.catPartnerList = [];
+        
         // login checker
         $scope.LogIn = function() {
             var user = $scope.data.loyaltyNum;
@@ -48,8 +51,10 @@
                 $scope.data.errorCode = 'Processing, please wait...';
                 $http.post('http://www.mahala.mobi/newMobi/api/app-results.php', {"reqType" : "login", "user" : user, "pass" : pass})
                 .success(function(data, status){
-                    
                     if (data['error'] == 0) {
+                        
+                        var randVal = parseFloat(data['CurrentBalance'])/10;
+                        
                         modal.hide();
                         $scope.data.result = data['html'];
                         $scope.CurrentBalance = data['CurrentBalance'];
@@ -57,7 +62,7 @@
                         $scope.CurrTierDescription = data['CurrTierDescription'];
                         $scope.Community = data['Community'];
                         $scope.CardNumber = data['CardNumber'];
-                        $scope.RandValue = parseInt(data['UsedUnits'])/10;
+                        $scope.RandValue = randVal.toFixed(2);
                         $scope.MPacc = user;
                         $scope.loggedIn = true;
                         myNavigator.pushPage('views/user/welcome.html', { animation : 'fade' });
@@ -317,7 +322,7 @@
             
             
             myNavigator.pushPage('views/user/voucher.html', { animation : 'fade', partnerId : partnerId });
-        }
+        };
         
         // buile discount name dropdown
         $http.get('http://www.mahala.mobi/newMobi/api/discountDD.php')
@@ -465,14 +470,105 @@
             
             
             myNavigator.pushPage('views/user/voucher.html', { animation : 'fade', partnerId : partnerId });
-        }
+        };
         
+        // log out function
         $scope.logout = function(){
             $scope.data = [];
             myNavigator.popPage();
             
             console.log('I got here');
-        }
+        };
+        
+        //contact us form function
+        $scope.contactMe = function() {
+            var contactAccount = $scope.data.contactAccount;
+            var contactPerks = $scope.data.contactPerks;
+            var contactComments = $scope.data.contactComments;
+            var contactName = $scope.data.contactName;
+            var contactSurname = $scope.data.contactSurname;
+            var contactCell = $scope.data.contactCell;
+            var contactEmail = $scope.data.contactEmail;
+            
+            if (contactName && contactSurname && contactCell && contactEmail) {
+                modal.show();
+                $scope.data.errorCode = 'Processing, please wait...';
+                $http.post('http://www.mahala.mobi/newMobi/api/app-results.php', { "reqType" : "contactUs", "accountType" : contactAccount, "perks" : contactPerks, "comments" : contactComments, "cName" : contactName, "cSurname" : contactSurname, "cCell" : contactCell, "cEmail" : contactEmail })
+                .success(function(data, status){
+                    if (data['error'] == 0) {
+                        modal.hide();
+                        $scope.data.result = data['html'];
+                        $scope.data.errorCode = data['html'];
+                        modal.show();
+                    } else {
+                        modal.hide();
+                        $scope.data.result = data['html'];
+                        $scope.data.errorCode = data['html'];
+                        modal.show();
+                    }
+                })
+                .error(function(data, status) {
+                    modal.hide();
+                    $scope.data.errorCode = 'Request failed';
+                    modal.show();
+                });
+            } else {
+                $scope.data.errorCode = 'Please fill in all the fields.';
+                modal.show();
+            }
+        };
+        
+        $scope.getDiscountList = function(catName) {
+            var partnerCat = catName;
+            $scope.catPartnerList = [];
+            console.log(catName);
+            modal.show();
+            $scope.data.errorCode = 'Processing, please wait...';
+            $http.post('http://www.mahala.mobi/newMobi/api/app-results.php', {"reqType" : "listDiscountCat", "partnerCat" : partnerCat})
+            .success(function(data, status){
+                modal.hide();
+                console.log(data);
+                $scope.catPartnerList = data;
+                
+                if (data) {
+                    myNavigator.pushPage('views/partners/list.html', { animation : 'fade'});
+                } else {
+                    $scope.data.errorCode = 'No Partners were found!';
+                    modal.show();
+                }         
+            })
+            .error(function(data, status) {
+                modal.hide();
+                $scope.data.errorCode = 'Request failed';
+                modal.show();
+            });
+        };
+        
+        $scope.getPointList = function(catName) {
+            var partnerCat = catName;
+            $scope.catPartnerList = [];
+            console.log(catName);
+            modal.show();
+            $scope.data.errorCode = 'Processing, please wait...';
+            $http.post('http://www.mahala.mobi/newMobi/api/app-results.php', {"reqType" : "listPointCat", "partnerCat" : partnerCat})
+            .success(function(data, status){
+                modal.hide();
+                console.log(data);
+                $scope.catPartnerList = data;
+                
+                if (data) {
+                    myNavigator.pushPage('views/partners/list.html', { animation : 'fade'});
+                } else {
+                    $scope.data.errorCode = 'No Partners were found!';
+                    modal.show();
+                } 
+            })
+            .error(function(data, status) {
+                modal.hide();
+                $scope.data.errorCode = 'Request failed';
+                modal.show();
+            });
+        };
     });
 })();
 
