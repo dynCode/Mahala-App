@@ -14,11 +14,17 @@
         <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/user/redemptions.html', { animation : 'slide' } )">
             REDEMPTIONS
         </ons-list-item>
+        <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/user/coupons.html', { animation : 'slide' } )">
+            COUPONS
+        </ons-list-item>
         <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/user/discount.html', { animation : 'slide' } )">
             DISCOUNT VOUCHERS
         </ons-list-item>
         <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/user/points.html', { animation : 'slide' } )">
             POINT PARTNERS
+        </ons-list-item>
+        <ons-list-item modifier="chevron" ng-click="logout()">
+            LOG OUT
         </ons-list-item>
     </ons-list>
 </ons-page>

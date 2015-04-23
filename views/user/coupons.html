@@ -1,0 +1,43 @@
+<ons-page>
+    <ons-toolbar>
+        <div class="left">
+            <ons-back-button>Back</ons-back-button>
+        </div>
+        <div class="center">Coupons</div>
+        <div class="right">
+            <ons-toolbar-button ng-click="menu.toggle()">
+                <ons-icon icon="ion-navicon" size="28px" fixed-width="false"></ons-icon>
+            </ons-toolbar-button>
+        </div>
+    </ons-toolbar>
+    <div class="topBanner">
+        <div class="subImgBlock">
+            <img src="images/sub_header.png" style="max-width: 380px; width: 100%;" />
+        </div>
+    </div>
+    <h2 class="myHeader"><span>COUPONS</span></h2>
+    <div style="padding: 0 20px;">
+        <p><strong>Available Coupons</strong></p>
+    </div>
+    <ons-list>
+        <ons-list-item modifier="couponList" class="list-item-container list__item--tappable" ng-repeat="coupon in couponList">
+            <ons-row>
+                <ons-col width="95px">
+                    <img src="{{coupon.imageUrl}}" class="thumbnail">
+                </ons-col>
+                <ons-col>
+                    <div class="name">
+                        {{coupon.name}}
+                    </div>
+                    <div class="desc">
+                        {{coupon.description}}
+                    </div>
+                </ons-col>
+                <ons-col width="40px"></ons-col>
+            </ons-row>
+        </ons-list-item>
+    </ons-list>
+    <div style="padding:20px">
+        <ons-button modifier="large outline" id="btnLogIn" ng-click="getCouponCode()" style="width:100%">My Coupon Code</ons-button>
+    </div>
+</ons-page>

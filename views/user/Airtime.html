@@ -17,9 +17,27 @@
     </div>
     <h2 class="myHeader"><span>AIRTIME</span></h2>
     <div style="padding: 0 20px;">
-        <p>Please enter your cell number and submit, Mahala will process your redemption within 24 hours</p>
+        <p>You can redeem up to <strong>R {{RandValue}}</strong> worth of airtime.</p>
+    </div>
+    <div style="padding: 0 20px;">
+        <p>Please complete the fields below to redeem your airtime.</p>
     </div>
     <div class="formShadow">
+        <div class="formList">
+            <div class="formListLable">NETWORK:</div>
+            <div class="formListInput">
+                <select ng-model="selectedAir.network" style="width:100%;" ng-options="sa.network for sa in selectedAirData">
+                </select>
+            </div>
+        </div>
+        <div class="formList">
+            <div class="formListLable">AMOUNT:</div>
+            <div class="formListInput">
+                <select ng-model="selectedAir.airOption" style="width:100%;" ng-options="air.cents as air.rand for air in selectedAir.network.airOptions">
+                </select>
+                <input type="hidden" ng-model="data.airAmount" value="{{selectedAir.airOption}}" />
+            </div>
+        </div>
         <div class="formList">
             <div class="formListLable">CELL NO:</div><div class="formListInput"><input ng-model="data.CellNum" type="text" class="text-input" placeholder="Cell Number" /></div>
         </div>
