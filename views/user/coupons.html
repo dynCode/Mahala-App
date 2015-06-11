@@ -17,10 +17,11 @@
     </div>
     <h2 class="myHeader"><span>COUPONS</span></h2>
     <div style="padding: 0 20px;">
+        <img src="images/eeziCoupons.png" style="max-width: 380px; width: 100%;" />
         <p><strong>Available Coupons</strong></p>
     </div>
     <ons-list>
-        <ons-list-item modifier="couponList" class="list-item-container list__item--tappable" ng-repeat="coupon in couponList">
+        <ons-list-item modifier="couponList" class="list-item-container list__item--tappable" ng-repeat="coupon in couponList" ng-click="showCoupon(coupon.id)">
             <ons-row>
                 <ons-col width="95px">
                     <img src="{{coupon.imageUrl}}" class="thumbnail">
@@ -31,6 +32,9 @@
                     </div>
                     <div class="desc">
                         {{coupon.description}}
+                    </div>
+                    <div>
+                        Save <br /><span style="font-size: 18px; font-weight: bold; color: #c82126;">{{coupon.discount}}</span>
                     </div>
                 </ons-col>
                 <ons-col width="40px"></ons-col>

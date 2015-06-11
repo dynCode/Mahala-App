@@ -2,7 +2,7 @@
     <ons-list class="bottom-menu-list">
         <div ng-hide="loggedIn">
             <ons-list-item modifier="chevron" class="bottom-menu-item" onclick="myNavigator.pushPage('views/login.html'); menu.closeMenu();">
-                Login
+                Loyalty Login
             </ons-list-item>
         </div>
         <ons-list-item modifier="chevron" class="bottom-menu-item" onclick="myNavigator.pushPage('views/partners.html'); menu.closeMenu();">
@@ -24,17 +24,20 @@
             <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/user/balance.html', { animation : 'slide' } ); menu.closeMenu();">
                 Your Balance
             </ons-list-item>
-            <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/user/redemptions.html', { animation : 'slide' } ); menu.closeMenu();">
-                Redemptions
-            </ons-list-item>
             <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/user/discount.html', { animation : 'slide' } ); menu.closeMenu();">
                 Discount Vouchers
             </ons-list-item>
             <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/user/points.html', { animation : 'slide' } ); menu.closeMenu();">
-                Points Partners
+                Point Partners
+            </ons-list-item>
+            <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/user/coupons.html', { animation : 'slide' } ); menu.closeMenu();">
+                EEZI Coupons
+            </ons-list-item>
+            <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/user/redemptions.html', { animation : 'slide' } ); menu.closeMenu();">
+                Redemptions
             </ons-list-item>
             <ons-list-item modifier="chevron" ng-click="logout()">
-                Log Out
+                LOG OUT
             </ons-list-item>
         </ons-list>
     </div>
