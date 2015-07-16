@@ -138,3 +138,8 @@
     text-align: left;
     padding-left: 10px;
 }
+
+// slide show
+.hideable {
+    display: none;
+}

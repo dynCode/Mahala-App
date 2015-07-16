@@ -605,6 +605,7 @@
         //contact us form function
         $scope.contactMe = function() {
             var contactAccount = $scope.data.contactAccount;
+            var contactStudent = $scope.data.contactStudent;
             var contactPerks = $scope.data.contactPerks;
             var contactComments = $scope.data.contactComments;
             var contactName = $scope.data.contactName;
@@ -615,7 +616,7 @@
             if (contactName && contactSurname && contactCell && contactEmail) {
                 modal.show();
                 $scope.data.errorCode = 'Processing, please wait...';
-                $http.post('http://www.mahala.mobi/mobiTest/api/app-results.php', { "reqType" : "contactUs", "accountType" : contactAccount, "perks" : contactPerks, "comments" : contactComments, "cName" : contactName, "cSurname" : contactSurname, "cCell" : contactCell, "cEmail" : contactEmail })
+                $http.post('http://www.mahala.mobi/mobiTest/api/app-results.php', { "reqType" : "contactUs", "accountType" : contactAccount, "student" : contactStudent, "perks" : contactPerks, "comments" : contactComments, "cName" : contactName, "cSurname" : contactSurname, "cCell" : contactCell, "cEmail" : contactEmail })
                 .success(function(data, status){
                     if (data['error'] == 0) {
                         modal.hide();
@@ -865,3 +866,38 @@
         }
     });
 })();
+
+// normal JS
+// direction = boolean value: true or false. If true, go to NEXT slide; otherwise go to PREV slide
+function toggleSlide(direction) {
+    var elements = document.getElementsByClassName("hideable"); // gets all the "slides" in our slideshow
+    // Find the LI that's currently displayed
+    var visibleID = getVisible(elements);
+    elements[visibleID].style.display = "none"; // hide the currently visible LI
+    if(!direction) {
+        var makeVisible = prev(visibleID, elements.length); // get the previous slide
+    } else {
+        var makeVisible = next(visibleID, elements.length); // get the next slide
+    }
+    elements[makeVisible].style.display = "block"; // show the previous or next slide
+}
+function getVisible(elements) {
+    var visibleID = -1;
+    for(var i = 0; i < elements.length; i++) {
+        if(elements[i].style.display == "block") {
+            visibleID = i;
+        }
+    }
+    return visibleID;
+}
+function prev(num, arrayLength) {
+    if(num == 0) return arrayLength-1;
+    else return num-1;
+}
+function next(num, arrayLength) {
+    if(num == arrayLength-1) return 0;
+    else return num+1;
+}
+
+var interval = 5000; // You can change this value to your desired speed. The value is in milliseconds, so if you want to advance a slide every 5 seconds, set this to 5000.
+var switching = setInterval("toggleSlide(true)", interval);
