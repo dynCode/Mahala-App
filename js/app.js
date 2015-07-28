@@ -41,6 +41,7 @@
         $scope.voucher_date = '';
         
         //Category Partner Lists
+        $scope.catList = [];
         $scope.catPartnerList = [];
         
         //Coupons List
@@ -642,6 +643,29 @@
             }
         };
         
+        $scope.getDiscountCatList = function() {
+            $scope.catList = [];
+            modal.show();
+            $scope.data.errorCode = 'Processing, please wait...';
+            $http.post('http://www.mahala.mobi/mobiTest/api/app-results.php', {"reqType" : "listDiscountCat", "partnerCat" : "catList"})
+            .success(function(data, status){
+                modal.hide();
+                console.log(data);
+                $scope.catList = data;
+                if (data) {
+                    myNavigator.pushPage('views/partners/discount.html', { animation : 'fade'});
+                } else {
+                    $scope.data.errorCode = 'No Partners were found!';
+                    modal.show();
+                }         
+            })
+            .error(function(data, status) {
+                modal.hide();
+                $scope.data.errorCode = 'Request failed';
+                modal.show();
+            });
+        };
+        
         $scope.getDiscountList = function(catName) {
             var partnerCat = catName;
             $scope.catPartnerList = [];
@@ -655,11 +679,39 @@
                 $scope.catPartnerList = data;
                 
                 if (data) {
-                    myNavigator.pushPage('views/partners/list.html', { animation : 'fade'});
+                    if (partnerCat === 'catList') {
+                        myNavigator.pushPage('views/partners/discount.html', { animation : 'fade'});
+                    } else {
+                        myNavigator.pushPage('views/partners/list.html', { animation : 'fade'});
+                    }
                 } else {
                     $scope.data.errorCode = 'No Partners were found!';
                     modal.show();
                 }         
+            })
+            .error(function(data, status) {
+                modal.hide();
+                $scope.data.errorCode = 'Request failed';
+                modal.show();
+            });
+        };
+        
+        $scope.getPointCatList = function() {
+            $scope.catList = [];
+            modal.show();
+            $scope.data.errorCode = 'Processing, please wait...';
+            $http.post('http://www.mahala.mobi/mobiTest/api/app-results.php', {"reqType" : "listPointCat", "partnerCat" : "catList"})
+            .success(function(data, status){
+                modal.hide();
+                console.log(data);
+                $scope.catList = data;
+                
+                if (data) {
+                    myNavigator.pushPage('views/partners/points.html', { animation : 'fade'});
+                } else {
+                    $scope.data.errorCode = 'No Partners were found!';
+                    modal.show();
+                } 
             })
             .error(function(data, status) {
                 modal.hide();
@@ -681,7 +733,11 @@
                 $scope.catPartnerList = data;
                 
                 if (data) {
-                    myNavigator.pushPage('views/partners/list.html', { animation : 'fade'});
+                    if (partnerCat === 'catList') {
+                        myNavigator.pushPage('views/partners/points.html', { animation : 'fade'});
+                    } else {
+                        myNavigator.pushPage('views/partners/list.html', { animation : 'fade'});
+                    }
                 } else {
                     $scope.data.errorCode = 'No Partners were found!';
                     modal.show();
@@ -869,8 +925,8 @@
 
 // normal JS
 // direction = boolean value: true or false. If true, go to NEXT slide; otherwise go to PREV slide
-function toggleSlide(direction) {
-    var elements = document.getElementsByClassName("hideable"); // gets all the "slides" in our slideshow
+function toggleSlide(direction, className) {
+    var elements = document.getElementsByClassName(className); // gets all the "slides" in our slideshow
     // Find the LI that's currently displayed
     var visibleID = getVisible(elements);
     elements[visibleID].style.display = "none"; // hide the currently visible LI
@@ -900,4 +956,6 @@ function next(num, arrayLength) {
 }
 
 var interval = 5000; // You can change this value to your desired speed. The value is in milliseconds, so if you want to advance a slide every 5 seconds, set this to 5000.
-var switching = setInterval("toggleSlide(true)", interval);
+var switching = setInterval("toggleSlide(true,'hideable')", interval);
+var switching = setInterval("toggleSlide(true,'hideableL')", interval);
+var switching = setInterval("toggleSlide(true,'hideableW')", interval);

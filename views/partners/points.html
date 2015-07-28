@@ -17,133 +17,13 @@
     </div>
     <h2 class="myHeader"><span>PARTNER CATEGORIES:</span></h2>
     <ons-list>
-        <ons-list-item modifier="chevron" ng-click="getPointList('ACCOMMODATION');">
+        <ons-list-item modifier="chevron" ng-repeat="partner in catList" ng-click="getPointList(partner.partner_category);">
             <ons-row>
                 <ons-col width="60px">
-                    <img src="images/partnerIcons.png" />
+                    <img src="images/{{partner.partner_category}}.png" />
                 </ons-col>
                 <ons-col>
-                    <h4 class="listHeadings">ACCOMMODATION</h4>
-                </ons-col>
-            </ons-row>
-        </ons-list-item>
-        <ons-list-item modifier="chevron" ng-click="getPointList('AUTOMOTIVE');">
-            <ons-row>
-                <ons-col width="60px">
-                    <img src="images/partnerIcons-02.png" />
-                </ons-col>
-                <ons-col>
-                    <h4 class="listHeadings">AUTOMOTIVE</h4>
-                </ons-col>
-            </ons-row>
-        </ons-list-item>
-        <ons-list-item modifier="chevron" ng-click="getPointList('CLOTHING');">
-            <ons-row>
-                <ons-col width="60px">
-                    <img src="images/partnerIcons-03.png" />
-                </ons-col>
-                <ons-col>
-                    <h4 class="listHeadings">CLOTHING</h4>
-                </ons-col>
-            </ons-row>
-        </ons-list-item>
-        <ons-list-item modifier="chevron" ng-click="getPointList('COMMUNICATION');">
-            <ons-row>
-                <ons-col width="60px">
-                    <img src="images/partnerIcons-04.png" />
-                </ons-col>
-                <ons-col>
-                    <h4 class="listHeadings">COMMUNICATION</h4>
-                </ons-col>
-            </ons-row>
-        </ons-list-item>
-        <ons-list-item modifier="chevron" ng-click="getPointList('EDUCATION');">
-            <ons-row>
-                <ons-col width="60px">
-                    <img src="images/partnerIcons-05.png" />
-                </ons-col>
-                <ons-col>
-                    <h4 class="listHeadings">EDUCATION</h4>
-                </ons-col>
-            </ons-row>
-        </ons-list-item>
-        <ons-list-item modifier="chevron" ng-click="getPointList('FINANCIAL');">
-            <ons-row>
-                <ons-col width="60px">
-                    <img src="images/partnerIcons-06.png" />
-                </ons-col>
-                <ons-col>
-                    <h4 class="listHeadings">FINANCIAL</h4>
-                </ons-col>
-            </ons-row>
-        </ons-list-item>
-        <ons-list-item modifier="chevron" ng-click="getPointList('FITNESS');">
-            <ons-row>
-                <ons-col width="60px">
-                    <img src="images/partnerIcons-07.png" />
-                </ons-col>
-                <ons-col>
-                    <h4 class="listHeadings">FITNESS</h4>
-                </ons-col>
-            </ons-row>
-        </ons-list-item>
-        <ons-list-item modifier="chevron" ng-click="getPointList('FUNERAL');">
-            <ons-row>
-                <ons-col width="60px">
-                    <img src="images/partnerIcons-08.png" />
-                </ons-col>
-                <ons-col>
-                    <h4 class="listHeadings">FUNERAL</h4>
-                </ons-col>
-            </ons-row>
-        </ons-list-item>
-        <ons-list-item modifier="chevron" ng-click="getPointList('FOOD');">
-            <ons-row>
-                <ons-col width="60px">
-                    <img src="images/partnerIcons-09.png" />
-                </ons-col>
-                <ons-col>
-                    <h4 class="listHeadings">FOOD</h4>
-                </ons-col>
-            </ons-row>
-        </ons-list-item>
-        <ons-list-item modifier="chevron" ng-click="getPointList('HOME');">
-            <ons-row>
-                <ons-col width="60px">
-                    <img src="images/partnerIcons-10.png" />
-                </ons-col>
-                <ons-col>
-                    <h4 class="listHeadings">HOME</h4>
-                </ons-col>
-            </ons-row>
-        </ons-list-item>
-        <ons-list-item modifier="chevron" ng-click="getPointList('HEALTH');">
-            <ons-row>
-                <ons-col width="60px">
-                    <img src="images/partnerIcons-11.png" />
-                </ons-col>
-                <ons-col>
-                    <h4 class="listHeadings">HEALTH</h4>
-                </ons-col>
-            </ons-row>
-        </ons-list-item>
-        <ons-list-item modifier="chevron" ng-click="getPointList('RETAIL');">
-            <ons-row>
-                <ons-col width="60px">
-                    <img src="images/partnerIcons-12.png" />
-                </ons-col>
-                <ons-col>
-                    <h4 class="listHeadings">RETAIL</h4>
-                </ons-col>
-            </ons-row>
-        </ons-list-item>
-        <ons-list-item modifier="chevron" ng-click="getPointList('TRAVEL');">
-            <ons-row>
-                <ons-col width="60px">
-                    <img src="images/partnerIcons-13.png" />
-                </ons-col>
-                <ons-col>
-                    <h4 class="listHeadings">TRAVEL</h4>
+                    <h4 class="listHeadings">{{partner.partner_category}}</h4>
                 </ons-col>
             </ons-row>
         </ons-list-item>

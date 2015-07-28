@@ -10,11 +10,9 @@
         </div>
     </ons-toolbar>
     <div class="topBanner">
-        <ul style="list-style-type: none; margin: 0;">
-            <li id="1" class="hideable" style="display: block;"><div class="imgBlock"><img src="images/app_header1.png" style="max-width: 800px; width: 100%;" /></div></li>
-            <li id="2" class="hideable" style="display: none;"><div class="imgBlock"><img src="images/app_header2.png" style="max-width: 800px; width: 100%;" /></div></li>
-            <li id="3" class="hideable" style="display: none;"><div class="imgBlock"><img src="images/app_header3.png" style="max-width: 800px; width: 100%;" /></div></li>
-        </ul>
+        <div class="imgBlock hideable" style="display: block;"><img src="images/app_header1.png" style="max-width: 800px; width: 100%;" /></div>
+        <div class="imgBlock hideable" style="display: none;"><img src="images/app_header2.png" style="max-width: 800px; width: 100%;" /></div>
+        <div class="imgBlock hideable" style="display: none;"><img src="images/app_header3.png" style="max-width: 800px; width: 100%;" /></div>
     </div>
     <ons-list class="dropShadow">
         <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/wantToJoin.html', { animation : 'slide' } )">
@@ -43,4 +41,8 @@
             CONTACT US
         </ons-list-item>
     </ons-list>
+    <div style="padding:20px">
+        <p>Welcome to the Mahala Mobile Platform where you can find all your DEALS & SAVINGS at your finger tips.  Our platform is simple and easy to navigate, remember to login in order to access your personal details or to download your vouchers. </p>
+        <p>Feel free to promote Mahala to your friends and family and don’t forget to join our Facebook page (Mahala Loyalty) to receive all the NEW deals!</p>
+    </div>
 </ons-page>

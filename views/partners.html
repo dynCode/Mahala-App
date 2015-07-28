@@ -15,12 +15,12 @@
             <img src="images/sub_header.png" style="max-width: 380px; width: 100%;" />
         </div>
     </div>
-    <h2 class="myHeader"><span>OUR PARTNERS</span></h2>
+    <h2 class="myHeader"><span>PARTNERS / RETAILERS</span></h2>
     <ons-list>
-        <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/partners/points.html', { animation : 'fade' } )">
+        <ons-list-item modifier="chevron" ng-click="getPointCatList();">
             POINTS PARTNERS
         </ons-list-item>
-        <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/partners/discount.html', { animation : 'fade' } )">
+        <ons-list-item modifier="chevron" ng-click="getDiscountCatList();">
             DISCOUNT PARTNERS
         </ons-list-item>
     </ons-list>
