@@ -39,6 +39,7 @@
         $scope.partner_tel = '';
         $scope.partner_address = '';
         $scope.voucher_date = '';
+        $scope.conImages = '';
         
         //Category Partner Lists
         $scope.catList = [];
@@ -69,7 +70,8 @@
                     {"cents" : '1200', "rand" : 'R 12'},
                     {"cents" : '2900', "rand" : 'R 29'},
                     {"cents" : '5500', "rand" : 'R 55'},
-                    {"cents" : '11000', "rand" : 'R 110'}
+                    {"cents" : '11000', "rand" : 'R 110'},
+                    {"cents" : '27500', "rand" : 'R 275'}
                 ]
             },{ 
                 'id': '1',
@@ -93,16 +95,18 @@
                     {"cents" : '5000', "rand" : 'R 50'},
                     {"cents" : '7000', "rand" : 'R 70'},
                     {"cents" : '10000', "rand" : 'R 100'},
-                    {"cents" : '15000', "rand" : 'R 150'}
+                    {"cents" : '15000', "rand" : 'R 150'},
+                    {"cents" : '20000', "rand" : 'R 200'}
                 ] 
             },{ 
                 'id': '3',
                 'network' : 'Telkom',
                 "airOptions": [
-                    {"cents" : '500', "rand" : 'R 5'},
-                    {"cents" : '1000', "rand" : 'R 10'},
                     {"cents" : '2000', "rand" : 'R 20'},
-                    {"cents" : '3000', "rand" : 'R 30'}
+                    {"cents" : '4000', "rand" : 'R 40'},
+                    {"cents" : '5000', "rand" : 'R 50'},
+                    {"cents" : '10000', "rand" : 'R 100'},
+                    {"cents" : '20000', "rand" : 'R 200'}
                 ] 
             }
 	];
@@ -420,6 +424,7 @@
                 $scope.partner_tel = data[0]['partner_tel'];
                 $scope.partner_address = data[0]['partner_address'];
                 $scope.voucher_date = today;
+                $scope.conImages = 'http://www.mahala.mobi/components/com_jumi/files/mahala_WSDL/partnerLogo.png';
             })
             .error(function(data, status) {
                 modal.hide();
@@ -585,6 +590,7 @@
                 $scope.partner_tel = data[0]['partner_tel'];
                 $scope.partner_address = data[0]['partner_address'];
                 $scope.voucher_date = today;
+                $scope.conImages = 'http://www.mahala.mobi/components/com_jumi/files/mahala_WSDL/partnerDisLogo.png';
             })
             .error(function(data, status) {
                 modal.hide();
@@ -808,6 +814,12 @@
                 $scope.partner_tel = data[0]['partner_tel'];
                 $scope.partner_address = data[0]['partner_address'];
                 $scope.voucher_date = today;
+                
+                if (partnerType === 'Points') {
+                    $scope.conImages = 'http://www.mahala.mobi/components/com_jumi/files/mahala_WSDL/partnerLogo.png';
+                } else {
+                    $scope.conImages = 'http://www.mahala.mobi/components/com_jumi/files/mahala_WSDL/partnerDisLogo.png';
+                }
             })
             .error(function(data, status) {
                 modal.hide();
@@ -843,11 +855,89 @@
             myNavigator.pushPage('views/user/coupon_view.html', { animation : 'fade' });
             
         };
+        
+        // nomination form submistion
+        $scope.nominate = function () {
+            var nom_MPAcc = $scope.data.nom_MPAcc;
+            var nom_Details = '';
+            var nom_Name = $scope.data.nom_Name;
+            var nom_Cat = $scope.data.nom_Cat;
+            var nom_Address = '';
+            var nom_Str = $scope.data.nom_Str;
+            var nom_Sub = $scope.data.nom_Sub;
+            var nom_Prov = $scope.data.nom_Prov;
+            var nom_MallName = $scope.data.nom_MallName;
+            var nom_ContactPerson = $scope.data.nom_ContactPerson;
+            var nom_Tel = $scope.data.nom_Tel;
+            
+            modal.show();
+            $scope.data.errorCode = 'Processing, please wait...';
+            $http.post('http://www.mahala.mobi/mobiTest/api/app-results.php', {"reqType" : "nominate", "MPAcc" : nom_MPAcc, "Details" : nom_Details, "Name" : nom_Name, "Cat" : nom_Cat, "Address" : nom_Address, "Street" : nom_Str, "Suburb" : nom_Sub, "Province" : nom_Prov, "Mall" : nom_MallName, "ContactPerson" : nom_ContactPerson, "Tel" : nom_Tel})
+            
+            .success(function(data, status){
+                if (data['error'] == 0) {
+                    modal.hide();
+                    $scope.data.result = data['html'];
+                    $scope.data.errorCode = data['html'];
+                    modal.show();
+                    myNavigator.pushPage('views/home.html', { animation : 'fade'});
+                } else {
+                    modal.hide();
+                    $scope.data.result = data['html'];
+                    $scope.data.errorCode = data['html'];
+                    modal.show();
+                }
+            })
+            .error(function(data, status) {
+                modal.hide();
+                $scope.data.errorCode = 'Request failed';
+                modal.show();
+            });
+        };
+        
+        // become a retailer form submistion
+        $scope.becomeRetailer = function () {
+            var bec_Name = $scope.data.bec_Name;
+            var bec_Cat = $scope.data.bec_Cat;
+            var bec_Str = $scope.data.bec_Str;
+            var bec_Sub = $scope.data.bec_Sub;
+            var bec_Prov = $scope.data.bec_Prov;
+            var bec_inmall = $scope.data.bec_inmall;
+            var bec_MallName = $scope.data.bec_MallName;
+            var bec_NumBranch = $scope.data.bec_NumBranch;
+            var bec_ContactPerson = $scope.data.bec_ContactPerson;
+            var bec_Tel = $scope.data.bec_Tel;
+            var bec_Email = $scope.data.bec_Email;
+            
+            modal.show();
+            $scope.data.errorCode = 'Processing, please wait...';
+            $http.post('http://www.mahala.mobi/mobiTest/api/app-results.php', {"reqType" : "becomeRetailer", "Name" : bec_Name, "Cat" : bec_Cat, "Str" : bec_Str, "Sub" : bec_Sub, "Prov" : bec_Prov, "inmall" : bec_inmall, "MallName" : bec_MallName, "NumBranch" : bec_NumBranch, "ContactPerson" : bec_ContactPerson, "Tel" : bec_Tel, "Email" : bec_Email})
+            
+            .success(function(data, status){
+                if (data['error'] == 0) {
+                    modal.hide();
+                    $scope.data.result = data['html'];
+                    $scope.data.errorCode = data['html'];
+                    modal.show();
+                    myNavigator.pushPage('views/home.html', { animation : 'fade'});
+                } else {
+                    modal.hide();
+                    $scope.data.result = data['html'];
+                    $scope.data.errorCode = data['html'];
+                    modal.show();
+                }
+            })
+            .error(function(data, status) {
+                modal.hide();
+                $scope.data.errorCode = 'Request failed';
+                modal.show();
+            });
+        };
     });
     
     // Map Controler
     
-    module.controller('mapController', function($scope, $http, StreetView) {
+    module.controller('mapController', function($scope, $http, $timeout, StreetView) {
         $scope.map;
         $scope.stores = [];
         $scope.partnerType;
@@ -859,48 +949,75 @@
             $scope.mapRadius = radius;
         };
         
-        var map;
-        $scope.$on('mapInitialized', function(event, evtMap) {
-            map = evtMap;
-            $scope.map = map;
-            $scope.myLat = $scope.map.center.A;
-            $scope.myLng = $scope.map.center.F;
-            
-            $http.post('http://www.mahala.mobi/mobiTest/api/mapMarkers.php', {"lat" : $scope.myLat, "lng" : $scope.myLng, "radius" : $scope.mapRadius, "type" : $scope.partnerType, cat : "%"}).success( function(stores) {
-                var markers = [];
-                console.log(stores);
-                $scope.partnerList = stores;
-                for (var i=0; i<stores.length; i++) {
-                    var store = stores[i];
-                    store.position = new google.maps.LatLng(store.partner_lat,store.partner_lng);
-                    store.title = store.partner_name;
-                    store.animation = google.maps.Animation.DROP;
-                    markers[i] = new google.maps.Marker(store);
-                    google.maps.event.addListener(markers[i], 'click', function() {
-                        $scope.store = this;
-                        //map.setZoom(18);
-                        map.setCenter(this.getPosition());
-                        $scope.storeInfo.show();
+        var onSuccess = function(position) {
+        
+            //Map initialization  
+            $timeout(function(){
+                var map;
+                $scope.$on('mapInitialized', function(event, evtMap) {
+                    map = evtMap;
+                    $scope.map = map;
+                    $scope.myLat = position.coords.latitude;
+                    $scope.myLng = position.coords.longitude;
+
+                    //console.log($scope.map);
+
+                    console.log("lat:" + $scope.myLat + " lng:" + $scope.myLng + " radius:" + $scope.mapRadius + " type:" + $scope.partnerType);
+
+                    $http.post('http://www.mahala.mobi/mobiTest/api/pointsPartnerMapList.php', {"lat" : $scope.myLat, "lng" : $scope.myLng, "radius" : $scope.mapRadius, "type" : $scope.partnerType, "cat" : "%"})
+                    .success( function(stores) {
+                        var markers = [];
+                        console.log(stores);
+                        $scope.partnerList = stores;
+                        for (var i=0; i<stores.length; i++) {
+                            var store = stores[i];
+                            store.position = new google.maps.LatLng(store.partner_lat,store.partner_lng);
+                            store.title = store.partner_name;
+                            store.animation = google.maps.Animation.DROP;
+                            markers[i] = new google.maps.Marker(store);
+                            google.maps.event.addListener(markers[i], 'click', function() {
+                                $scope.store = this;
+                                //map.setZoom(18);
+                                map.setCenter(this.getPosition());
+                                $scope.storeInfo.show();
+                            });
+                            google.maps.event.addListener(map, 'click', function() {
+                                $scope.storeInfo.hide();
+                            });
+                            $scope.stores.push(markers[i]); 
+                            markers[i].setPosition(store.position);
+                            markers[i].setMap($scope.map);
+                        }
+                    }).error(function(data, status) {
+                        modal.hide();
+                        $scope.data.errorCode = status;
+                        modal.show();
                     });
-                    google.maps.event.addListener(map, 'click', function() {
-                        $scope.storeInfo.hide();
-                    });
-                    $scope.stores.push(markers[i]); 
-                    markers[i].setPosition(store.position);
-                    markers[i].setMap($scope.map);
-                }
-            });
-        });
+                });
+            },100);
+        }
+        
         $scope.showStreetView = function() {
             StreetView.setPanorama(map, $scope.panoId);
             $scope.storeInfo.hide();
         };
+        
         $scope.showHybridView = function() {
             map.setMapTypeId(google.maps.MapTypeId.HYBRID);
             map.setTilt(45);
             $scope.storeInfo.hide();
         }
+        
+        // onError Callback receives a PositionError object
+        //
+        function onError(error) {
+            alert('code: '    + error.code    + '\n' +
+                  'message: ' + error.message + '\n');
+        }
+
+        navigator.geolocation.getCurrentPosition(onSuccess, onError);
     });
+    
     module.directive('storeInfo', function() {
         var StoreInfo = function(s, e, a) {
             this.scope = s;

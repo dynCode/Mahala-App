@@ -1,7 +1,7 @@
-// top banner
+/* top banner */
 .topBanner {
   color: white;
-  height: 250px;
+  /*height: 250px;*/
   text-align: center;
 }
 
@@ -17,7 +17,7 @@
     text-align: center;
 }
 
-//list items
+/*list items*/
 .list__item {
     text-align: center;
 }
@@ -26,7 +26,7 @@
     text-align: center;
 }
 
-//partner list
+/*partner list*/
 .list__item--partnerList {
     box-shadow: none;
     text-align: left;
@@ -39,7 +39,6 @@
 
 .thumbnail {
     width: 80px;
-    //height: 100%;
     border-radius: 4px;
     -webkit-border-radius: 4px;
     background-color: #eee;
@@ -82,7 +81,7 @@
     padding: 15px;
 }
 
-//form style
+/*form style*/
 .formShadow {
     box-shadow: 0px 0px 10px 5px rgb(187, 187, 187);
 }
@@ -92,6 +91,19 @@
     display: block; 
     box-shadow: 0px -5px 10px -1px rgba(187,187,187,1); 
     padding: 10px 20px;
+}
+
+.formListLrg {
+    height: 60px;
+    display: block;
+    /* box-shadow: 0px -5px 10px -1px rgba(187,187,187,1); */
+    padding: 10px 20px;
+}
+
+.formListInputLrg {
+    float: none;
+    line-height: 40px;
+    width: 100%;
 }
 
 .formListLable {
@@ -121,12 +133,23 @@
     vertical-align: middle
 }
 
-//side menu
+.formListInputLrg > input[type=text], input[type=password], select {
+    border-radius: 0px;
+    background: #eee;
+    border-color: #eee;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 5px;
+    width:100%; 
+    vertical-align: middle
+}
+
+/*side menu*/
 .page--menu-page__content {
     background-color: #bbb;
 }
 
-//tab bar alignment
+/*tab bar alignment*/
 .tab-bar__item {}
 
 .tab-bar__button--tabbar-right {
@@ -139,7 +162,7 @@
     padding-left: 10px;
 }
 
-// slide show
+/* slide show*/
 .hideable {
     display: none;
 }

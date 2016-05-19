@@ -3,7 +3,7 @@
         <div class="left">
             <ons-back-button>Back</ons-back-button>
         </div>
-        <div class="center">Gold & Silver</div>
+        <div class="center">Silver & Gold</div>
         <div class="right">
             <ons-toolbar-button ng-click="menu.toggle()">
                 <ons-icon icon="ion-navicon" size="28px" fixed-width="false"></ons-icon>
@@ -17,12 +17,17 @@
     </div>
     <h2 class="myHeader"><span>WANT TO JOIN?</span></h2>
     <div class="formShadow">
-        <div style="padding:20px">
-            <img src="images/sgHeading.png" style="max-width: 348px; width: 100%;" />
-            <br />
-            <h2 style="font-weight: normal;">COMPREHENSIVE FAMILY FUNERAL COVER WITH UNIQUE VALUE ADDED BENEFITS!</h2>
-            <img src="images/memberShipInfo.png" style="max-width: 348px; width: 100%;" />
-            <h3 style="font-weight: normal; border-bottom: 2px dashed #c69a48;">INCLUDED BENEFITS</h3>
+        <img src="images/sgHeading.png" style="width: 100%;" />
+        <div style="padding: 20px">
+            <ons-row>
+                <ons-col width="80px">
+                    <img src="images/sgloyalty.png" />
+                </ons-col>
+                <ons-col>
+                    <h4>MAHALA LOYALTY PROGRAMME</h4>
+                    <p>You enjoy true and tangible lifestyle benefits, you accumulate points on your membership card and receive up to 30% on-the-spot discount from the Discount Partners (through a virtual voucher system). Feel free to view all our partner offerings on www.mahalas.co.za or simply phone 084 196 3733 for more information.</p>
+                </ons-col>
+            </ons-row>
             <ons-row>
                 <ons-col width="80px">
                     <img src="images/vehicle.png" />
@@ -32,7 +37,6 @@
                     <p>In the event of a life assured's death, the surviving family is provided with an Avis Car Rental for a period of 3 days - unlimited mileage, Category C vehicle (Aircon, Powersteering, Airbags, ABS etc.) This benefit must be used within 6 months after the deceased persons death. (Main Member, Principal Partner and Nominated Children Only) <span style="color: #C82126;">Also included in your additional dependant fee.</span></p>
                 </ons-col>
             </ons-row>
-            
             <ons-row>
                 <ons-col width="80px">
                     <img src="images/airtime.png" />
@@ -47,12 +51,13 @@
                     <img src="images/body.png" />
                 </ons-col>
                 <ons-col>
-                    <h4>REPATRIATION BENEFIT</h4>
+                    <h4>BODY REPATRIATION BENEFIT</h4>
                     <p>In the event of a life assured's death greater than 100km from place of burial, Hollard will pay towards the cost of transporting their mortal remains up to R7 500 per incident to a Funeral Home nearest to the place of burial, with a maximum annual limit of R20 000. (Main Member, Principal Partner and Nominated Children) <span style="color: #C82126;">Also included in your additional dependant fee.</span></p>
                 </ons-col>
             </ons-row>
-            <img src="images/sgBooster.png" style="max-width: 348px; width: 100%;" />
-            <h3 style="background-color: #C82126; color: #fff;text-align: center;padding: 5px;text-transform: uppercase;font-weight: normal;">Only R79.95 per month</h3>
+        </div>
+        <img src="images/sgBooster.png" style="width: 100%;" />
+        <div style="padding: 20px">
             <ons-row>
                 <ons-col width="80px">
                     <img src="images/advice.png" />
@@ -99,6 +104,7 @@
                 </ons-col>
             </ons-row>
         </div>
+        <img src="images/sgFooter.png" style="width: 100%; padding-bottom: 20px;" />
     </div>
     <ons-list class="dropShadow">
         <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/enquiery.html', { animation : 'slide' } )">
