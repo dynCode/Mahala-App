@@ -1,0 +1,67 @@
+<ons-page>
+    <ons-toolbar>
+        <div class="left">
+            <ons-back-button>Back</ons-back-button>
+        </div>
+        <div class="center">Discount Voucher</div>
+        <div class="right">
+            <ons-toolbar-button ng-click="menu.toggle()">
+                <ons-icon icon="ion-navicon" size="28px" fixed-width="false"></ons-icon>
+            </ons-toolbar-button>
+        </div>
+    </ons-toolbar>
+    <div class="topBanner">
+        <div class="subImgBlock">
+            <img src="images/sub_header.png" style="max-width: 380px; width: 100%;" />
+        </div>
+    </div>
+    <div style="padding: 0 20px;">
+        <table width='100%' style='border:none'>
+            <tr>
+                <td colspan='2' style='border-bottom:2px solid #cd242d;' align='center'><img src="http://www.mahala.mobi/components/com_jumi/files/mahala_WSDL/logos/{{partner_logo}}" width="90%"></td>
+            </tr>
+            <tr>
+                <td>Deal:</td><td>{{partner_voucher}}</td>
+            </tr>
+            <tr>
+                <td>Tel:</td><td>{{partner_tel}}</td>
+            </tr>
+            <tr>
+                <td>Address:</td><td>{{partner_address}}</td>
+            </tr>
+            <tr>
+                <td>Date:</td><td>{{voucher_date}}</td>
+            </tr>
+            <tr>
+                <td>Loyalty no:</td><td>{{MPacc}}</td>
+            </tr>
+            <tr>
+                <td colspan='2' align='center'><img src='http://www.mahala.mobi/components/com_jumi/files/mahala_WSDL/test_1D.php?text={{CardNumber}}' width='270px' /></td>
+            </tr>
+        </table>
+    </div>
+    
+    <img src='images/discountTop.png' width='100%'/>
+    
+    <div style="padding: 0 20px;">
+        <div class="formListLrg">
+            <div class="formListLable">Transaction Value:</div><div class="formListInputLrg"><input type="number" class="text-input"  placeholder="Transaction Value" ng-model="data.pointsTransVal"></div>
+        </div>
+        <div class="formListLrg">
+            <div class="formListLable">Invoice No:</div><div class="formListInputLrg"><input type="text" class="text-input"  placeholder="Invoice No" ng-model="data.pointsTransInv"></div>
+        </div>
+        <div class="formListLrg">
+            <div class="formListLable"><br></div><div class="formListInputLrg"><ons-button ngf-select ng-model="data.invoiceSlip" name="file" ngf-pattern="'image/*'" ngf-capture="'camera'" ngf-resize-if="$width > 800 || $height > 800" ngf-accept="'image/*'" ngf-max-size="20MB" ngf-resize="{width: 800, height: 800}" style="background-color: #ccc; color: #000;"><ons-icon icon="fa fa-camera"></ons-icon> UPLOAD YOUR TILL SLIP</ons-button></div>
+        </div>
+        <!--<input type="text" class="text-input" ng-model="data.partId" value="{{partner_id}}">
+        <input type="text" class="text-input" ng-model="data.partName" ng-value="{{partner_name}}">-->
+        <img ng-show="data.invoiceSlip.$valid" ngf-thumbnail="data.invoiceSlip" ngf-size="{width: 100, height: 100, quality: 0.9}">
+        <br>
+        <ons-button modifier="large" id="btnLogIn" ng-click="claimDiscount(data.invoiceSlip)" style="width:100%">SUBMIT</ons-button>
+                
+        <p class="location" style='color:#000'><i>Submitting your till slip is not compulsory to complete your discount transaction. Completing these two fields will allow you to view your over-all savings through your Mahala membership. When capturing your till slip, please ensure that the total transaction value and invoice number are visible, these details will be confirmed by the Retailer.</i></p>
+        <p style='color:#cd242d'><a href="#" onclick="myNavigator.pushPage('views/TandC.html');" style="text-decoration: none; color: #C82126;">TERMS AND CONDITIONS</a> APPLY.</p>
+        
+        <img src='images/discountBottom.png' width='80%'/>
+    </div>
+</ons-page>
