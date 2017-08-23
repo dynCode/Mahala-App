@@ -90,8 +90,6 @@
     <plugin name="cordova-plugin-device-orientation" />
     <plugin name="cordova-plugin-geolocation" />
     <plugin name="cordova-plugin-whitelist" />
-    <plugin name="com.phonegap.plugins.barcodescanner" />
-    <preference name="StatusBarOverlaysWebView" value="true" />
 
     <!-- Define app icon for each platform. -->
     <icon src="icon.png" />
