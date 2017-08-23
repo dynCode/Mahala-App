@@ -24,6 +24,8 @@
 .list__item--chevron {
     box-shadow: 0px -5px 10px -1px rgba(187,187,187,1);
     text-align: center;
+    font-weight: bold;
+    color: #96989a;
 }
 
 /*partner list*/
@@ -109,6 +111,7 @@
 .formListLable {
     float:left; 
     line-height: 40px;
+    font-size: 14px;
 }
 
 .formListRight {
@@ -165,4 +168,110 @@
 /* slide show*/
 .hideable {
     display: none;
+}
+
+.button-bar__button {
+    font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
+    background-color: rgba(200,33,38,1);
+    color: #fff;
+    height: 40px;
+    line-height: 40px;
+    font-size: 17px;
+}
+
+.button-bar__item.active > .button-bar__button, :checked + .button-bar__button {
+    background-color: rgba(200,33,38,0.80);
+    color: #000;
+}
+
+.navigation-bar {
+    background: rgba(200,33,38,1);
+}
+
+.navigation-bar__title {
+    color: #fff;
+}
+
+.toolbar-button, .toolbar-button--outline, .toolbar-button--quiet {
+    color: #fff;
+}
+
+.tab-bar {
+    background-color: #c69a48;
+}
+
+.tab-bar__button {
+    color: #fff;
+}
+.tab-bar__button > .tab-bar__icon {
+    text-align: left;
+    padding-left: 10px;
+}
+
+.tab-bar__button > .tab-bar__label {
+    text-align: right;
+    padding-right: 10px;
+}
+
+:checked + .tab-bar__button > .tab-bar__icon {
+    color: #594621;
+}
+
+:checked + .tab-bar__button {
+    color: #594621;
+}
+
+.button {
+    background: rgba(200,33,38,1);
+}
+
+.button-bar__button {
+    border: none;
+}
+
+.checkbox > input[type="checkbox"]:checked {
+    background: rgba(200,33,38,0.81);
+}
+
+.checkbox > .checkbox__checkmark:before {
+    border: 1px solid rgba(200,33,38,0.81);
+}
+
+.checkbox > input[type="checkbox"]:checked + .checkbox__checkmark:before {
+    background: rgba(200,33,38,0.81);
+    border: 1px solid rgba(200,33,38,0.81);
+}
+
+.radio-button > input[type="radio"]:checked {
+    background: rgba(200,33,38,0.81);
+}
+
+.radio-button > .radio-button__checkmark:before {
+    border: 1px solid rgba(200,33,38,0.81);
+}
+
+.radio-button > input[type="radio"]:checked + .radio-button__checkmark:before {
+    background: rgba(200,33,38,0.81);
+    border: 1px solid rgba(200,33,38,0.81);
+}
+
+.button-bar__item:first-child > .button-bar__button {
+    border-left: 1px solid rgba(255,255,255,0.77);
+    border-right: 1px solid rgba(255,255,255,0.77);
+}
+
+.button--large--cta {
+    background-color: #6c6c6c;
+}
+
+.button--large--quiet {
+    color: rgba(200,33,38,1);
+}
+
+.centerContent {
+    text-align: center;
+}
+
+.row-center {
+    text-align: center;
 }

@@ -3,7 +3,7 @@
         <div class="left">
             <ons-back-button>Back</ons-back-button>
         </div>
-        <div class="center">Points Partners</div>
+        <div class="center">Points Vouchers</div>
         <div class="right">
             <ons-toolbar-button ng-click="menu.toggle()">
                 <ons-icon icon="ion-navicon" size="28px" fixed-width="false"></ons-icon>
@@ -11,11 +11,9 @@
         </div>
     </ons-toolbar>
     <div class="topBanner">
-        <div class="subImgBlock">
-            <img src="images/sub_header.png" style="max-width: 380px; width: 100%;" />
-        </div>
+        <img src="images/app_header1.png" style="max-width: 800px; width: 100%;" />
     </div>
-    <h2 class="myHeader"><span>PARTNER CATEGORIES:</span></h2>
+    <h2 class="myHeader"><span>VOUCHER CATEGORIES:</span></h2>
     <ons-list>
         <ons-list-item modifier="chevron" ng-repeat="partner in catList" ng-click="getPointList(partner.partner_category);">
             <ons-row>

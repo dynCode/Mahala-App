@@ -3,7 +3,7 @@
         <div class="left">
             <ons-back-button>Back</ons-back-button>
         </div>
-        <div class="center">Want to join?</div>
+        <div class="center">Products</div>
         <div class="right">
             <ons-toolbar-button ng-click="menu.toggle()">
                 <ons-icon icon="ion-navicon" size="28px" fixed-width="false"></ons-icon>
@@ -11,26 +11,31 @@
         </div>
     </ons-toolbar>
     <div class="topBanner">
-        <div class="subImgBlock">
-            <img src="images/sub_header.png" style="max-width: 380px; width: 100%;" />
-        </div>
-    </div>
-    <h2 class="myHeader"><span>WANT TO JOIN?</span></h2>
-    <div style="padding:20px">
-        <p>There are various ways to join the Mahala Family.</p>
-        <p>Our Mahala Perks will provide you with the necessary assistance as a South African citizen.</p>
-        <p>Our Mahala Silver & Gold gives up to R50 000 funeral cover with unique added benefits (Value Booster).</p>
-        <p>Our Exceed Student Plan offers all the assistance a young irresponsible scholar / student use in a time of need.  PARENTS, this is a MUST if you would like to sleep at night :)</p>
+        <div class="imgBlock hideablePro" style="display: block;"><img src="images/app_header1.png" style="max-width: 800px; width: 100%;" /></div>
+        <div class="imgBlock hideablePro" style="display: none;"><img src="images/app_header2.png" style="max-width: 800px; width: 100%;" /></div>
+        <div class="imgBlock hideablePro" style="display: none;"><img src="images/app_header3.png" style="max-width: 800px; width: 100%;" /></div>
+        <div class="imgBlock hideablePro" style="display: none;"><img src="images/app_header4.png" style="max-width: 800px; width: 100%;" /></div>
+        <div class="imgBlock hideablePro" style="display: none;"><img src="images/app_header5.png" style="max-width: 800px; width: 100%;" /></div>
+        <div class="imgBlock hideablePro" style="display: none;"><img src="images/app_header6.png" style="max-width: 800px; width: 100%;" /></div>
     </div>
     <ons-list>
-        <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/join/perks.html', { animation : 'lift' } )">
-            MAHALA PERKS!
+        <ons-list-item onclick="myNavigator.pushPage('views/join/perks.html', { animation : 'lift' } )">
+            <img src="images/Mahala_Perks.png" style="max-width: 800px; width: 100%;" />
         </ons-list-item>
-        <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/join/silver_gold.html', { animation : 'lift' } )">
-            MAHALA SILVER & GOLD
+        <ons-list-item onclick="myNavigator.pushPage('views/join/silver_gold.html', { animation : 'lift' } )">
+            <img src="images/Mahala_funeral.png" style="max-width: 800px; width: 100%;" />
         </ons-list-item>
-        <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/join/student_plan.html', { animation : 'lift' } )">
-            EXCEED STUDENT PLAN
+        <ons-list-item onclick="myNavigator.pushPage('views/join/workers.html', { animation : 'lift' } )">
+            <img src="images/Mahala_Workers.png" style="max-width: 800px; width: 100%;" />
+        </ons-list-item>
+        <ons-list-item onclick="myNavigator.pushPage('views/join/charity.html', { animation : 'lift' } )">
+            <img src="images/Mahala_Charity.png" style="max-width: 800px; width: 100%;" />
+        </ons-list-item>
+        <ons-list-item onclick="myNavigator.pushPage('views/join/student_plan.html', { animation : 'lift' } )">
+            <img src="images/Mahala_student.png" style="max-width: 800px; width: 100%;" />
+        </ons-list-item>
+        <ons-list-item onclick="myNavigator.pushPage('views/join/travel.html', { animation : 'lift' } )">
+            <img src="images/Mahala_travel.jpg" style="max-width: 800px; width: 100%;" />
         </ons-list-item>
     </ons-list>
 </ons-page>

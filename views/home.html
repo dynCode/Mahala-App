@@ -1,62 +1,74 @@
-<ons-page>
-    <ons-toolbar>
-        <div class="center">Welcome</div>
-        <div ng-show="loggedIn">
+<ons-navigator title="Navigator" var="myNavigator">    
+    <ons-page>
+        <ons-toolbar>
+            <div class="left"></div>
+            <div class="center">WELCOME</div>
             <div class="right">
-                <ons-toolbar-button ng-click="menu.toggle()">
+                <ons-toolbar-button ng-click="menu.toggleMenu()">
                     <ons-icon icon="ion-navicon" size="28px" fixed-width="false"></ons-icon>
                 </ons-toolbar-button>
             </div>
+        </ons-toolbar>
+        <div class="topBanner">
+            <div class="imgBlock hideable" style="display: block;"><img src="images/app_header1.png" style="max-width: 800px; width: 100%;" /></div>
+            <div class="imgBlock hideable" style="display: none;"><img src="images/app_header2.png" style="max-width: 800px; width: 100%;" /></div>
+            <div class="imgBlock hideable" style="display: none;"><img src="images/app_header3.png" style="max-width: 800px; width: 100%;" /></div>
+            <div class="imgBlock hideable" style="display: none;"><img src="images/app_header4.png" style="max-width: 800px; width: 100%;" /></div>
+            <div class="imgBlock hideable" style="display: none;"><img src="images/app_header5.png" style="max-width: 800px; width: 100%;" /></div>
+            <div class="imgBlock hideable" style="display: none;"><img src="images/app_header6.png" style="max-width: 800px; width: 100%;" /></div>
         </div>
-    </ons-toolbar>
-    <div class="topBanner">
-        <div class="imgBlock hideable" style="display: block;"><img src="images/app_header1.png" style="max-width: 800px; width: 100%;" /></div>
-        <div class="imgBlock hideable" style="display: none;"><img src="images/app_header2.png" style="max-width: 800px; width: 100%;" /></div>
-        <div class="imgBlock hideable" style="display: none;"><img src="images/app_header3.png" style="max-width: 800px; width: 100%;" /></div>
-    </div>
-    <ons-list class="dropShadow">
-        <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/wantToJoin.html', { animation : 'slide' } )">
-            PRODUCT / SERVICES
-        </ons-list-item>
-        <div ng-hide="loggedIn">
-            <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/login.html', { animation : 'slide' } )">
-                LOYALTY LOGIN
+        <ons-list class="dropShadow">
+            <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/register.html', { animation : 'slide' } )">
+                JOIN NOW
             </ons-list-item>
-        </div>
-        <div ng-show="loggedIn">
-            <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/user/welcome.html', { animation : 'slide' } )">
-                MEMBERS AREA
+            <div ng-hide="loggedIn">
+                <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/login.html', { animation : 'slide' } )">
+                    LOYALTY LOGIN
+                </ons-list-item>
+            </div>
+            <div ng-show="loggedIn">
+                <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/user/welcome.html', { animation : 'slide' } )">
+                    MEMBERS AREA
+                </ons-list-item>
+                <ons-list-item modifier="chevron" ng-click="logout()">
+                    LOG OUT
+                </ons-list-item>
+            </div>
+            <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/promotions.html', { animation : 'slide' } )">
+                PROMOTIONS
             </ons-list-item>
-            <ons-list-item modifier="chevron" ng-click="logout()">
-                LOG OUT
+            <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/wantToJoin.html', { animation : 'slide' } )">
+                PRODUCT / SERVICES
             </ons-list-item>
-        </div>
-        <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/howItWorks.html', { animation : 'slide' } )">
-            HOW DOES LOYALTY WORK?
-        </ons-list-item>
-        <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/partners.html', { animation : 'slide' } )">
-            PARTNERS / RETAILERS
-        </ons-list-item>
-        <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/nominate.html', { animation : 'slide' } )">
-            NOMINATE A RETAILER
-        </ons-list-item>
-        <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/become.html', { animation : 'slide' } )">
-            BECOME A RETAILER
-        </ons-list-item>
-        <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/contactUs.html', { animation : 'slide' } )">
-            CONTACT US
-        </ons-list-item>
-    </ons-list>
-    <div style="padding:20px" ng-init="init()">
-        <p>Welcome to the Mahala Mobile Platform where you can find all your DEALS & SAVINGS at your finger tips.  Our platform is simple and easy to navigate, remember to login in order to access your personal details or to download your vouchers. </p>
-        <p>Feel free to promote Mahala to your friends and family and don’t forget to join our Facebook page (Mahala Loyalty) to receive all the NEW deals!</p>
-    </div>
-    <ons-list>
-        <ons-list-item modifier="chevron" onclick="window.open('https://www.facebook.com/mahalaloyalty','_system','')">
-            FACEBOOK
-        </ons-list-item>
-        <ons-list-item modifier="chevron" onclick="window.open('https://twitter.com/mahala_loyalty','_system','')">
-            TWITTER
-        </ons-list-item>
-    </ons-list>
-</ons-page>
+            <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/howItWorks.html', { animation : 'slide' } )">
+                HOW DOES LOYALTY WORK?
+            </ons-list-item>
+            <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/partners.html', { animation : 'slide' } )">
+                VOUCHERS
+            </ons-list-item>
+            <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/nominate.html', { animation : 'slide' } )">
+                NOMINATE A RETAILER
+            </ons-list-item>
+            <!--<ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/become.html', { animation : 'slide' } )">
+                BECOME A RETAILER
+            </ons-list-item>-->
+            
+            <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/contactUs.html', { animation : 'slide' } )">
+                CONTACT US
+            </ons-list-item>
+        </ons-list>
+        <!--<div style="padding:20px" ng-init="init()">
+            <p>Welcome to the Mahala Mobile Platform where you can find all your DEALS & SAVINGS at your finger tips.  Our platform is simple and easy to navigate, remember to login in order to access your personal details or to download your vouchers. </p>
+            <p>Feel free to promote Mahala to your friends and family and don’t forget to join our Facebook page (Mahala Loyalty) to receive all the NEW deals!</p>
+        </div>-->
+        <ons-row align="center">
+            <ons-col><img src="images/mahala_facebook.png" style="" onclick="window.open('https://www.facebook.com/mahalaloyalty','_system','')" /></ons-col>
+            <ons-col><img src="images/mahala_twitter.png" style="" onclick="window.open('https://twitter.com/mahala_loyalty','_system','')" /></ons-col>
+        </ons-row>
+        <ons-list class="dropShadow">
+            <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/retail/login.html', { animation : 'slide' } )" style="color:#ce282c;">
+                RETAILER LOGIN
+            </ons-list-item>
+        </ons-list>
+    </ons-page>
+</ons-navigator>

@@ -7,11 +7,11 @@
 
         <title>Mahala Mobi</title>  
 
-        <link rel="stylesheet" href="lib/onsen/css/onsenui.css">  
-        <link rel="stylesheet" href="styles/app.css"/>
+        <link rel="stylesheet" href="lib/onsen/css/onsenui.css">
         <link rel="stylesheet" href="styles/onsen-css-components.css">  
+        <link rel="stylesheet" href="styles/app.css"/>
         
-        <script src='//maps.googleapis.com/maps/api/js'></script>
+        <script src='//maps.googleapis.com/maps/api/js?key=AIzaSyB5G5LWb3yu-EVcRtUGKpr1GPUw5ZvOlHk'></script>
         <script src="lib/onsen/js/angular/angular.js"></script>
         <script src="lib/onsen/js/onsenui.js"></script>
         
@@ -33,13 +33,19 @@
         
     </head>
     <body ng-controller="AppController">
-        <ons-sliding-menu behind-page="views/menu.html" above-page="views/tab-bar.html" side="right" type="reveal" max-slide-distance="250px" swipable="true" var="menu">
-        </ons-sliding-menu>   
-        <ons-modal var="modal" ng-click="modal.hide()">
-            <br>
-            <br>{{data.errorCode}}
-            <br>
-        </ons-modal>
+        <ons-tabbar>
+            <ons-tab active="true" page="hoge.html" icon="ion-home"></ons-tab>
+            <ons-tab page="views/TandC.html" label="Terms & Conditions"></ons-tab>
+        </ons-tabbar>
+        <script type="text/ons-template" id="hoge.html">
+            <ons-sliding-menu main-page="views/home.html" menu-page="views/menu.html" max-slide-distance="260px" type="push" side="right" var="menu">
+            </ons-sliding-menu>
+            <ons-modal var="modal" ng-click="modal.hide()">
+                <br>
+                <br>{{data.errorCode}}
+                <br>
+            </ons-modal>
+        </script> 
     </body>
 </html>
 

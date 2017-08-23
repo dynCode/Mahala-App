@@ -2,8 +2,8 @@
 <widget xmlns     = "http://www.w3.org/ns/widgets"
         xmlns:gap = "http://phonegap.com/ns/1.0"
         id        = "com.mahala"
-        versionCode = "160" 
-        version   = "1.6.0">
+        versionCode = "170" 
+        version   = "1.7.0">
 
     <name>Mahala</name>
 
@@ -90,6 +90,7 @@
     <plugin name="cordova-plugin-device-orientation" />
     <plugin name="cordova-plugin-geolocation" />
     <plugin name="cordova-plugin-whitelist" />
+    <plugin name="com.phonegap.plugins.barcodescanner" />
     <gap:plugin name="com.phonegap.plugin.statusbar" />
     <gap:config-file platform="ios" parent="UIStatusBarHidden">
         <true/>

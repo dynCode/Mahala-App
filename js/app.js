@@ -4,6 +4,7 @@
     
     var module = angular.module('app', ['onsen', 'ngMap', 'ngFileUpload']);
     module.controller('AppController', function($scope, $http, $window, $timeout, Upload) {
+        $scope.apiPath = 'http://www.mahala.mobi/newApp/api/';
         $scope.data = [];
         //points partners name dropdown
         $scope.pointsDD = [];
@@ -23,21 +24,44 @@
         $scope.searchDiscountProvOk = false;
         $scope.discountPartnerList = [];
         
-        // login data
-        $scope.CurrentBalance = '';
-        $scope.UsedUnits = '';
-        $scope.CurrTierDescription = '';
-        $scope.Community = '';
+        //Membder Data
+        $scope.userMpacc = '';
+        $scope.userPass = ''; 
+        $scope.loggedIn = false; 
+        $scope.updateDate = '';
+        $scope.totalEarned = '';
+        $scope.totalBonusEarned = '';
+        $scope.totalUsed = '';
+        $scope.currentUnits = '';
+        $scope.currentRands = '';
+        $scope.sessionId = '';
+        $scope.FirstName = '';
+        $scope.LastName = '';
+        $scope.gender = '';
+        $scope.title = '';
+        $scope.IdNumber = '';
+        $scope.dob = '';
+        $scope.EmailAddress = '';
+        $scope.ContactNumber = '';
+        $scope.Province = '';
+        $scope.City = '';
+        $scope.Suburb = '';
+        $scope.Addressline1 = '';
+        $scope.Addressline2 = '';
+        $scope.Addressline3 = '';
+        $scope.postalCode = '';
+        $scope.Title = '';
+        $scope.tierDes = '';
         $scope.CardNumber = '';
-        $scope.RandValue = '';
-        $scope.MPacc = '';
-        $scope.loggedIn = false;
+        $scope.comId = '';
+        $scope.commun = '';
         
         //Partner Data
         $scope.partner_id = '';
         $scope.partner_name = '';
         $scope.partner_logo = '';
         $scope.partner_voucher = '';
+        $scope.partner_terms = '';
         $scope.partner_tel = '';
         $scope.partner_address = '';
         $scope.voucher_date = '';
@@ -59,6 +83,10 @@
         $scope.coupondescription = "";
         $scope.coupondiscount = "";
         $scope.coupontc = "";
+        
+        //tranaction fields
+        $scope.transList = "";
+        $scope.discountList = "";
         
         // Airtime Options
         $scope.selectedAir = [];
@@ -113,6 +141,17 @@
             }
 	];
         
+        // distName drop down for registration
+        $scope.searchOk = false;
+        $scope.regCityDD = [];
+        
+        // set member reg field to false
+        $scope.cardReg = false;
+        
+        // retail Name & ID
+        $scope.retailName = "";
+        $scope.retailID = "";
+        
         /*
         //partner map matkers
         $scope.partnerMarkers = [];
@@ -140,28 +179,77 @@
             if (user && pass) {
                 modal.show();
                 $scope.data.errorCode = 'Processing, please wait...';
-                $http.post('http://www.mahala.mobi/mobiTest/api/app-results.php', {"reqType" : "login", "user" : user, "pass" : pass})
+                $http.post($scope.apiPath+'login.php', {"reqType" : "login", "user" : user, "pass" : pass})
                 .success(function(data, status){
                     if (data['error'] == 0) {
-                        
-                        var randVal = parseFloat(data['CurrentBalance'])/10;
-                        
+                        console.log("Data:", data);
                         modal.hide();
-                        $scope.data.result = data['html'];
-                        $scope.CurrentBalance = data['CurrentBalance'];
-                        $scope.UsedUnits = data['UsedUnits'];
-                        $scope.CurrTierDescription = data['CurrTierDescription'];
-                        $scope.Community = data['Community'];
-                        $scope.CardNumber = data['CardNumber'];
-                        $scope.RandValue = randVal.toFixed(2);
-                        $scope.MPacc = user;
+                        $scope.totalEarned = data['totalEarned'];
+                        $scope.totalBonusEarned = data['totalBonusEarned'];
+                        $scope.totalUsed = data['totalUsed'];
+                        $scope.totalBucks = data['totalBucks'];
+                        $scope.currentUnits = data['currentUnits'];
+                        $scope.currentRands = data['currentRands'];
+                        $scope.userMpacc = user;
+                        $scope.userPass = pass;
+                        $scope.sessionId = data['sessionId'];
                         $scope.loggedIn = true;
-                        myNavigator.pushPage('views/user/welcome.html', { animation : 'fade' });
-                    } else {
+                        $scope.FirstName = data['FirstName'];
+                        $scope.LastName = data['LastName'];
+                        $scope.gender = data['gender'];
+                        $scope.IdNumber = data['IdNumber'];
+                        $scope.dob = data['dob'];
+                        $scope.EmailAddress = data['EmailAddress'];
+                        $scope.ContactNumber = data['ContactNumber'];
+                        $scope.Province = data['Province'];
+                        $scope.City = data['City'];
+                        $scope.Suburb = data['Suburb'];
+                        $scope.Addressline1 = data['Addressline1'];
+                        $scope.Addressline2 = data['Addressline2'];
+                        $scope.Addressline3 = data['Addressline3'];
+                        $scope.postalCode = data['postalCode'];
+                        $scope.Title = data['title'];
+                        $scope.tierDes = data['tierDes'];
+                        $scope.CardNumber = '62786401'+user;
+                        $scope.comId = data['comId'];
+                        $scope.commun = data['commun'];
+                        
+                        modal.show();
+                        $scope.data.errorCode = 'Collecting your data...';
+                        
+                        $timeout(function(){
+                            modal.hide();
+                            $scope.data = [];
+                            myNavigator.pushPage('views/user/welcome.html', { animation : 'fade' });
+                        },'2000');
+                    } else if (data['error'] === 2) {    
                         modal.hide();
                         $scope.data.result = data['html'];
                         $scope.data.errorCode = data['html'];
                         modal.show();
+                        $timeout(function(){
+                            modal.hide();
+                            myNavigator.pushPage('views/register.html', { animation : 'fade' });
+                        },'2000');
+                    } else if (data['error'] === 3) {    
+                        modal.hide();
+                        $scope.data.result = data['html'];
+                        $scope.data.errorCode = data['html'];
+                        modal.show();
+                        $timeout(function(){
+                            modal.hide();
+                            myNavigator.pushPage('views/resetpassword.html', { animation : 'fade' });
+                        },'2000');
+                    } else {
+                        modal.hide();
+                        $scope.data.result = data['html'];
+                        $scope.data.errorCode = data['html'];
+                        console.log(data['html']);
+                        modal.show();
+                        $timeout(function(){
+                            modal.hide();
+                            myNavigator.pushPage('views/login.html', { animation : 'fade' });
+                        },'1000');
                     }
                 })
                 .error(function(data, status) {
@@ -174,22 +262,402 @@
                 modal.show();
             }
         };
+        //register me
+        $scope.registerME = function () {
+            var cashierCode = $scope.data.reg_cashierCode;
+            var cardType = $scope.data.cardType;
+            var FirstName = $scope.data.reg_FirstName;
+            var LastName = $scope.data.reg_LastName;
+            var gender = $scope.data.reg_gender;
+            var title = $scope.data.reg_title;
+            var IDNum = $scope.data.reg_IDNum;
+            var CellNumber = $scope.data.reg_CellNumber;
+            var EmailAddress = $scope.data.reg_EmailAddress;
+            var Address1 = $scope.data.reg_Address1;
+            var Address2 = $scope.data.reg_Address2;
+            var PostCode = $scope.data.reg_PostCode;
+            var Suburb = $scope.data.reg_Suburb;
+            var City = $scope.data.reg_City;
+            var Province = $scope.data.reg_Province;
+            var MemberNo = $scope.data.reg_memberCode;
+            var tc_y = $scope.data.tc_y;
+            var market_y = $scope.data.market_y;
+            
+            // set dob
+            var iddob = IDNum.slice(0,6);
+            var dobYear = iddob.slice(0,2);
+            var dobMonth = iddob.slice(2,4);
+            var dobDay = iddob.slice(4,6);
+
+            var d = new Date();
+            var n = d.getFullYear();
+            var str = n.toString();
+            var y = str.slice(2,4);    
+
+            console.log('DOB: '+iddob+' dobYear: '+dobYear+' dobMonth: '+dobMonth+' dobDay: '+dobDay);
+
+            if (dobYear >= '00' && dobYear <= y) {
+                dobYear = '20'+dobYear;
+            } else {
+                dobYear = '19'+dobYear;
+            }
+
+            var dob = dobYear+'-'+dobMonth+'-'+dobDay;
+            
+            // check and set terms and marketing
+            if (typeof tc_y === 'undefined' || tc_y === null) {
+                tc_y = 'no';
+            } else {
+                tc_y = 'yes';
+            }
+            
+            if (typeof market_y === 'undefined' || market_y === null) {
+                market_y = 'no';
+            } else {
+                market_y = 'yes';
+            }
+            
+            if ( cashierCode && cardType && FirstName && LastName && gender && title && gender && IDNum && CellNumber ) {
+                
+                if (cardType === 'physical' && (typeof MemberNo === 'undefined' || MemberNo === null)) {
+                    ons.notification.alert({
+                        message: 'Please complete all the fields.',
+                        title: 'Oops!',
+                        buttonLabel: 'OK',
+                        animation: 'default'
+                    });
+                } else if (tc_y === 'no') {
+                    ons.notification.alert({
+                        message: 'Please accept the terms and conditions to continue.',
+                        title: 'Oops!',
+                        buttonLabel: 'OK',
+                        animation: 'default'
+                    });
+                } else {
+                    modal.show();
+                    $scope.data.errorCode = 'Processing, please wait...';
+                    $http.post($scope.apiPath+'register.php', {"reqType" : "register", "cashierCode" : cashierCode, "cardType" : cardType, "FirstName" : FirstName, "LastName" : LastName, "gender" : gender, "title" : title, "IDNum" : IDNum, "dob" : dob, "CellNumber" : CellNumber, "EmailAddress" : EmailAddress, "Address1" : Address1, "Address2" : Address2, "PostCode" : PostCode, "Suburb" : Suburb, "City" : City, "Province" : Province, "MemberNo" : MemberNo, "Terms" : tc_y, "Market" : market_y})
+                    .success(function(data, status){
+                        console.log("Data:", data);
+                        if (data['error'] == 0) {
+                            console.log("Data:", data);
+                            modal.hide();
+
+                            ons.notification.alert({
+                                message: data['html'],
+                                title: 'Yay!',
+                                buttonLabel: 'Continue',
+                                animation: 'default',
+                                callback: function() {
+                                    $scope.data = [];
+                                    myNavigator.pushPage('views/reg_thanks.html', { animation : 'fade' });
+                                }
+                            });
+
+                        } else {
+                            modal.hide();
+                            ons.notification.alert({
+                                message: data['html'],
+                                title: 'Error',
+                                buttonLabel: 'OK',
+                                animation: 'default'
+                            });
+                        }
+                    })
+                    .error(function(data, status) {
+                        modal.hide();
+                        $scope.data.errorCode = 'Request failed';
+                        modal.show();
+                    });   
+                }             
+            } else {
+                ons.notification.alert({
+                    message: 'Please complete all the fields.',
+                    title: 'Oops!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            }
+        };
+        // set show mpacc on registrarion 
+        $scope.showMPAccInput = function () {
+            console.log($scope.data.cardType);
+            $scope.cardReg = true;
+        };
+        $scope.hideMPAccInput = function () {
+            console.log($scope.cardReg);
+            $scope.cardReg = false;
+        };
+        // get dist code for registration
+        $scope.getDistCode = function () {
+            $scope.searchOk = false;
+            $scope.regCityDD = [];
+            var provCode;
+            
+            if (undefined != this.data.reg_Province) {
+                console.log('Province',this.data.reg_Province);
+                var provCode = this.data.reg_Province;
+            } else {
+                console.log('Province',this.data.up_Prov);
+                var provCode = this.data.up_Prov;
+            }
+            
+            modal.show();
+            $scope.data.errorCode = 'Processing, please wait...';
+            $http.post($scope.apiPath+'provlist.php', {"provCode" : provCode})
+            .success(function(data, status){
+                modal.hide();
+                console.log('City Data',data);
+                $scope.searchOk = true;
+                $scope.regCityDD = data;
+            })
+            .error(function(data, status) {
+                modal.hide();
+                $scope.data.errorCode = 'Request failed';
+                modal.show();
+            });
+        };
+        // password reset
+        $scope.restPass = function () {
+            var MPAcc = $scope.data.reset_MPacc;
+            
+            if (MPAcc) {
+                modal.show();
+                $scope.data.errorCode = 'Processing, please wait...';
+                $http.post($scope.apiPath+'restpass.php', {"reqType" : "restPass", "MPAcc" : MPAcc})
+                .success(function(data, status){
+                    if (data['error'] == 0) {
+                        
+                        modal.show();
+                        $scope.data.errorCode = data['html'];
+                        
+                        $timeout(function(){
+                            modal.hide();
+                            myNavigator.pushPage('views/updatepassword.html', { animation : 'fade' });
+                        },'2000');
+                    } else {
+                        modal.hide();
+                        ons.notification.alert({
+                            message: data['html'],
+                            title: 'Error',
+                            buttonLabel: 'OK',
+                            animation: 'default'
+                        });
+                    }
+                })
+                .error(function(data, status) {
+                    modal.hide();
+                    $scope.data.errorCode = 'Request failed';
+                    modal.show();
+                });
+            } else {
+                ons.notification.alert({
+                    message: 'Please fill in your membership number.',
+                    title: 'Oops!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            }
+        };
+        
+        //password update
+        $scope.updatePass = function () {
+            var MPAcc = $scope.data.pu_MPacc;
+            var oldPass = $scope.data.pu_oldPass;
+            var password = $scope.data.pu_newPass;
+            var re_pass = $scope.data.pu_newPassR;
+            
+            if (MPAcc, oldPass, password, re_pass) {
+                if (password.length >= 5) {
+                    if (password === re_pass) {
+
+                        modal.show();
+                        $scope.data.errorCode = 'Processing, please wait...';
+                        $http.post($scope.apiPath+'updatepass.php', {"member" : MPAcc, "password" : password, "oldpassword" : oldPass })
+                        .success(function(data, status){
+                            if (data['error'] == 0) {
+
+                                modal.show();
+                                $scope.data.errorCode = data['html'];
+
+                                $timeout(function(){
+                                    modal.hide();
+                                    $scope.data = [];
+                                    myNavigator.resetToPage('views/login.html', { animation : 'fade' });
+                                },'2000');
+                            } else {
+                                modal.hide();
+                                ons.notification.alert({
+                                    message: data['html'],
+                                    title: 'Error',
+                                    buttonLabel: 'OK',
+                                    animation: 'default'
+                                });
+                            }
+                        })
+                        .error(function(data, status) {
+                            modal.hide();
+                            $scope.data.errorCode = 'Request failed';
+                            modal.show();
+                        });
+                    } else {
+                        ons.notification.alert({
+                            message: 'Your new passwords did not match.',
+                            title: 'Oops!',
+                            buttonLabel: 'OK',
+                            animation: 'default'
+                        });
+                    }
+                } else {
+                    ons.notification.alert({
+                        message: 'Password not long enough.',
+                        title: 'Oops!',
+                        buttonLabel: 'OK',
+                        animation: 'default'
+                    });
+                }
+            } else {
+                ons.notification.alert({
+                    message: 'Please fill all the fields.',
+                    title: 'Oops!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            }
+        };
+        
+        // setup update fields
+        $scope.SetupUpdate = function() {
+            $scope.data.up_Addline1 = $scope.Addressline1;
+            $scope.data.up_Addline2 = $scope.Addressline2;
+            $scope.data.up_Addline3 = $scope.Addressline3;
+            $scope.data.up_City = $scope.City;
+            $scope.data.up_CNumber = $scope.ContactNumber;
+            $scope.data.up_Email = $scope.EmailAddress;
+            $scope.data.up_Name = $scope.FirstName;
+            $scope.data.up_IdNum = $scope.IdNumber;
+            $scope.data.up_LName = $scope.LastName;
+            $scope.data.up_Prov = $scope.Province;
+            $scope.data.up_Sub = $scope.Suburb;
+            $scope.data.up_sex = $scope.gender;
+            $scope.data.up_pCode = $scope.postalCode;
+            $scope.data.up_title = $scope.Title;
+            
+            myNavigator.pushPage('views/user/profile_update.html', { animation : 'fade' });
+        };
+        
+        //update profile
+        $scope.updateProfile = function () {
+            var CellNumber = $scope.data.up_CNumber;
+            var EmailAddress = $scope.data.up_Email;
+            var Address1 = $scope.data.up_Addline1;
+            var Address2 = $scope.data.up_Addline2;
+            var PostCode = $scope.data.up_pCode;
+            var Suburb = $scope.data.up_Sub;
+            var City = $scope.data.up_City;
+            var Province = $scope.data.up_Prov;
+            var MemberNo = $scope.userMpacc;
+            var MemberPass = $scope.userPass;
+            var MemberSession = $scope.sessionId;
+            
+            if ( CellNumber && EmailAddress ) {
+                modal.show();
+                $scope.data.errorCode = 'Processing, please wait...';
+                $http.post($scope.apiPath+'updateProfile.php', {"reqType" : "update", "CellNumber" : CellNumber, "EmailAddress" : EmailAddress, "Address1" : Address1, "Address2" : Address2, "PostCode" : PostCode, "Suburb" : Suburb, "City" : City, "Province" : Province, "MemberNo" : MemberNo, "MemberPass" : MemberPass, "MemberSession" : MemberSession})
+                .success(function(data, status){
+                    console.log("Data:", data);
+                    if (data['error'] == 0) {
+                        console.log("Data:", data);
+                        modal.hide();
+
+                        ons.notification.alert({
+                            message: data['html'],
+                            title: 'Yay!',
+                            buttonLabel: 'Continue',
+                            animation: 'default',
+                            callback: function() {
+                                $scope.data = [];
+                                myNavigator.resetToPage('views/user/welcome.html', { animation : 'fade' });
+                            }
+                        });
+
+                    } else {
+                        modal.hide();
+                        ons.notification.alert({
+                            message: data['html'],
+                            title: 'Error',
+                            buttonLabel: 'OK',
+                            animation: 'default'
+                        });
+                    }
+                })
+                .error(function(data, status) {
+                    modal.hide();
+                    $scope.data.errorCode = 'Request failed';
+                    modal.show();
+                });  
+            } else {
+                ons.notification.alert({
+                    message: 'Please fill in all the fields.',
+                    title: 'Oops!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            }
+        }
+        
+        // last 10 transactions
+        $scope.myTransactions = function () {
+            var user = $scope.userMpacc;
+            var pass = $scope.userPass; 
+            
+            console.log("user: " + user+", pass: "+pass+", sessionId: " +$scope.sessionId);
+            
+            $scope.transList = [];
+            modal.show();
+            $scope.data.errorCode = 'Processing, please wait...';
+            $http.post($scope.apiPath+'translistList.php', {"user" : user, "pass" : pass, "sessionId" : $scope.sessionId})
+            .success(function(data, status){
+                console.log("Data:",data);
+                modal.hide();
+                $scope.transList = data['tranactions'];
+                $scope.discountList = data['discounts'];
+                if (data) {
+                    myNavigator.pushPage('views/user/mytransactions.html', { animation : 'fade'});
+                } else {
+                    ons.notification.alert({
+                        message: 'No transactions found.',
+                        title: 'Sorry!',
+                        buttonLabel: 'OK',
+                        animation: 'default'
+                    });
+                }         
+            })
+            .error(function(data, status) {
+                modal.hide();
+                $scope.data.errorCode = 'Request failed';
+                modal.show();
+            });
+        };
+        
         // airtime redemption
         $scope.redeemAir = function () {
             var mobile = $scope.data.CellNum;
             var airAmt = $scope.selectedAir.airOption;
             var spNetwork = $scope.selectedAir.network.network;
+            var mpacc = $scope.userMpacc;
                         
             if (mobile) {
                 modal.show();
                 $scope.data.errorCode = 'Processing, please wait...';
-                $http.post('http://www.mahala.mobi/mobiTest/api/redeemAir.php', {"reqType" : "redeemAir", "mobile" : mobile, "airAmt" : airAmt, "spNetwork": spNetwork, "cardNum" : $scope.MPacc})
+                $http.post($scope.apiPath+'redeemAir.php', {"reqType" : "redeemAir", "mobile" : mobile, "airAmt" : airAmt, "spNetwork": spNetwork, "cardNum" : mpacc})
                 .success(function(data, status){
                     if (data['error'] == 0) {
                         modal.hide();
                         $scope.data.result = data['html'];
                         $scope.data.errorCode = data['html'];
                         modal.show();
+                        $scope.data = [];
                         myNavigator.pushPage('views/user/welcome.html', { animation : 'fade'});
                     } else {
                         modal.hide();
@@ -215,11 +683,12 @@
             if (mobile) {
                 modal.show();
                 $scope.data.errorCode = 'Processing, please wait...';
-                $http.post('http://www.mahala.mobi/mobiTest/api/app-results.php', {"reqType" : "redeemElc", "mobile" : mobile, "voucher" : vAmount, "cardNum" : $scope.MPacc})
+                $http.post($scope.apiPath+'app-results.php', {"reqType" : "redeemElc", "mobile" : mobile, "voucher" : vAmount, "cardNum" : $scope.userMpacc})
                 .success(function(data, status){
                     modal.hide();
                     $scope.data.result = data['html'];
                     $scope.data.errorCode = data['html'];
+                    $scope.data = [];
                     modal.show();
                 })
                 .error(function(data, status) {
@@ -239,11 +708,12 @@
             if (mobile) {
                 modal.show();
                 $scope.data.errorCode = 'Processing, please wait...';
-                $http.post('http://www.mahala.mobi/mobiTest/api/app-results.php', {"reqType" : "redeemFood", "mobile" : mobile, "voucher" : vAmount, "cardNum" : $scope.MPacc})
+                $http.post($scope.apiPath+'app-results.php', {"reqType" : "redeemFood", "mobile" : mobile, "voucher" : vAmount, "cardNum" : $scope.userMpacc})
                 .success(function(data, status){
                     modal.hide();
                     $scope.data.result = data['html'];
                     $scope.data.errorCode = data['html'];
+                    $scope.data = [];
                     modal.show();
                 })
                 .error(function(data, status) {
@@ -263,12 +733,217 @@
             if (mobile) {
                 modal.show();
                 $scope.data.errorCode = 'Processing, please wait...';
-                $http.post('http://www.mahala.mobi/mobiTest/api/app-results.php', {"reqType" : "redeemMovie", "mobile" : mobile, "voucher" : vAmount, "cardNum" : $scope.MPacc})
+                $http.post($scope.apiPath+'app-results.php', {"reqType" : "redeemMovie", "mobile" : mobile, "voucher" : vAmount, "cardNum" : $scope.userMpacc})
                 .success(function(data, status){
                     modal.hide();
                     $scope.data.result = data['html'];
                     $scope.data.errorCode = data['html'];
+                    $scope.data = [];
                     modal.show();
+                })
+                .error(function(data, status) {
+                    modal.hide();
+                    $scope.data.errorCode = 'Request failed';
+                    modal.show();
+                });
+            } else {
+                $scope.data.errorCode = 'No cell number entered.';
+                modal.show();
+            } 
+        };
+        //Edgars redemption
+        $scope.redeemEdgarsGc = function () {
+            var mobile = $scope.data.CellNum;
+            var vAmount = $scope.data.voucher;
+            if (mobile) {
+                modal.show();
+                $scope.data.errorCode = 'Processing, please wait...';
+                $http.post($scope.apiPath+'app-results.php', {"reqType" : "redeemEdgarsGc", "mobile" : mobile, "voucher" : vAmount, "cardNum" : $scope.userMpacc})
+                .success(function(data, status){
+                    modal.hide();
+                    $scope.data.result = data['html'];
+                    $scope.data.errorCode = data['html'];
+                    $scope.data = [];
+                    modal.show();
+                })
+                .error(function(data, status) {
+                    modal.hide();
+                    $scope.data.errorCode = 'Request failed';
+                    modal.show();
+                });
+            } else {
+                $scope.data.errorCode = 'No cell number entered.';
+                modal.show();
+            } 
+        };
+        //Edgars Active redemption
+        $scope.redeemActiveGc = function () {
+            var mobile = $scope.data.CellNum;
+            var vAmount = $scope.data.voucher;
+            if (mobile) {
+                modal.show();
+                $scope.data.errorCode = 'Processing, please wait...';
+                $http.post($scope.apiPath+'app-results.php', {"reqType" : "redeemActiveGc", "mobile" : mobile, "voucher" : vAmount, "cardNum" : $scope.userMpacc})
+                .success(function(data, status){
+                    modal.hide();
+                    $scope.data.result = data['html'];
+                    $scope.data.errorCode = data['html'];
+                    $scope.data = [];
+                    modal.show();
+                })
+                .error(function(data, status) {
+                    modal.hide();
+                    $scope.data.errorCode = 'Request failed';
+                    modal.show();
+                });
+            } else {
+                $scope.data.errorCode = 'No cell number entered.';
+                modal.show();
+            } 
+        };
+        //Boardmans redemption
+        $scope.redeemBoardmansGc = function () {
+            var mobile = $scope.data.CellNum;
+            var vAmount = $scope.data.voucher;
+            if (mobile) {
+                modal.show();
+                $scope.data.errorCode = 'Processing, please wait...';
+                $http.post($scope.apiPath+'app-results.php', {"reqType" : "redeemBoardmansGc", "mobile" : mobile, "voucher" : vAmount, "cardNum" : $scope.userMpacc})
+                .success(function(data, status){
+                    modal.hide();
+                    $scope.data.result = data['html'];
+                    $scope.data.errorCode = data['html'];
+                    $scope.data = [];
+                    modal.show();
+                })
+                .error(function(data, status) {
+                    modal.hide();
+                    $scope.data.errorCode = 'Request failed';
+                    modal.show();
+                });
+            } else {
+                $scope.data.errorCode = 'No cell number entered.';
+                modal.show();
+            } 
+        };
+        //JET redemption
+        $scope.redeemJetGc = function () {
+            var mobile = $scope.data.CellNum;
+            var vAmount = $scope.data.voucher;
+            if (mobile) {
+                modal.show();
+                $scope.data.errorCode = 'Processing, please wait...';
+                $http.post($scope.apiPath+'app-results.php', {"reqType" : "redeemJetGc", "mobile" : mobile, "voucher" : vAmount, "cardNum" : $scope.userMpacc})
+                .success(function(data, status){
+                    modal.hide();
+                    $scope.data.result = data['html'];
+                    $scope.data.errorCode = data['html'];
+                    $scope.data = [];
+                    modal.show();
+                })
+                .error(function(data, status) {
+                    modal.hide();
+                    $scope.data.errorCode = 'Request failed';
+                    modal.show();
+                });
+            } else {
+                $scope.data.errorCode = 'No cell number entered.';
+                modal.show();
+            } 
+        };
+        //JET MART redemption
+        $scope.redeemJetMartGc = function () {
+            var mobile = $scope.data.CellNum;
+            var vAmount = $scope.data.voucher;
+            if (mobile) {
+                modal.show();
+                $scope.data.errorCode = 'Processing, please wait...';
+                $http.post($scope.apiPath+'app-results.php', {"reqType" : "redeemJetMartGc", "mobile" : mobile, "voucher" : vAmount, "cardNum" : $scope.userMpacc})
+                .success(function(data, status){
+                    modal.hide();
+                    $scope.data.result = data['html'];
+                    $scope.data.errorCode = data['html'];
+                    $scope.data = [];
+                    modal.show();
+                })
+                .error(function(data, status) {
+                    modal.hide();
+                    $scope.data.errorCode = 'Request failed';
+                    modal.show();
+                });
+            } else {
+                $scope.data.errorCode = 'No cell number entered.';
+                modal.show();
+            } 
+        };
+        //RED SQUARE redemption
+        $scope.redeemRedSGc = function () {
+            var mobile = $scope.data.CellNum;
+            var vAmount = $scope.data.voucher;
+            if (mobile) {
+                modal.show();
+                $scope.data.errorCode = 'Processing, please wait...';
+                $http.post($scope.apiPath+'app-results.php', {"reqType" : "redeemRedSGc", "mobile" : mobile, "voucher" : vAmount, "cardNum" : $scope.userMpacc})
+                .success(function(data, status){
+                    modal.hide();
+                    $scope.data.result = data['html'];
+                    $scope.data.errorCode = data['html'];
+                    $scope.data = [];
+                    modal.show();
+                })
+                .error(function(data, status) {
+                    modal.hide();
+                    $scope.data.errorCode = 'Request failed';
+                    modal.show();
+                });
+            } else {
+                $scope.data.errorCode = 'No cell number entered.';
+                modal.show();
+            } 
+        };
+        //CNA redemption
+        $scope.redeemCNAGc = function () {
+            var mobile = $scope.data.CellNum;
+            var vAmount = $scope.data.voucher;
+            if (mobile) {
+                modal.show();
+                $scope.data.errorCode = 'Processing, please wait...';
+                $http.post($scope.apiPath+'app-results.php', {"reqType" : "redeemCNAGc", "mobile" : mobile, "voucher" : vAmount, "cardNum" : $scope.userMpacc})
+                .success(function(data, status){
+                    modal.hide();
+                    $scope.data.result = data['html'];
+                    $scope.data.errorCode = data['html'];
+                    $scope.data = [];
+                    modal.show();
+                })
+                .error(function(data, status) {
+                    modal.hide();
+                    $scope.data.errorCode = 'Request failed';
+                    modal.show();
+                });
+            } else {
+                $scope.data.errorCode = 'No cell number entered.';
+                modal.show();
+            } 
+        };
+        //Feed A child Donation
+        $scope.redeemDonateChild = function () {
+            var vAmount = $scope.data.voucher;
+            if (mobile) {
+                modal.show();
+                $scope.data.errorCode = 'Processing, please wait...';
+                $http.post($scope.apiPath+'app-results.php', {"reqType" : "redeemDonateChild", "voucher" : vAmount, "cardNum" : $scope.userMpacc})
+                .success(function(data, status){
+                    modal.hide();
+                    $scope.data.result = data['html'];
+                    $scope.data.errorCode = data['html'];
+                    
+                    modal.show();
+                    $timeout(function(){
+                        modal.hide();
+                        $scope.data = [];
+                        myNavigator.resetToPage('views/user/feed_thanks.html', { animation : 'fade' });
+                    },'2000');
                 })
                 .error(function(data, status) {
                     modal.hide();
@@ -285,7 +960,7 @@
         $scope.pointsName = function() {
             $scope.pointsDD = [];
             $scope.partnerList = [];
-            $http.get('http://www.mahala.mobi/mobiTest/api/pointsDD.php')
+            $http.get($scope.apiPath+'pointsDD.php')
             .success(function (result, status) {
                 $scope.pointsDD = result;
                 myNavigator.pushPage('views/user/points_name.html', { animation : 'lift' });
@@ -304,7 +979,7 @@
             
             modal.show();
             $scope.data.errorCode = 'Processing, please wait...';
-            $http.post('http://www.mahala.mobi/mobiTest/api/app-results.php', {"reqType" : "PointPartnerName", "partnerName" : partnerName})
+            $http.post($scope.apiPath+'app-results.php', {"reqType" : "PointPartnerName", "partnerName" : partnerName})
             .success(function(data, status){
                 modal.hide();
                 //console.log(data);
@@ -322,7 +997,7 @@
         $scope.pointsCategory = function() {
             $scope.pointsCatDD = [];
             $scope.partnerList = [];
-            $http.get('http://www.mahala.mobi/mobiTest/api/pointsCatDD.php')
+            $http.get($scope.apiPath+'pointsCatDD.php')
             .success(function (result, status) {
                 $scope.pointsCatDD = result;
                 myNavigator.pushPage('views/user/points_cat.html', { animation : 'lift' } );
@@ -341,7 +1016,7 @@
             
             modal.show();
             $scope.data.errorCode = 'Processing, please wait...';
-            $http.post('http://www.mahala.mobi/mobiTest/api/app-results.php', {"reqType" : "PointPartnerCat", "partnerCat" : partnerCat})
+            $http.post($scope.apiPath+'app-results.php', {"reqType" : "PointPartnerCat", "partnerCat" : partnerCat})
             .success(function(data, status){
                 modal.hide();
                 console.log(data);
@@ -359,7 +1034,7 @@
         $scope.pointsProvince = function() {
             $scope.pointsProvDD = [];
             $scope.partnerList = [];
-            $http.get('http://www.mahala.mobi/mobiTest/api/pointsProvDD.php')
+            $http.get($scope.apiPath+'pointsProvDD.php')
             .success(function (result, status) {
                 $scope.pointsProvDD = result;
                 myNavigator.pushPage('views/user/points_reg.html', { animation : 'lift' } );
@@ -378,7 +1053,7 @@
             
             modal.show();
             $scope.data.errorCode = 'Processing, please wait...';
-            $http.post('http://www.mahala.mobi/mobiTest/api/pointsCityDD.php', {"partnerProv" : partnerProv})
+            $http.post($scope.apiPath+'pointsCityDD.php', {"partnerProv" : partnerProv})
             .success(function(data, status){
                 modal.hide();
                 //console.log(data);
@@ -400,7 +1075,7 @@
             
             modal.show();
             $scope.data.errorCode = 'Processing, please wait...';
-            $http.post('http://www.mahala.mobi/mobiTest/api/app-results.php', {"reqType" : "PointPartnerCity", "partnerCity" : partnerCity})
+            $http.post($scope.apiPath+'app-results.php', {"reqType" : "PointPartnerCity", "partnerCity" : partnerCity})
             .success(function(data, status){
                 modal.hide();
                 //console.log(data);
@@ -418,7 +1093,7 @@
         $scope.pointsVoucher = function(partnerId) {
             console.log(partnerId);
             $scope.data.errorCode = 'Processing, please wait...';
-            $http.post('http://www.mahala.mobi/mobiTest/api/app-results.php', {"reqType" : "PartnerVoucher", "partnerId" : partnerId, "cardNum" : $scope.MPacc})
+            $http.post($scope.apiPath+'app-results.php', {"reqType" : "PartnerVoucher", "partnerId" : partnerId, "cardNum" : $scope.userMpacc})
             .success(function(data, status){
                 modal.hide();
                 console.log(data);
@@ -432,6 +1107,7 @@
                 $scope.partner_name = data[0]['partner_name'];
                 $scope.partner_logo = data[0]['partner_logo'];
                 $scope.partner_voucher = data[0]['partner_voucher'];
+                $scope.partner_terms = data[0]['partner_terms'];
                 $scope.partner_tel = data[0]['partner_tel'];
                 $scope.partner_address = data[0]['partner_address'];
                 $scope.voucher_date = today;
@@ -451,7 +1127,7 @@
         $scope.discountName = function () {
             $scope.discountDD = [];
             $scope.discountPartnerList = [];
-            $http.get('http://www.mahala.mobi/mobiTest/api/discountDD.php')
+            $http.get($scope.apiPath+'discountDD.php')
             .success(function (result, status) {
                 $scope.discountDD = result;
                 myNavigator.pushPage('views/user/dis_name.html', { animation : 'lift' } );
@@ -472,7 +1148,7 @@
             
             modal.show();
             $scope.data.errorCode = 'Processing, please wait...';
-            $http.post('http://www.mahala.mobi/mobiTest/api/app-results.php', {"reqType" : "DiscountPartnerName", "partnerName" : partnerName})
+            $http.post($scope.apiPath+'app-results.php', {"reqType" : "DiscountPartnerName", "partnerName" : partnerName})
             .success(function(data, status){
                 modal.hide();
                 //console.log(data);
@@ -490,7 +1166,7 @@
         $scope.discountCategory = function() {
             $scope.discountCatDD = [];
             $scope.discountPartnerList = [];
-            $http.get('http://www.mahala.mobi/mobiTest/api/discountCatDD.php')
+            $http.get($scope.apiPath+'discountCatDD.php')
             .success(function (result, status) {
                 $scope.discountCatDD = result;
                 myNavigator.pushPage('views/user/dis_cat.html', { animation : 'lift' } );
@@ -509,7 +1185,7 @@
             
             modal.show();
             $scope.data.errorCode = 'Processing, please wait...';
-            $http.post('http://www.mahala.mobi/mobiTest/api/app-results.php', {"reqType" : "DiscountPartnerCat", "partnerCat" : partnerCat})
+            $http.post($scope.apiPath+'app-results.php', {"reqType" : "DiscountPartnerCat", "partnerCat" : partnerCat})
             .success(function(data, status){
                 modal.hide();
                 console.log(data);
@@ -527,7 +1203,7 @@
         $scope.discountProvine = function() {
             $scope.discountProvDD = [];
             $scope.discountPartnerList = [];
-            $http.get('http://www.mahala.mobi/mobiTest/api/discountProvDD.php')
+            $http.get($scope.apiPath+'discountProvDD.php')
             .success(function (result, status) {
                 $scope.discountProvDD = result;
                 myNavigator.pushPage('views/user/dis_reg.html', { animation : 'lift' } );
@@ -546,7 +1222,7 @@
             
             modal.show();
             $scope.data.errorCode = 'Processing, please wait...';
-            $http.post('http://www.mahala.mobi/mobiTest/api/discountCityDD.php', {"partnerProv" : partnerProv})
+            $http.post($scope.apiPath+'discountCityDD.php', {"partnerProv" : partnerProv})
             .success(function(data, status){
                 modal.hide();
                 //console.log(data);
@@ -568,7 +1244,7 @@
             
             modal.show();
             $scope.data.errorCode = 'Processing, please wait...';
-            $http.post('http://www.mahala.mobi/mobiTest/api/app-results.php', {"reqType" : "DiscountPartnerCity", "partnerCity" : partnerCity})
+            $http.post($scope.apiPath+'app-results.php', {"reqType" : "DiscountPartnerCity", "partnerCity" : partnerCity})
             .success(function(data, status){
                 modal.hide();
                 //console.log(data);
@@ -586,7 +1262,7 @@
         $scope.discountVoucher = function(partnerId) {
             console.log(partnerId);
             $scope.data.errorCode = 'Processing, please wait...';
-            $http.post('http://www.mahala.mobi/mobiTest/api/app-results.php', {"reqType" : "DiscountPartnerVoucher", "partnerId" : partnerId, "cardNum" : $scope.MPacc})
+            $http.post($scope.apiPath+'app-results.php', {"reqType" : "DiscountPartnerVoucher", "partnerId" : partnerId, "cardNum" : $scope.userMpacc})
             .success(function(data, status){
                 modal.hide();
                 console.log(data);
@@ -600,6 +1276,7 @@
                 $scope.partner_name = data[0]['partner_name'];
                 $scope.partner_logo = data[0]['partner_logo'];
                 $scope.partner_voucher = data[0]['partner_voucher'];
+                $scope.partner_terms = data[0]['partner_terms'];
                 $scope.partner_tel = data[0]['partner_tel'];
                 $scope.partner_address = data[0]['partner_address'];
                 $scope.voucher_date = today;
@@ -619,7 +1296,7 @@
         $scope.logout = function(){
             $scope.data = [];
             $scope.loggedIn = false;
-            myNavigator.pushPage('views/home.html', { animation : 'fade' });
+            myNavigator.resetToPage('views/login.html', { animation : 'fade' });
         };
         
         //contact us form function
@@ -627,6 +1304,8 @@
             var contactAccount = $scope.data.contactAccount;
             var contactStudent = $scope.data.contactStudent;
             var contactPerks = $scope.data.contactPerks;
+            var contactCharity = $scope.data.contactCharity;
+            var contactTravel = $scope.data.contactTravel;
             var contactComments = $scope.data.contactComments;
             var contactName = $scope.data.contactName;
             var contactSurname = $scope.data.contactSurname;
@@ -636,13 +1315,14 @@
             if (contactName && contactSurname && contactCell && contactEmail) {
                 modal.show();
                 $scope.data.errorCode = 'Processing, please wait...';
-                $http.post('http://www.mahala.mobi/mobiTest/api/app-results.php', { "reqType" : "contactUs", "accountType" : contactAccount, "student" : contactStudent, "perks" : contactPerks, "comments" : contactComments, "cName" : contactName, "cSurname" : contactSurname, "cCell" : contactCell, "cEmail" : contactEmail })
+                $http.post($scope.apiPath+'app-results.php', { "reqType" : "contactUs", "accountType" : contactAccount, "student" : contactStudent, "perks" : contactPerks, "comments" : contactComments, "cName" : contactName, "cSurname" : contactSurname, "cCell" : contactCell, "cEmail" : contactEmail, 'charity' : contactCharity, 'travel' : contactTravel })
                 .success(function(data, status){
                     if (data['error'] == 0) {
                         modal.hide();
                         $scope.data.result = data['html'];
                         $scope.data.errorCode = data['html'];
                         modal.show();
+                        $scope.data = [];
                         myNavigator.pushPage('views/home.html', { animation : 'fade'});
                     } else {
                         modal.hide();
@@ -666,7 +1346,7 @@
             $scope.catList = [];
             modal.show();
             $scope.data.errorCode = 'Processing, please wait...';
-            $http.post('http://www.mahala.mobi/mobiTest/api/app-results.php', {"reqType" : "listDiscountCat", "partnerCat" : "catList"})
+            $http.post($scope.apiPath+'app-results.php', {"reqType" : "listDiscountCat", "partnerCat" : "catList"})
             .success(function(data, status){
                 modal.hide();
                 console.log(data);
@@ -691,7 +1371,7 @@
             console.log(catName);
             modal.show();
             $scope.data.errorCode = 'Processing, please wait...';
-            $http.post('http://www.mahala.mobi/mobiTest/api/app-results.php', {"reqType" : "listDiscountCat", "partnerCat" : partnerCat})
+            $http.post($scope.apiPath+'app-results.php', {"reqType" : "listDiscountCat", "partnerCat" : partnerCat})
             .success(function(data, status){
                 modal.hide();
                 console.log(data);
@@ -719,7 +1399,7 @@
             $scope.catList = [];
             modal.show();
             $scope.data.errorCode = 'Processing, please wait...';
-            $http.post('http://www.mahala.mobi/mobiTest/api/app-results.php', {"reqType" : "listPointCat", "partnerCat" : "catList"})
+            $http.post($scope.apiPath+'app-results.php', {"reqType" : "listPointCat", "partnerCat" : "catList"})
             .success(function(data, status){
                 modal.hide();
                 console.log(data);
@@ -745,7 +1425,7 @@
             console.log(catName);
             modal.show();
             $scope.data.errorCode = 'Processing, please wait...';
-            $http.post('http://www.mahala.mobi/mobiTest/api/app-results.php', {"reqType" : "listPointCat", "partnerCat" : partnerCat})
+            $http.post($scope.apiPath+'app-results.php', {"reqType" : "listPointCat", "partnerCat" : partnerCat})
             .success(function(data, status){
                 modal.hide();
                 console.log(data);
@@ -770,7 +1450,7 @@
         };
         
         //Coupons List Builder
-        $http.get('http://www.mahala.mobi/mobiTest/api/coupon-list.php')
+        $http.get($scope.apiPath+'coupon-list.php')
         .success(function (result, status) {
             $scope.couponList = result;
         })
@@ -783,7 +1463,7 @@
         $scope.getCouponCode = function() {
             modal.show();
             $scope.data.errorCode = 'Processing, please wait...';
-            $http.post('http://www.mahala.mobi/mobiTest/api/coupon-code.php', {"userRef" : $scope.MPacc})
+            $http.post($scope.apiPath+'coupon-code.php', {"userRef" : $scope.userMpacc})
             .success(function(data, status){
                 modal.hide();
                 console.log(data);
@@ -812,7 +1492,7 @@
             console.log(partnerId);
             console.log(partnerType);
             $scope.data.errorCode = 'Processing, please wait...';
-            $http.post('http://www.mahala.mobi/mobiTest/api/app-results.php', {"reqType" : "MapPartnerVoucher", "partnerId" : partnerId, "cardNum" : $scope.MPacc, "partnerType": partnerType})
+            $http.post($scope.apiPath+'app-results.php', {"reqType" : "MapPartnerVoucher", "partnerId" : partnerId, "cardNum" : $scope.userMpacc, "partnerType": partnerType})
             .success(function(data, status){
                 modal.hide();
                 console.log(data);
@@ -826,6 +1506,7 @@
                 $scope.partner_name = data[0]['partner_name'];
                 $scope.partner_logo = data[0]['partner_logo'];
                 $scope.partner_voucher = data[0]['partner_voucher'];
+                $scope.partner_terms = data[0]['partner_terms'];
                 $scope.partner_tel = data[0]['partner_tel'];
                 $scope.partner_address = data[0]['partner_address'];
                 $scope.voucher_date = today;
@@ -852,7 +1533,7 @@
         $scope.showCoupon = function(couponId) {
             console.log(couponId);
             $scope.data.errorCode = 'Processing, please wait...';
-            $http.post('http://www.mahala.mobi/mobiTest/api/show_coupon.php', {"couponId" : couponId})
+            $http.post($scope.apiPath+'show_coupon.php', {"couponId" : couponId})
             .success(function(data, status){
                 modal.hide();
                 console.log(data);
@@ -890,7 +1571,7 @@
             
             modal.show();
             $scope.data.errorCode = 'Processing, please wait...';
-            $http.post('http://www.mahala.mobi/mobiTest/api/app-results.php', {"reqType" : "nominate", "MPAcc" : nom_MPAcc, "Details" : nom_Details, "Name" : nom_Name, "Cat" : nom_Cat, "Address" : nom_Address, "Street" : nom_Str, "Suburb" : nom_Sub, "Province" : nom_Prov, "Mall" : nom_MallName, "ContactPerson" : nom_ContactPerson, "Tel" : nom_Tel})
+            $http.post($scope.apiPath+'app-results.php', {"reqType" : "nominate", "MPAcc" : nom_MPAcc, "Details" : nom_Details, "Name" : nom_Name, "Cat" : nom_Cat, "Address" : nom_Address, "Street" : nom_Str, "Suburb" : nom_Sub, "Province" : nom_Prov, "Mall" : nom_MallName, "ContactPerson" : nom_ContactPerson, "Tel" : nom_Tel})
             
             .success(function(data, status){
                 if (data['error'] == 0) {
@@ -929,7 +1610,7 @@
             
             modal.show();
             $scope.data.errorCode = 'Processing, please wait...';
-            $http.post('http://www.mahala.mobi/mobiTest/api/app-results.php', {"reqType" : "becomeRetailer", "Name" : bec_Name, "Cat" : bec_Cat, "Str" : bec_Str, "Sub" : bec_Sub, "Prov" : bec_Prov, "inmall" : bec_inmall, "MallName" : bec_MallName, "NumBranch" : bec_NumBranch, "ContactPerson" : bec_ContactPerson, "Tel" : bec_Tel, "Email" : bec_Email})
+            $http.post($scope.apiPath+'app-results.php', {"reqType" : "becomeRetailer", "Name" : bec_Name, "Cat" : bec_Cat, "Str" : bec_Str, "Sub" : bec_Sub, "Prov" : bec_Prov, "inmall" : bec_inmall, "MallName" : bec_MallName, "NumBranch" : bec_NumBranch, "ContactPerson" : bec_ContactPerson, "Tel" : bec_Tel, "Email" : bec_Email})
             
             .success(function(data, status){
                 if (data['error'] == 0) {
@@ -955,97 +1636,320 @@
         //cliam Points
         $scope.claimPoints = function(file) {
             
-            modal.show();
-            $scope.data.errorCode = 'Processing, please wait...';
+            var transVal = $scope.data.pointsTransVal;
+            var transInv = $scope.data.pointsTransInv;
+            var partName = $scope.partner_name;
+            var partId = $scope.partner_id;
+            var mpacc = $scope.userMpacc;
+            var cardNum = $scope.CardNumber;
+            var cashier = $scope.data.cashierCode;
             
-            file.upload = Upload.upload({
-                url: 'http://www.mahala.mobi/mobiTest/api/uploadPoints.php',
-                method: 'POST',
-                file: file,
-                data: {
-                    'reqType': "claimPoints", 
-                    'transVal': $scope.data.pointsTransVal, 
-                    'transInv': $scope.data.pointsTransInv,
-                    'partName': $scope.partner_name,
-                    'partId': $scope.partner_id,
-                    'mpacc': $scope.MPacc,
-                    'cardNum': $scope.CardNumber
-                }
-            });
-            
-            // returns a promise
-            file.upload.then(function(resp) {
-                // file is uploaded successfully
-                console.log('file ' + resp.config.data.file.name + ' is uploaded successfully. Response: ' + resp.data);
-                modal.hide();
-                $scope.data.errorCode = "Thank you!";
+            if (transVal && transInv && cashier) {                
                 modal.show();
-                $timeout(function(){
-                    modal.hide();
-                    $scope.data = [];
-                    myNavigator.pushPage('views/user/welcome.html', { animation : 'fade'});
-                },'2000');
-            }, function(resp) {
-                if (resp.status > 0) {
-                    modal.hide();
-                    $scope.data.result = resp.status + ': ' + resp.data;
-                    $scope.data.errorCode = resp.status + ': ' + resp.data;
-                    modal.show();
-                }            
-            }, function(evt) {
-                // progress notify
-                console.log('progress: ' + parseInt(100.0 * evt.loaded / evt.total) + '% file :'+ evt.config.data.file.name);
-                $scope.data.errorCode = 'progress: ' + parseInt(100.0 * evt.loaded / evt.total) + '%';
-            });
+                $scope.data.errorCode = 'Processing, please wait...';
+
+                if ((typeof file === 'undefined' || file === null) && $scope.data.pointsTransVal < 501) {
+                    
+                    $http.post($scope.apiPath+'uploadPoints.php', {'reqType': "claimPoints", 'transVal': transVal, 'transInv': transInv, 'partName': partName, 'partId': partId, 'mpacc': mpacc, 'cardNum': cardNum, 'cashierCode' : cashier})
+                    .success(function(data, status){
+                        modal.hide();
+                        $scope.data.errorCode = "Thank you!";
+                        modal.show();
+                        $timeout(function(){
+                            modal.hide();
+                            $scope.data = [];
+                            myNavigator.pushPage('views/user/feedback_form.html', { animation : 'fade'});
+                        },'2000');
+                    })
+                    .error(function(data, status) {
+                        modal.hide();
+                        $scope.data.errorCode = 'Request failed';
+                        modal.show();
+                    });
+                } else {
+
+                    file.upload = Upload.upload({
+                        url: $scope.apiPath+'uploadPoints.php',
+                        method: 'POST',
+                        file: file,
+                        data: {
+                            'reqType': "claimPoints", 
+                            'transVal': transVal, 
+                            'transInv': transInv,
+                            'partName': partName,
+                            'partId': partId,
+                            'mpacc': mpacc,
+                            'cardNum': cardNum,
+                            'cashierCode' : cashier
+                        }
+                    });
+
+                    // returns a promise
+                    file.upload.then(function(resp) {
+                        // file is uploaded successfully
+                        console.log('file ' + resp.config.data.file.name + ' is uploaded successfully. Response: ' + resp.data);
+                        modal.hide();
+                        $scope.data.errorCode = "Thank you!";
+                        modal.show();
+                        $timeout(function(){
+                            modal.hide();
+                            $scope.data = [];
+                            myNavigator.pushPage('views/user/feedback_form.html', { animation : 'fade'});
+                        },'2000');
+                    }, function(resp) {
+                        if (resp.status > 0) {
+                            modal.hide();
+                            $scope.data.result = resp.status + ': ' + resp.data;
+                            $scope.data.errorCode = resp.status + ': ' + resp.data;
+                            modal.show();
+                        }            
+                    }, function(evt) {
+                        // progress notify
+                        console.log('progress: ' + parseInt(100.0 * evt.loaded / evt.total) + '% file :'+ evt.config.data.file.name);
+                        $scope.data.errorCode = 'progress: ' + parseInt(100.0 * evt.loaded / evt.total) + '%';
+                    });
+                }
+            } else {
+                ons.notification.alert({
+                    message: 'Please fill in all the fields.',
+                    title: 'Oops!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            }
         };
         
         //cliam Discount
         $scope.claimDiscount = function(file) {
-            
-            modal.show();
-            $scope.data.errorCode = 'Processing, please wait...';
-            
-            file.upload = Upload.upload({
-                url: 'http://www.mahala.mobi/mobiTest/api/uploadDiscount.php',
-                method: 'POST',
-                file: file,
-                data: {
-                    'reqType': "claimDiscount", 
-                    'transVal': $scope.data.pointsTransVal, 
-                    'transInv': $scope.data.pointsTransInv,
-                    'partName': $scope.partner_name,
-                    'partId': $scope.partner_id,
-                    'mpacc': $scope.MPacc,
-                    'cardNum': $scope.CardNumber
-                }
-            });
-            
-            // returns a promise
-            file.upload.then(function(resp) {
-                // file is uploaded successfully
-                console.log('file ' + resp.config.data.file.name + ' is uploaded successfully. Response: ' + resp.data);
-                modal.hide();
-                $scope.data.errorCode = "Thank you!";
+            if ((typeof file === 'undefined' || file === null) && $scope.data.pointsTransVal < 501) {
                 modal.show();
-                $timeout(function(){
+                $scope.data.errorCode = 'Processing, please wait...';
+                $http.post($scope.apiPath+'uploadDiscount.php', {"reqType" : "claimDiscount", 'transVal': $scope.data.pointsTransVal, 'transInv': $scope.data.pointsTransInv, 'partName': $scope.partner_name, 'partId': $scope.partner_id, 'mpacc': $scope.userMpacc, 'cardNum': $scope.CardNumber})
+                .success(function(data, status){
                     modal.hide();
-                    $scope.data = [];
-                    myNavigator.pushPage('views/user/welcome.html', { animation : 'fade'});
-                },'2000');
-            }, function(resp) {
-                if (resp.status > 0) {
-                    modal.hide();
-                    $scope.data.result = resp.status + ': ' + resp.data;
-                    $scope.data.errorCode = resp.status + ': ' + resp.data;
+                    $scope.data.errorCode = "Thank you!";
                     modal.show();
-                }            
-            }, function(evt) {
-                // progress notify
-                console.log('progress: ' + parseInt(100.0 * evt.loaded / evt.total) + '% file :'+ evt.config.data.file.name);
-                $scope.data.errorCode = 'progress: ' + parseInt(100.0 * evt.loaded / evt.total) + '%';
-            });
+                    $timeout(function(){
+                        modal.hide();
+                        $scope.data = [];
+                        myNavigator.pushPage('views/user/feedback_form.html', { animation : 'fade'});
+                    },'2000');
+                })
+                .error(function(data, status) {
+                    modal.hide();
+                    $scope.data.errorCode = 'Request failed';
+                    modal.show();
+                });
+            } else {
+            
+                modal.show();
+                $scope.data.errorCode = 'Processing, please wait...';
+
+                file.upload = Upload.upload({
+                    url: $scope.apiPath+'uploadDiscount.php',
+                    method: 'POST',
+                    file: file,
+                    data: {
+                        'reqType': "claimDiscount", 
+                        'transVal': $scope.data.pointsTransVal, 
+                        'transInv': $scope.data.pointsTransInv,
+                        'partName': $scope.partner_name,
+                        'partId': $scope.partner_id,
+                        'mpacc': $scope.userMpacc,
+                        'cardNum': $scope.CardNumber
+                    }
+                });
+
+                // returns a promise
+                file.upload.then(function(resp) {
+                    // file is uploaded successfully
+                    console.log('file ' + resp.config.data.file.name + ' is uploaded successfully. Response: ' + resp.data);
+                    modal.hide();
+                    $scope.data.errorCode = "Thank you!";
+                    modal.show();
+                    $timeout(function(){
+                        modal.hide();
+                        $scope.data = [];
+                        myNavigator.pushPage('views/user/feedback_form.html', { animation : 'fade'});
+                    },'2000');
+                }, function(resp) {
+                    if (resp.status > 0) {
+                        modal.hide();
+                        $scope.data.result = resp.status + ': ' + resp.data;
+                        $scope.data.errorCode = resp.status + ': ' + resp.data;
+                        modal.show();
+                    }            
+                }, function(evt) {
+                    // progress notify
+                    console.log('progress: ' + parseInt(100.0 * evt.loaded / evt.total) + '% file :'+ evt.config.data.file.name);
+                    $scope.data.errorCode = 'progress: ' + parseInt(100.0 * evt.loaded / evt.total) + '%';
+                });
+            }
         };
-    });
+        
+        // set partner feedback
+        $scope.sendFeedback = function () {
+            var question1 = $scope.data.question1;
+            var question2 = $scope.data.question2;
+            var question3 = $scope.data.question3;
+            var partId = $scope.partner_id;
+            
+            if (question1 && question2 && question3) {
+                modal.show();
+                $scope.data.errorCode = 'Processing, please wait...';
+                $http.post($scope.apiPath+'app-results.php', {"reqType" : "feedback", "question1" : question1, "question2" : question2, "question3" : question3, "partId" : partId, "mpacc" : $scope.userMpacc})
+                .success(function(data, status){
+                    if (data['error'] == 0) {
+                        modal.hide();
+                        $scope.data.errorCode = data['html'];
+                        modal.show();
+                        $timeout(function(){
+                            modal.hide();
+                            myNavigator.pushPage('views/user/welcome.html', { animation : 'fade' });
+                        },'2000');
+                    } else {
+                        ons.notification.alert({
+                            message: 'Something went worng, please try again.',
+                            title: 'Oops!',
+                            buttonLabel: 'OK',
+                            animation: 'default'
+                        });
+                    }
+                })
+                .error(function(data, status) {
+                    modal.hide();
+                    $scope.data.errorCode = 'Request failed';
+                    modal.show();
+                });
+            } else {
+                ons.notification.alert({
+                    message: 'Please make all the selections.',
+                    title: 'Oops!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            }
+            
+        };
+        
+        // Retailer Login
+        $scope.RetailLogIn = function() {
+            var retailId = $scope.data.retailID;
+            var retailPass = $scope.data.retailpassword;
+            
+            if (retailId && retailPass) {
+                modal.show();
+                $scope.data.errorCode = 'Processing, please wait...';
+                $http.post($scope.apiPath+'retailLogin.php', {"reqType" : "login", "user" : retailId, "pass" : retailPass})
+                .success(function(data, status){
+                    if (data['error'] == 0) {
+                        console.log("Data:", data);
+                        modal.hide();
+                                                
+                        modal.show();
+                        $scope.data.errorCode = 'Collecting your data...';
+                        
+                        $scope.retailName = data['retailName'];
+                        $scope.retailID = data['retailID'];
+                        
+                        $timeout(function(){
+                            modal.hide();
+                            myNavigator.pushPage('views/retail/welcome.html', { animation : 'fade' });
+                        },'2000');
+                    } else {
+                        modal.hide();
+                        $scope.data.result = data['html'];
+                        $scope.data.errorCode = data['html'];
+                        console.log(data['html']);
+                        modal.show();
+                        $timeout(function(){
+                            modal.hide();
+                            myNavigator.pushPage('views/retail/login.html', { animation : 'fade' });
+                        },'1000');
+                    }
+                })
+                .error(function(data, status) {
+                    modal.hide();
+                    $scope.data.errorCode = 'Request failed';
+                    modal.show();
+                });
+                
+            } else {
+                ons.notification.alert({
+                    message: 'Please fill in all the fields.',
+                    title: 'Oops!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            }
+        };
+        
+        // retail logout
+        $scope.retailLogout = function(){
+            $scope.data = [];
+            myNavigator.resetToPage('views/retail/login.html', { animation : 'fade' });
+        };
+        
+        // promotion submit
+        $scope.promoMe = function () {
+            var promoMPacc = $scope.data.promoMPacc;
+            var friendEmail1 = $scope.data.friendEmail1;
+            var friendEmail2 = $scope.data.friendEmail2;
+            var friendEmail3 = $scope.data.friendEmail3;
+            
+            if (promoMPacc && friendEmail1) {
+                modal.show();
+                $scope.data.errorCode = 'Processing, please wait...';
+                $http.post($scope.apiPath+'promotions.php', {"reqType" : "promo", "promoMPacc" : promoMPacc, "friendEmail1" : friendEmail1, "friendEmail2" : friendEmail2, "friendEmail3" : friendEmail3})
+                .success(function(data, status){
+                    if (data['error'] == 0) {
+                        console.log("Data:", data);
+                        modal.hide();
+                        $scope.data.result = data['html'];
+                        $scope.data.errorCode = data['html'];
+                        modal.show();
+                        $timeout(function(){
+                            modal.hide();
+                            myNavigator.pushPage('views/home.html', { animation : 'fade' });
+                        },'2000');
+                        
+                    } else if (data['error'] === 2) {    
+                        modal.hide();
+                        $scope.data.result = data['html'];
+                        $scope.data.errorCode = data['html'];
+                        modal.show();
+                        $timeout(function(){
+                            modal.hide();
+                            myNavigator.pushPage('views/register.html', { animation : 'fade' });
+                        },'2000');
+                    } else {
+                        modal.hide();
+                        $scope.data.result = data['html'];
+                        $scope.data.errorCode = data['html'];
+                        console.log(data['html']);
+                        modal.show();
+                        $timeout(function(){
+                            modal.hide();
+                            myNavigator.pushPage('views/promotions.html', { animation : 'fade' });
+                        },'1000');
+                    }
+                })
+                .error(function(data, status) {
+                    modal.hide();
+                    $scope.data.errorCode = 'Request failed';
+                    modal.show();
+                });
+                
+            } else {
+                ons.notification.alert({
+                    message: 'Please fill in all the fields.',
+                    title: 'Oops!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            }
+        };
+    }); 
     
     // Map Controler
     
@@ -1076,7 +1980,7 @@
 
                     console.log("lat:" + $scope.myLat + " lng:" + $scope.myLng + " radius:" + $scope.mapRadius + " type:" + $scope.partnerType);
 
-                    $http.post('http://www.mahala.mobi/mobiTest/api/pointsPartnerMapList.php', {"lat" : $scope.myLat, "lng" : $scope.myLng, "radius" : $scope.mapRadius, "type" : $scope.partnerType, "cat" : "%"})
+                    $http.post($scope.apiPath+'pointsPartnerMapList.php', {"lat" : $scope.myLat, "lng" : $scope.myLng, "radius" : $scope.mapRadius, "type" : $scope.partnerType, "cat" : "%"})
                     .success( function(stores) {
                         var markers = [];
                         console.log(stores);
@@ -1153,20 +2057,32 @@
 })();
 
 // normal JS
+// check if obejct is empty 
+function isNotEmpty(myObject) {
+    for(var key in myObject) {
+        if (myObject.hasOwnProperty(key)) {
+            return true;
+        }
+    }
+    return false;
+}
+
 // direction = boolean value: true or false. If true, go to NEXT slide; otherwise go to PREV slide
 
 function toggleSlide(direction, className) {
     var elements = document.getElementsByClassName(className); // gets all the "slides" in our slideshow
     // Find the LI that's currently displayed
-    //console.log('Elements', elements);
-    var visibleID = getVisible(elements);
-    elements[visibleID].style.display = "none"; // hide the currently visible LI
-    if(!direction) {
-        var makeVisible = prev(visibleID, elements.length); // get the previous slide
-    } else {
-        var makeVisible = next(visibleID, elements.length); // get the next slide
+    // console.log('Elements', elements);
+    if (isNotEmpty(elements)) {
+        var visibleID = getVisible(elements);
+        elements[visibleID].style.display = "none"; // hide the currently visible LI
+        if(!direction) {
+            var makeVisible = prev(visibleID, elements.length); // get the previous slide
+        } else {
+            var makeVisible = next(visibleID, elements.length); // get the next slide
+        }
+        elements[makeVisible].style.display = "block"; // show the previous or next slide
     }
-    elements[makeVisible].style.display = "block"; // show the previous or next slide
 }
 function getVisible(elements) {
     var visibleID = -1;
@@ -1188,5 +2104,47 @@ function next(num, arrayLength) {
 
 var interval = 5000; // You can change this value to your desired speed. The value is in milliseconds, so if you want to advance a slide every 5 seconds, set this to 5000.
 var switching = setInterval("toggleSlide(true,'hideable')", interval);
-//var switching = setInterval("toggleSlide(true,'hideableL')", interval);
-//var switching = setInterval("toggleSlide(true,'hideableW')", interval);
+var switching = setInterval("toggleSlide(true,'hideableL')", interval);
+var switching = setInterval("toggleSlide(true,'hideableW')", interval);
+var switching = setInterval("toggleSlide(true,'hideableReg')", interval);
+var switching = setInterval("toggleSlide(true,'hideablePro')", interval);
+
+// Barcode scanner
+function scanBarcodeRegShop(){
+    cordova.plugins.barcodeScanner.scan(
+      function (result) {
+          document.getElementById('cashierCode').value = result.text;
+          console.log("We got a barcode\n" +
+                "Result: " + result.text + "\n" +
+                "Format: " + result.format + "\n" +
+                "Cancelled: " + result.cancelled);
+      }, 
+      function (error) {
+          alert("Scanning failed: " + error);
+      }
+   );
+}
+
+// Barcode scanner
+function scanBarcodeRegFriend(){
+    cordova.plugins.barcodeScanner.scan(
+      function (result) {
+          document.getElementById('friendMpacc').value = result.text;
+          console.log("We got a barcode\n" +
+                "Result: " + result.text + "\n" +
+                "Format: " + result.format + "\n" +
+                "Cancelled: " + result.cancelled);
+      }, 
+      function (error) {
+          alert("Scanning failed: " + error);
+      }
+   );
+}
+
+function showDivAttid(con,divid){
+    if(con === 'show') {
+        document.getElementById(divid).style.display = 'block';
+    } else {
+        document.getElementById(divid).style.display = 'none';
+    }
+}

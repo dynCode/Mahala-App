@@ -18,22 +18,27 @@
     <h2 class="myHeader"><span>YOUR BALANCE</span></h2>
     <div class="formShadow">
         <div class="formList">
-            <div class="formListLable">CURRENT BALANCE:</div><div class="formListRight" style="width: 40%;">{{CurrentBalance}}</div>
+            <div class="formListLable">CURRENT BALANCE:</div><div class="formListRight" style="width: 40%;">{{currentUnits}}</div>
         </div>
         <div class="formList">
-            <div class="formListLable">RAND AVAILABLE:</div><div class="formListRight" style="width: 40%;">R {{RandValue}}</div>
+            <div class="formListLable">RAND AVAILABLE:</div><div class="formListRight" style="width: 40%;">R {{currentRands}}</div>
         </div>
         <div class="formList">
-            <div class="formListLable">USED POINTS:</div><div class="formListRight" style="width: 40%;">{{UsedUnits}}</div>
+            <div class="formListLable">USED POINTS:</div><div class="formListRight" style="width: 40%;">{{totalUsed}}</div>
         </div>
         <div class="formList">
-            <div class="formListLable">TIER LEVEL:</div><div class="formListRight" style="width: 40%;">{{CurrTierDescription}}</div>
+            <div class="formListLable">TIER LEVEL:</div><div class="formListRight" style="width: 40%;">{{tierDes}}</div>
         </div>
         <div class="formList">
-            <div class="formListLable">COMMUNITY:</div><div class="formListRight" style="width: 40%;">{{Community}}</div>
+            <div class="formListLable">COMMUNITY:</div><div class="formListRight" style="width: 40%;">{{commun}}</div>
         </div>
         <div class="formList">
             <div class="formListLable">CARD NO:</div><div class="formListRight" style="width: 60%;">{{CardNumber}}</div>
         </div>
     </div>
+    <ons-list>
+        <ons-list-item modifier="chevron" ng-click="myTransactions()">
+            YOUR LAST 10 TRANSACTIONS
+        </ons-list-item>
+    </ons-list>
 </ons-page>

@@ -1,0 +1,51 @@
+<ons-page>
+    <ons-toolbar>
+        <div class="left">
+            <ons-back-button>Back</ons-back-button>
+        </div>
+        <div class="center">Enquiry Form</div>
+        <div class="right">
+            <ons-toolbar-button ng-click="menu.toggle()">
+                <ons-icon icon="ion-navicon" size="28px" fixed-width="false"></ons-icon>
+            </ons-toolbar-button>
+        </div>
+    </ons-toolbar>
+    <div class="topBanner">
+        <img src="images/promotions_header.jpg" style="max-width: 800px; width: 100%;" onclick="myNavigator.pushPage('views/register.html', { animation : 'slide' } )" />
+    </div>
+    
+    <div class="formList">
+        1. Like our Facebook
+    </div>
+    <div class="form-row formListInputLrg">
+        <img src="images/Promotions_fb.png" onclick="window.open('https://www.facebook.com/mahalaloyalty','_system','')" style="height: 95%;" />
+    </div>
+    <div class="formList">
+        2. Enter your Loyalty Number:
+    </div>
+    <div class="form-row formListInputLrg">
+        <input ng-model="data.promoMPacc" type="text" class="text-input" placeholder="Enter your loyalty number" />
+    </div>
+    <div style="padding:20px">
+        <ons-button modifier="large" id="btnLogIn"  onclick="myNavigator.pushPage('views/register.html', { animation : 'slide' } )" style="width:100%">Join Now</ons-button>
+    </div>
+    <div class="formList">
+        3. Refer a friend
+    </div>
+    <div class="form-row formListInputLrg">
+        <input ng-model="data.friendEmail1" type="text" class="text-input" placeholder="Email address" />
+    </div>
+    <div class="form-row formListInputLrg">
+        <input ng-model="data.friendEmail2" type="text" class="text-input" value="" placeholder="Email address" />
+    </div>
+    <div class="form-row formListInputLrg">
+        <input ng-model="data.friendEmail3" type="text" class="text-input" value="" placeholder="Email address" />
+    </div>
+    <div style="padding:20px">
+        <ons-button modifier="large" id="btnLogIn" ng-click="promoMe()" style="width:100%">SUBMIT</ons-button>
+    </div>
+    <div style="text-align: center">
+        <p><strong>Prizes generously sponsored by:</strong></p>
+        <img src="images/mahala_promo_sponsers.jpg" style="max-width: 800px; width: 100%;" />
+    </div>
+</ons-page>

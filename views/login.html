@@ -11,13 +11,16 @@
         </div>
     </ons-toolbar>
     <div class="topBanner">
-        <div class="imgBlock hideable" style="display: block;"><img src="images/app_header1.png" style="max-width: 800px; width: 100%;" /></div>
-        <div class="imgBlock hideable" style="display: none;"><img src="images/app_header2.png" style="max-width: 800px; width: 100%;" /></div>
-        <div class="imgBlock hideable" style="display: none;"><img src="images/app_header3.png" style="max-width: 800px; width: 100%;" /></div>
+        <div class="imgBlock hideableL" style="display: block;"><img src="images/app_header1.png" style="max-width: 800px; width: 100%;" /></div>
+        <div class="imgBlock hideableL" style="display: none;"><img src="images/app_header2.png" style="max-width: 800px; width: 100%;" /></div>
+        <div class="imgBlock hideableL" style="display: none;"><img src="images/app_header3.png" style="max-width: 800px; width: 100%;" /></div>
+        <div class="imgBlock hideableL" style="display: none;"><img src="images/app_header4.png" style="max-width: 800px; width: 100%;" /></div>
+        <div class="imgBlock hideableL" style="display: none;"><img src="images/app_header5.png" style="max-width: 800px; width: 100%;" /></div>
+        <div class="imgBlock hideableL" style="display: none;"><img src="images/app_header6.png" style="max-width: 800px; width: 100%;" /></div>
     </div>
     <div class="formShadow">
         <div class="formList">
-            <div class="formListLable">LOYALTY NO:</div><div class="formListInput"><input ng-model="data.loyaltyNum" type="text" class="text-input" placeholder="Loyalty Number" /></div>
+            <div class="formListLable">LOYALTY / CELL NO:</div><div class="formListInput"><input ng-model="data.loyaltyNum" type="text" class="text-input" placeholder="Loyalty / Cell Number" /></div>
         </div>
         <div class="formList">
             <div class="formListLable">PASSWORD:</div><div class="formListInput"><input ng-model="data.password" type="password" class="text-input" placeholder="Password" /></div>
@@ -25,6 +28,10 @@
     </div>
     <div style="padding:20px">
         <ons-button modifier="large" id="btnLogIn" ng-click="LogIn()" style="width:100%">LOG IN</ons-button>
-        <p>Please use your loyalty number as your password.  (Your loyalty number is printed on your membership card).  To change your password or for any enquiries, please contact <a href="tel:+27841963733" style="text-decoration: none; color: #C82126;">084 196 3733</a> during office hours.</p>
+        <p>You can login with our loyalty no or your cell phone no.  If your contact details are not up to date, you may experience login problems.  Please phone: <a href="tel:0860624252">0860 624252</a>.</p>
+        <p>If you can’t remember your password, please click the “Reset your Password” button and follow the easy prompts.</p>
+        <button class="button--large--cta" onclick="myNavigator.pushPage('views/resetpassword.html', { animation : 'slide' } )" >Reset your Password</button>
+        <br /><br />
+        <!--<button class="button--large--cta" onclick="myNavigator.pushPage('views/updatepassword.html', { animation : 'slide' } )" >Update your Password</button>-->
     </div>
 </ons-page>

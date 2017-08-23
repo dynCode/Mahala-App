@@ -1,0 +1,29 @@
+<ons-page>
+    <ons-toolbar>
+        <div class="left">
+            <ons-back-button>Back</ons-back-button>
+        </div>
+        <div class="center">Retail Login</div>
+        <div class="right">
+            <ons-toolbar-button ng-click="menu.toggle()">
+                <ons-icon icon="ion-navicon" size="28px" fixed-width="false"></ons-icon>
+            </ons-toolbar-button>
+        </div>
+    </ons-toolbar>
+    <div class="topBanner">
+        <div class="subImgBlock">
+            <img src="images/sub_header.png" style="max-width: 380px; width: 100%;" />
+        </div>
+    </div>
+    <div class="formShadow">
+        <div class="formList">
+            <div class="formListLable">RETAIL ID:</div><div class="formListInput"><input ng-model="data.retailID" type="text" class="text-input" placeholder="Retail ID" /></div>
+        </div>
+        <div class="formList">
+            <div class="formListLable">PASSWORD:</div><div class="formListInput"><input ng-model="data.retailpassword" type="password" class="text-input" placeholder="Password" /></div>
+        </div>
+    </div>
+    <div style="padding:20px">
+        <ons-button modifier="large" id="btnLogIn" ng-click="RetailLogIn()" style="width:100%">LOG IN</ons-button>
+    </div>
+</ons-page>
