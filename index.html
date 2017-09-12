@@ -16,7 +16,7 @@
         <script src="lib/onsen/js/onsenui.js"></script>
         
         
-        <script src="phonegap.js"></script> 
+        <script src="cordova.js"></script> 
         <script src="js/app.js"></script>  
         <!-- ng Google Maps -->
         <script src="js/ng-map.min.js"></script>
@@ -40,7 +40,7 @@
         <script type="text/ons-template" id="hoge.html">
             <ons-sliding-menu main-page="views/home.html" menu-page="views/menu.html" max-slide-distance="260px" type="push" side="right" var="menu">
             </ons-sliding-menu>
-            <ons-modal var="modal" ng-click="modal.hide()">
+            <ons-modal var="modal">
                 <br>
                 <br>{{data.errorCode}}
                 <br>

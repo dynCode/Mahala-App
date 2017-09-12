@@ -317,7 +317,7 @@
                 market_y = 'yes';
             }
             
-            if ( cashierCode && cardType && FirstName && LastName && gender && title && gender && IDNum && CellNumber ) {
+            if ( cashierCode && cardType && FirstName && LastName && title && IDNum ) {
                 
                 if (cardType === 'physical' && (typeof MemberNo === 'undefined' || MemberNo === null)) {
                     ons.notification.alert({
@@ -604,7 +604,7 @@
                     animation: 'default'
                 });
             }
-        }
+        };
         
         // last 10 transactions
         $scope.myTransactions = function () {
