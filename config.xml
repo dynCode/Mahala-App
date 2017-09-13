@@ -79,9 +79,6 @@
         <preference name="fullscreen" value="true" />  
     </platform>
  
-    <feature name="http://api.phonegap.com/1.0/network" />
-    <feature name="http://api.phonegap.com/1.0/geolocation" />
-
     <!-- Third party plugins -->
     <!-- A list of available plugins are available at https://build.phonegap.com/plugins -->
     <!--
