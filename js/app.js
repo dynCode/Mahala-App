@@ -55,6 +55,7 @@
         $scope.CardNumber = '';
         $scope.comId = '';
         $scope.commun = '';
+        $scope.tokenBalance = '';
         
         //Partner Data
         $scope.partner_id = '';
@@ -63,6 +64,8 @@
         $scope.partner_voucher = '';
         $scope.partner_terms = '';
         $scope.partner_tel = '';
+        $scope.partner_web = '';
+        $scope.partner_manager = '';
         $scope.partner_address = '';
         $scope.voucher_date = '';
         $scope.conImages = '';
@@ -151,6 +154,22 @@
         // retail Name & ID
         $scope.retailName = "";
         $scope.retailID = "";
+        $scope.feedQ1 = "";
+        $scope.feedQ2 = "";
+        $scope.feedQ3 = "";
+        $scope.reprtMonth = "";
+        $scope.newMembers = "";
+        $scope.totalMembers = "";
+        $scope.membersActive = "";
+        $scope.totalTransactions = "";
+        $scope.avarageSales = "";
+        $scope.forMembers = "";
+        $scope.forTransaction = "";
+        $scope.totalSales = "";
+        $scope.totalMemRedemp = "";
+        $scope.totalRedempVal = "";
+        $scope.totalPendRedemp = "";
+        $scope.totalPaidRedemp = "";
         
         /*
         //partner map matkers
@@ -213,6 +232,7 @@
                         $scope.CardNumber = '62786401'+user;
                         $scope.comId = data['comId'];
                         $scope.commun = data['commun'];
+                        $scope.tokenBalance = data['tokenBalance'];
                         
                         modal.show();
                         $scope.data.errorCode = 'Collecting your data...';
@@ -248,18 +268,27 @@
                         modal.show();
                         $timeout(function(){
                             modal.hide();
-                            myNavigator.pushPage('views/login.html', { animation : 'fade' });
+                            myNavigator.resetToPage('views/login.html', { animation : 'fade' });
                         },'1000');
                     }
                 })
                 .error(function(data, status) {
                     modal.hide();
-                    $scope.data.errorCode = 'Request failed';
-                    modal.show();
+                    ons.notification.alert({
+                        message: 'Request failed. Try Again!',
+                        title: 'Oops!',
+                        buttonLabel: 'OK',
+                        animation: 'default'
+                    });
                 });
             } else {
                 $scope.data.errorCode = 'Invalid Loyalty Number or Password.';
-                modal.show();
+                ons.notification.alert({
+                    message: 'Invalid Loyalty Number or Password!',
+                    title: 'Oops!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
             }
         };
         //register me
@@ -317,67 +346,61 @@
                 market_y = 'yes';
             }
             
-            if ( cashierCode && cardType && FirstName && LastName && title && IDNum ) {
-                
-                if (cardType === 'physical' && (typeof MemberNo === 'undefined' || MemberNo === null)) {
-                    ons.notification.alert({
-                        message: 'Please complete all the fields.',
-                        title: 'Oops!',
-                        buttonLabel: 'OK',
-                        animation: 'default'
-                    });
-                } else if (tc_y === 'no') {
-                    ons.notification.alert({
-                        message: 'Please accept the terms and conditions to continue.',
-                        title: 'Oops!',
-                        buttonLabel: 'OK',
-                        animation: 'default'
-                    });
-                } else {
-                    modal.show();
-                    $scope.data.errorCode = 'Processing, please wait...';
-                    $http.post($scope.apiPath+'register.php', {"reqType" : "register", "cashierCode" : cashierCode, "cardType" : cardType, "FirstName" : FirstName, "LastName" : LastName, "gender" : gender, "title" : title, "IDNum" : IDNum, "dob" : dob, "CellNumber" : CellNumber, "EmailAddress" : EmailAddress, "Address1" : Address1, "Address2" : Address2, "PostCode" : PostCode, "Suburb" : Suburb, "City" : City, "Province" : Province, "MemberNo" : MemberNo, "Terms" : tc_y, "Market" : market_y})
-                    .success(function(data, status){
-                        console.log("Data:", data);
-                        if (data['error'] == 0) {
-                            console.log("Data:", data);
-                            modal.hide();
-
-                            ons.notification.alert({
-                                message: data['html'],
-                                title: 'Yay!',
-                                buttonLabel: 'Continue',
-                                animation: 'default',
-                                callback: function() {
-                                    $scope.data = [];
-                                    myNavigator.pushPage('views/reg_thanks.html', { animation : 'fade' });
-                                }
-                            });
-
-                        } else {
-                            modal.hide();
-                            ons.notification.alert({
-                                message: data['html'],
-                                title: 'Error',
-                                buttonLabel: 'OK',
-                                animation: 'default'
-                            });
-                        }
-                    })
-                    .error(function(data, status) {
-                        modal.hide();
-                        $scope.data.errorCode = 'Request failed';
-                        modal.show();
-                    });   
-                }             
-            } else {
+            if (cardType === 'physical' && (typeof MemberNo === 'undefined' || MemberNo === null)) {
                 ons.notification.alert({
-                    message: 'Please complete all the fields.',
+                    message: 'Please enter the membership number on yout physical card.',
                     title: 'Oops!',
                     buttonLabel: 'OK',
                     animation: 'default'
                 });
-            }
+            } else if (tc_y === 'no') {
+                ons.notification.alert({
+                    message: 'Please accept the terms and conditions to continue.',
+                    title: 'Oops!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            } else {
+                modal.show();
+                $scope.data.errorCode = 'Processing, please wait...';
+                $http.post($scope.apiPath+'register.php', {"reqType" : "register", "cashierCode" : cashierCode, "cardType" : cardType, "FirstName" : FirstName, "LastName" : LastName, "gender" : gender, "title" : title, "IDNum" : IDNum, "dob" : dob, "CellNumber" : CellNumber, "EmailAddress" : EmailAddress, "Address1" : Address1, "Address2" : Address2, "PostCode" : PostCode, "Suburb" : Suburb, "City" : City, "Province" : Province, "MemberNo" : MemberNo, "Terms" : tc_y, "Market" : market_y})
+                .success(function(data, status){
+                    console.log("Data:", data);
+                    if (data['error'] == 0) {
+                        console.log("Data:", data);
+                        modal.hide();
+
+                        ons.notification.alert({
+                            message: data['html'],
+                            title: 'Yay!',
+                            buttonLabel: 'Continue',
+                            animation: 'default',
+                            callback: function() {
+                                $scope.data = [];
+                                myNavigator.pushPage('views/reg_thanks.html', { animation : 'fade' });
+                            }
+                        });
+
+                    } else {
+                        modal.hide();
+                        ons.notification.alert({
+                            message: data['html'],
+                            title: 'Error',
+                            buttonLabel: 'OK',
+                            animation: 'default'
+                        });
+                    }
+                })
+                .error(function(data, status) {
+                    modal.hide();
+                    ons.notification.alert({
+                        message: 'There was a problem processing your request, please try again!',
+                        title: 'Oops!',
+                        buttonLabel: 'OK',
+                        animation: 'default'
+                    });
+                });   
+            }  
         };
         // set show mpacc on registrarion 
         $scope.showMPAccInput = function () {
@@ -413,8 +436,12 @@
             })
             .error(function(data, status) {
                 modal.hide();
-                $scope.data.errorCode = 'Request failed';
-                modal.show();
+                ons.notification.alert({
+                    message: 'Request failed. Try Again!',
+                    title: 'Oops!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
             });
         };
         // password reset
@@ -427,14 +454,17 @@
                 $http.post($scope.apiPath+'restpass.php', {"reqType" : "restPass", "MPAcc" : MPAcc})
                 .success(function(data, status){
                     if (data['error'] == 0) {
-                        
-                        modal.show();
-                        $scope.data.errorCode = data['html'];
-                        
-                        $timeout(function(){
-                            modal.hide();
-                            myNavigator.pushPage('views/updatepassword.html', { animation : 'fade' });
-                        },'2000');
+                        modal.hide();
+                        ons.notification.alert({
+                            message: data['html'],
+                            title: 'Yay!',
+                            buttonLabel: 'Continue',
+                            animation: 'default',
+                            callback: function() {
+                                $scope.data = [];
+                                myNavigator.pushPage('views/updatepassword.html', { animation : 'fade' });
+                            }
+                        });
                     } else {
                         modal.hide();
                         ons.notification.alert({
@@ -447,8 +477,12 @@
                 })
                 .error(function(data, status) {
                     modal.hide();
-                    $scope.data.errorCode = 'Request failed';
-                    modal.show();
+                    ons.notification.alert({
+                        message: 'Request failed. Try Again!',
+                        title: 'Oops!',
+                        buttonLabel: 'OK',
+                        animation: 'default'
+                    });
                 });
             } else {
                 ons.notification.alert({
@@ -476,15 +510,17 @@
                         $http.post($scope.apiPath+'updatepass.php', {"member" : MPAcc, "password" : password, "oldpassword" : oldPass })
                         .success(function(data, status){
                             if (data['error'] == 0) {
-
-                                modal.show();
-                                $scope.data.errorCode = data['html'];
-
-                                $timeout(function(){
-                                    modal.hide();
-                                    $scope.data = [];
-                                    myNavigator.resetToPage('views/login.html', { animation : 'fade' });
-                                },'2000');
+                                modal.hide();
+                                ons.notification.alert({
+                                    message: data['html'],
+                                    title: 'Yay!',
+                                    buttonLabel: 'Continue',
+                                    animation: 'default',
+                                    callback: function() {
+                                        $scope.data = [];
+                                        myNavigator.resetToPage('views/login.html', { animation : 'fade' });
+                                    }
+                                });
                             } else {
                                 modal.hide();
                                 ons.notification.alert({
@@ -497,8 +533,12 @@
                         })
                         .error(function(data, status) {
                             modal.hide();
-                            $scope.data.errorCode = 'Request failed';
-                            modal.show();
+                            ons.notification.alert({
+                                message: 'Request failed. Try Again!',
+                                title: 'Oops!',
+                                buttonLabel: 'OK',
+                                animation: 'default'
+                            });
                         });
                     } else {
                         ons.notification.alert({
@@ -525,6 +565,86 @@
                 });
             }
         };
+        
+        $scope.updateCurPass = function () {
+            var MPAcc = $scope.userMpacc;
+            var oldPass = $scope.userPass;
+            var password = $scope.data.pu_newPass;
+            var re_pass = $scope.data.pu_newPassR;
+            
+            console.log('MPAcc',MPAcc);
+            console.log('oldPass',oldPass);
+            console.log('password',password);
+            console.log('re_pass',re_pass);
+            
+            if (MPAcc, oldPass, password, re_pass) {
+                if (password.length >= 5) {
+                    if (password === re_pass) {
+
+                        modal.show();
+                        $scope.data.errorCode = 'Processing, please wait...';
+                        $http.post($scope.apiPath+'updatepass.php', {"member" : MPAcc, "password" : password, "oldpassword" : oldPass })
+                        .success(function(data, status){
+                            if (data['error'] == 0) {
+                                modal.hide();
+                                ons.notification.alert({
+                                    message: data['html'],
+                                    title: 'Yay!',
+                                    buttonLabel: 'Continue',
+                                    animation: 'default',
+                                    callback: function() {
+                                        $scope.data = [];
+                                        myNavigator.resetToPage('views/users/welcome.html', { animation : 'fade' });
+                                    }
+                                });
+                            } else {
+                                modal.hide();
+                                ons.notification.alert({
+                                    message: data['html'],
+                                    title: 'Error',
+                                    buttonLabel: 'OK',
+                                    animation: 'default'
+                                });
+                            }
+                        })
+                        .error(function(data, status) {
+                            modal.hide();
+                            ons.notification.alert({
+                                message: 'Request failed. Try Again!',
+                                title: 'Oops!',
+                                buttonLabel: 'OK',
+                                animation: 'default'
+                            });
+                        });
+                    } else {
+                        modal.hide();
+                        ons.notification.alert({
+                            message: 'Your new passwords did not match.',
+                            title: 'Oops!',
+                            buttonLabel: 'OK',
+                            animation: 'default'
+                        });
+                    }
+                } else {
+                    modal.hide();
+                    ons.notification.alert({
+                        message: 'Password not long enough.',
+                        title: 'Oops!',
+                        buttonLabel: 'OK',
+                        animation: 'default'
+                    });
+                }
+            } else {
+                modal.hide();
+                ons.notification.alert({
+                    message: 'Please fill all the fields.',
+                    title: 'Oops!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            }
+        };
+        
         
         // setup update fields
         $scope.SetupUpdate = function() {
@@ -593,8 +713,12 @@
                 })
                 .error(function(data, status) {
                     modal.hide();
-                    $scope.data.errorCode = 'Request failed';
-                    modal.show();
+                    ons.notification.alert({
+                        message: 'Request failed. Try Again!',
+                        title: 'Oops!',
+                        buttonLabel: 'OK',
+                        animation: 'default'
+                    });
                 });  
             } else {
                 ons.notification.alert({
@@ -635,8 +759,12 @@
             })
             .error(function(data, status) {
                 modal.hide();
-                $scope.data.errorCode = 'Request failed';
-                modal.show();
+                ons.notification.alert({
+                    message: 'Request failed. Try Again!',
+                    title: 'Oops!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
             });
         };
         
@@ -654,26 +782,43 @@
                 .success(function(data, status){
                     if (data['error'] == 0) {
                         modal.hide();
-                        $scope.data.result = data['html'];
-                        $scope.data.errorCode = data['html'];
-                        modal.show();
-                        $scope.data = [];
-                        myNavigator.pushPage('views/user/welcome.html', { animation : 'fade'});
+			ons.notification.alert({
+                            message: data['html'],
+                            title: 'Yay!',
+                            buttonLabel: 'Continue',
+                            animation: 'default',
+                            callback: function() {
+                                $scope.data = [];
+                                myNavigator.resetToPage('views/user/welcome.html', { animation : 'fade' });
+                            }
+                        });
+						
                     } else {
-                        modal.hide();
-                        $scope.data.result = data['html'];
-                        $scope.data.errorCode = data['html'];
-                        modal.show();
+			modal.hide();
+                        ons.notification.alert({
+                            message: data['html'],
+                            title: 'Sorry!',
+                            buttonLabel: 'OK',
+                            animation: 'default'
+                        });
                     }
                 })
                 .error(function(data, status) {
                     modal.hide();
-                    $scope.data.errorCode = 'Request failed';
-                    modal.show();
+                    ons.notification.alert({
+                        message: 'Request Failed, try again.',
+                        title: 'Sorry!',
+                        buttonLabel: 'OK',
+                        animation: 'default'
+                    });
                 });
             } else {
-                $scope.data.errorCode = 'No cell number entered.';
-                modal.show();
+                ons.notification.alert({
+                    message: 'No cell number entered!',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
             }
         };
         // electricity redemption
@@ -685,21 +830,46 @@
                 $scope.data.errorCode = 'Processing, please wait...';
                 $http.post($scope.apiPath+'app-results.php', {"reqType" : "redeemElc", "mobile" : mobile, "voucher" : vAmount, "cardNum" : $scope.userMpacc})
                 .success(function(data, status){
-                    modal.hide();
-                    $scope.data.result = data['html'];
-                    $scope.data.errorCode = data['html'];
-                    $scope.data = [];
-                    modal.show();
+                    if (data['error'] == 0) {
+                        modal.hide();
+			ons.notification.alert({
+                            message: data['html'],
+                            title: 'Yay!',
+                            buttonLabel: 'Continue',
+                            animation: 'default',
+                            callback: function() {
+                                $scope.data = [];
+                                myNavigator.resetToPage('views/user/welcome.html', { animation : 'fade' });
+                            }
+                        });
+						
+                    } else {
+			modal.hide();
+                        ons.notification.alert({
+                            message: data['html'],
+                            title: 'Sorry!',
+                            buttonLabel: 'OK',
+                            animation: 'default'
+                        });
+                    }
                 })
                 .error(function(data, status) {
                     modal.hide();
-                    $scope.data.errorCode = 'Request failed';
-                    modal.show();
+                    ons.notification.alert({
+                        message: 'Request Failed, try again.',
+                        title: 'Sorry!',
+                        buttonLabel: 'OK',
+                        animation: 'default'
+                    });
                 });
             } else {
-                $scope.data.errorCode = 'No cell number entered.';
-                modal.show();
-            } 
+                ons.notification.alert({
+                    message: 'No cell number entered!',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            }
         };
         // groceries redemption
         $scope.redeemFood = function () {
@@ -710,21 +880,46 @@
                 $scope.data.errorCode = 'Processing, please wait...';
                 $http.post($scope.apiPath+'app-results.php', {"reqType" : "redeemFood", "mobile" : mobile, "voucher" : vAmount, "cardNum" : $scope.userMpacc})
                 .success(function(data, status){
-                    modal.hide();
-                    $scope.data.result = data['html'];
-                    $scope.data.errorCode = data['html'];
-                    $scope.data = [];
-                    modal.show();
+                    if (data['error'] == 0) {
+                        modal.hide();
+			ons.notification.alert({
+                            message: data['html'],
+                            title: 'Yay!',
+                            buttonLabel: 'Continue',
+                            animation: 'default',
+                            callback: function() {
+                                $scope.data = [];
+                                myNavigator.resetToPage('views/user/welcome.html', { animation : 'fade' });
+                            }
+                        });
+						
+                    } else {
+			modal.hide();
+                        ons.notification.alert({
+                            message: data['html'],
+                            title: 'Sorry!',
+                            buttonLabel: 'OK',
+                            animation: 'default'
+                        });
+                    }
                 })
                 .error(function(data, status) {
                     modal.hide();
-                    $scope.data.errorCode = 'Request failed';
-                    modal.show();
+                    ons.notification.alert({
+                        message: 'Request Failed, try again.',
+                        title: 'Sorry!',
+                        buttonLabel: 'OK',
+                        animation: 'default'
+                    });
                 });
             } else {
-                $scope.data.errorCode = 'No cell number entered.';
-                modal.show();
-            } 
+                ons.notification.alert({
+                    message: 'No cell number entered!',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            }
         };
         // nu metro redemption
         $scope.redeemMovie = function () {
@@ -735,21 +930,46 @@
                 $scope.data.errorCode = 'Processing, please wait...';
                 $http.post($scope.apiPath+'app-results.php', {"reqType" : "redeemMovie", "mobile" : mobile, "voucher" : vAmount, "cardNum" : $scope.userMpacc})
                 .success(function(data, status){
-                    modal.hide();
-                    $scope.data.result = data['html'];
-                    $scope.data.errorCode = data['html'];
-                    $scope.data = [];
-                    modal.show();
+                    if (data['error'] == 0) {
+                        modal.hide();
+			ons.notification.alert({
+                            message: data['html'],
+                            title: 'Yay!',
+                            buttonLabel: 'Continue',
+                            animation: 'default',
+                            callback: function() {
+                                $scope.data = [];
+                                myNavigator.resetToPage('views/user/welcome.html', { animation : 'fade' });
+                            }
+                        });
+						
+                    } else {
+			modal.hide();
+                        ons.notification.alert({
+                            message: data['html'],
+                            title: 'Sorry!',
+                            buttonLabel: 'OK',
+                            animation: 'default'
+                        });
+                    }
                 })
                 .error(function(data, status) {
                     modal.hide();
-                    $scope.data.errorCode = 'Request failed';
-                    modal.show();
+                    ons.notification.alert({
+                        message: 'Request Failed, try again.',
+                        title: 'Sorry!',
+                        buttonLabel: 'OK',
+                        animation: 'default'
+                    });
                 });
             } else {
-                $scope.data.errorCode = 'No cell number entered.';
-                modal.show();
-            } 
+                ons.notification.alert({
+                    message: 'No cell number entered!',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            }
         };
         //Edgars redemption
         $scope.redeemEdgarsGc = function () {
@@ -760,21 +980,46 @@
                 $scope.data.errorCode = 'Processing, please wait...';
                 $http.post($scope.apiPath+'app-results.php', {"reqType" : "redeemEdgarsGc", "mobile" : mobile, "voucher" : vAmount, "cardNum" : $scope.userMpacc})
                 .success(function(data, status){
-                    modal.hide();
-                    $scope.data.result = data['html'];
-                    $scope.data.errorCode = data['html'];
-                    $scope.data = [];
-                    modal.show();
+                    if (data['error'] == 0) {
+                        modal.hide();
+			ons.notification.alert({
+                            message: data['html'],
+                            title: 'Yay!',
+                            buttonLabel: 'Continue',
+                            animation: 'default',
+                            callback: function() {
+                                $scope.data = [];
+                                myNavigator.resetToPage('views/user/welcome.html', { animation : 'fade' });
+                            }
+                        });
+						
+                    } else {
+			modal.hide();
+                        ons.notification.alert({
+                            message: data['html'],
+                            title: 'Sorry!',
+                            buttonLabel: 'OK',
+                            animation: 'default'
+                        });
+                    }
                 })
                 .error(function(data, status) {
                     modal.hide();
-                    $scope.data.errorCode = 'Request failed';
-                    modal.show();
+                    ons.notification.alert({
+                        message: 'Request Failed, try again.',
+                        title: 'Sorry!',
+                        buttonLabel: 'OK',
+                        animation: 'default'
+                    });
                 });
             } else {
-                $scope.data.errorCode = 'No cell number entered.';
-                modal.show();
-            } 
+                ons.notification.alert({
+                    message: 'No cell number entered!',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            }
         };
         //Edgars Active redemption
         $scope.redeemActiveGc = function () {
@@ -785,21 +1030,46 @@
                 $scope.data.errorCode = 'Processing, please wait...';
                 $http.post($scope.apiPath+'app-results.php', {"reqType" : "redeemActiveGc", "mobile" : mobile, "voucher" : vAmount, "cardNum" : $scope.userMpacc})
                 .success(function(data, status){
-                    modal.hide();
-                    $scope.data.result = data['html'];
-                    $scope.data.errorCode = data['html'];
-                    $scope.data = [];
-                    modal.show();
+                    if (data['error'] == 0) {
+                        modal.hide();
+			ons.notification.alert({
+                            message: data['html'],
+                            title: 'Yay!',
+                            buttonLabel: 'Continue',
+                            animation: 'default',
+                            callback: function() {
+                                $scope.data = [];
+                                myNavigator.resetToPage('views/user/welcome.html', { animation : 'fade' });
+                            }
+                        });
+						
+                    } else {
+			modal.hide();
+                        ons.notification.alert({
+                            message: data['html'],
+                            title: 'Sorry!',
+                            buttonLabel: 'OK',
+                            animation: 'default'
+                        });
+                    }
                 })
                 .error(function(data, status) {
                     modal.hide();
-                    $scope.data.errorCode = 'Request failed';
-                    modal.show();
+                    ons.notification.alert({
+                        message: 'Request Failed, try again.',
+                        title: 'Sorry!',
+                        buttonLabel: 'OK',
+                        animation: 'default'
+                    });
                 });
             } else {
-                $scope.data.errorCode = 'No cell number entered.';
-                modal.show();
-            } 
+                ons.notification.alert({
+                    message: 'No cell number entered!',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            }
         };
         //Boardmans redemption
         $scope.redeemBoardmansGc = function () {
@@ -810,21 +1080,46 @@
                 $scope.data.errorCode = 'Processing, please wait...';
                 $http.post($scope.apiPath+'app-results.php', {"reqType" : "redeemBoardmansGc", "mobile" : mobile, "voucher" : vAmount, "cardNum" : $scope.userMpacc})
                 .success(function(data, status){
-                    modal.hide();
-                    $scope.data.result = data['html'];
-                    $scope.data.errorCode = data['html'];
-                    $scope.data = [];
-                    modal.show();
+                    if (data['error'] == 0) {
+                        modal.hide();
+			ons.notification.alert({
+                            message: data['html'],
+                            title: 'Yay!',
+                            buttonLabel: 'Continue',
+                            animation: 'default',
+                            callback: function() {
+                                $scope.data = [];
+                                myNavigator.resetToPage('views/user/welcome.html', { animation : 'fade' });
+                            }
+                        });
+						
+                    } else {
+			modal.hide();
+                        ons.notification.alert({
+                            message: data['html'],
+                            title: 'Sorry!',
+                            buttonLabel: 'OK',
+                            animation: 'default'
+                        });
+                    }
                 })
                 .error(function(data, status) {
                     modal.hide();
-                    $scope.data.errorCode = 'Request failed';
-                    modal.show();
+                    ons.notification.alert({
+                        message: 'Request Failed, try again.',
+                        title: 'Sorry!',
+                        buttonLabel: 'OK',
+                        animation: 'default'
+                    });
                 });
             } else {
-                $scope.data.errorCode = 'No cell number entered.';
-                modal.show();
-            } 
+                ons.notification.alert({
+                    message: 'No cell number entered!',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            }
         };
         //JET redemption
         $scope.redeemJetGc = function () {
@@ -835,21 +1130,46 @@
                 $scope.data.errorCode = 'Processing, please wait...';
                 $http.post($scope.apiPath+'app-results.php', {"reqType" : "redeemJetGc", "mobile" : mobile, "voucher" : vAmount, "cardNum" : $scope.userMpacc})
                 .success(function(data, status){
-                    modal.hide();
-                    $scope.data.result = data['html'];
-                    $scope.data.errorCode = data['html'];
-                    $scope.data = [];
-                    modal.show();
+                    if (data['error'] == 0) {
+                        modal.hide();
+			ons.notification.alert({
+                            message: data['html'],
+                            title: 'Yay!',
+                            buttonLabel: 'Continue',
+                            animation: 'default',
+                            callback: function() {
+                                $scope.data = [];
+                                myNavigator.resetToPage('views/user/welcome.html', { animation : 'fade' });
+                            }
+                        });
+						
+                    } else {
+			modal.hide();
+                        ons.notification.alert({
+                            message: data['html'],
+                            title: 'Sorry!',
+                            buttonLabel: 'OK',
+                            animation: 'default'
+                        });
+                    }
                 })
                 .error(function(data, status) {
                     modal.hide();
-                    $scope.data.errorCode = 'Request failed';
-                    modal.show();
+                    ons.notification.alert({
+                        message: 'Request Failed, try again.',
+                        title: 'Sorry!',
+                        buttonLabel: 'OK',
+                        animation: 'default'
+                    });
                 });
             } else {
-                $scope.data.errorCode = 'No cell number entered.';
-                modal.show();
-            } 
+                ons.notification.alert({
+                    message: 'No cell number entered!',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            }
         };
         //JET MART redemption
         $scope.redeemJetMartGc = function () {
@@ -860,21 +1180,46 @@
                 $scope.data.errorCode = 'Processing, please wait...';
                 $http.post($scope.apiPath+'app-results.php', {"reqType" : "redeemJetMartGc", "mobile" : mobile, "voucher" : vAmount, "cardNum" : $scope.userMpacc})
                 .success(function(data, status){
-                    modal.hide();
-                    $scope.data.result = data['html'];
-                    $scope.data.errorCode = data['html'];
-                    $scope.data = [];
-                    modal.show();
+                    if (data['error'] == 0) {
+                        modal.hide();
+			ons.notification.alert({
+                            message: data['html'],
+                            title: 'Yay!',
+                            buttonLabel: 'Continue',
+                            animation: 'default',
+                            callback: function() {
+                                $scope.data = [];
+                                myNavigator.resetToPage('views/user/welcome.html', { animation : 'fade' });
+                            }
+                        });
+						
+                    } else {
+			modal.hide();
+                        ons.notification.alert({
+                            message: data['html'],
+                            title: 'Sorry!',
+                            buttonLabel: 'OK',
+                            animation: 'default'
+                        });
+                    }
                 })
                 .error(function(data, status) {
                     modal.hide();
-                    $scope.data.errorCode = 'Request failed';
-                    modal.show();
+                    ons.notification.alert({
+                        message: 'Request Failed, try again.',
+                        title: 'Sorry!',
+                        buttonLabel: 'OK',
+                        animation: 'default'
+                    });
                 });
             } else {
-                $scope.data.errorCode = 'No cell number entered.';
-                modal.show();
-            } 
+                ons.notification.alert({
+                    message: 'No cell number entered!',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            }
         };
         //RED SQUARE redemption
         $scope.redeemRedSGc = function () {
@@ -885,21 +1230,46 @@
                 $scope.data.errorCode = 'Processing, please wait...';
                 $http.post($scope.apiPath+'app-results.php', {"reqType" : "redeemRedSGc", "mobile" : mobile, "voucher" : vAmount, "cardNum" : $scope.userMpacc})
                 .success(function(data, status){
-                    modal.hide();
-                    $scope.data.result = data['html'];
-                    $scope.data.errorCode = data['html'];
-                    $scope.data = [];
-                    modal.show();
+                    if (data['error'] == 0) {
+                        modal.hide();
+			ons.notification.alert({
+                            message: data['html'],
+                            title: 'Yay!',
+                            buttonLabel: 'Continue',
+                            animation: 'default',
+                            callback: function() {
+                                $scope.data = [];
+                                myNavigator.resetToPage('views/user/welcome.html', { animation : 'fade' });
+                            }
+                        });
+						
+                    } else {
+			modal.hide();
+                        ons.notification.alert({
+                            message: data['html'],
+                            title: 'Sorry!',
+                            buttonLabel: 'OK',
+                            animation: 'default'
+                        });
+                    }
                 })
                 .error(function(data, status) {
                     modal.hide();
-                    $scope.data.errorCode = 'Request failed';
-                    modal.show();
+                    ons.notification.alert({
+                        message: 'Request Failed, try again.',
+                        title: 'Sorry!',
+                        buttonLabel: 'OK',
+                        animation: 'default'
+                    });
                 });
             } else {
-                $scope.data.errorCode = 'No cell number entered.';
-                modal.show();
-            } 
+                ons.notification.alert({
+                    message: 'No cell number entered!',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            }
         };
         //CNA redemption
         $scope.redeemCNAGc = function () {
@@ -910,21 +1280,46 @@
                 $scope.data.errorCode = 'Processing, please wait...';
                 $http.post($scope.apiPath+'app-results.php', {"reqType" : "redeemCNAGc", "mobile" : mobile, "voucher" : vAmount, "cardNum" : $scope.userMpacc})
                 .success(function(data, status){
-                    modal.hide();
-                    $scope.data.result = data['html'];
-                    $scope.data.errorCode = data['html'];
-                    $scope.data = [];
-                    modal.show();
+                    if (data['error'] == 0) {
+                        modal.hide();
+			ons.notification.alert({
+                            message: data['html'],
+                            title: 'Yay!',
+                            buttonLabel: 'Continue',
+                            animation: 'default',
+                            callback: function() {
+                                $scope.data = [];
+                                myNavigator.resetToPage('views/user/welcome.html', { animation : 'fade' });
+                            }
+                        });
+						
+                    } else {
+			modal.hide();
+                        ons.notification.alert({
+                            message: data['html'],
+                            title: 'Sorry!',
+                            buttonLabel: 'OK',
+                            animation: 'default'
+                        });
+                    }
                 })
                 .error(function(data, status) {
                     modal.hide();
-                    $scope.data.errorCode = 'Request failed';
-                    modal.show();
+                    ons.notification.alert({
+                        message: 'Request Failed, try again.',
+                        title: 'Sorry!',
+                        buttonLabel: 'OK',
+                        animation: 'default'
+                    });
                 });
             } else {
-                $scope.data.errorCode = 'No cell number entered.';
-                modal.show();
-            } 
+                ons.notification.alert({
+                    message: 'No cell number entered!',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            }
         };
         //Feed A child Donation
         $scope.redeemDonateChild = function () {
@@ -947,12 +1342,20 @@
                 })
                 .error(function(data, status) {
                     modal.hide();
-                    $scope.data.errorCode = 'Request failed';
-                    modal.show();
+                    ons.notification.alert({
+                        message: 'Request Failed, try again.',
+                        title: 'Sorry!',
+                        buttonLabel: 'OK',
+                        animation: 'default'
+                    });
                 });
             } else {
-                $scope.data.errorCode = 'No cell number entered.';
-                modal.show();
+                ons.notification.alert({
+                    message: 'No cell number entered!',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
             } 
         };
         
@@ -966,8 +1369,12 @@
                 myNavigator.pushPage('views/user/points_name.html', { animation : 'lift' });
             })
             .error(function(result, status) {
-                $scope.data.errorCode = 'Failed to get parter names, please try again.';
-                modal.show();
+                ons.notification.alert({
+                    message: 'Failed to get parter names, please try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
             });
         };
         
@@ -988,8 +1395,12 @@
             })
             .error(function(data, status) {
                 modal.hide();
-                $scope.data.errorCode = 'Request failed';
-                modal.show();
+                ons.notification.alert({
+                    message: 'Request Failed, try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
             });
         };
         
@@ -1003,8 +1414,12 @@
                 myNavigator.pushPage('views/user/points_cat.html', { animation : 'lift' } );
             })
             .error(function(result, status) {
-                $scope.data.errorCode = 'Failed to get categories, please try again.';
-                modal.show();
+                ons.notification.alert({
+                    message: 'Failed to get categories, please try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
             });
         };
         
@@ -1025,8 +1440,12 @@
             })
             .error(function(data, status) {
                 modal.hide();
-                $scope.data.errorCode = 'Request failed';
-                modal.show();
+                ons.notification.alert({
+                    message: 'Request Failed, try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
             });
         };       
         
@@ -1040,8 +1459,12 @@
                 myNavigator.pushPage('views/user/points_reg.html', { animation : 'lift' } );
             })
             .error(function(result, status) {
-                $scope.data.errorCode = 'Failed to get regions, please try again.';
-                modal.show();
+                ons.notification.alert({
+                    message: 'Failed to get regions, please try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
             });
         };
         
@@ -1062,8 +1485,12 @@
             })
             .error(function(data, status) {
                 modal.hide();
-                $scope.data.errorCode = 'Request failed';
-                modal.show();
+                ons.notification.alert({
+                    message: 'Request Failed, try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
             });
         }; 
         
@@ -1084,8 +1511,12 @@
             })
             .error(function(data, status) {
                 modal.hide();
-                $scope.data.errorCode = 'Request failed';
-                modal.show();
+                ons.notification.alert({
+                    message: 'Request Failed, try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
             });
         }; 
         
@@ -1109,19 +1540,254 @@
                 $scope.partner_voucher = data[0]['partner_voucher'];
                 $scope.partner_terms = data[0]['partner_terms'];
                 $scope.partner_tel = data[0]['partner_tel'];
+                $scope.partner_web = data[0]['partner_web'];
                 $scope.partner_address = data[0]['partner_address'];
                 $scope.voucher_date = today;
                 $scope.conImages = 'http://www.mahala.mobi/components/com_jumi/files/mahala_WSDL/partnerLogo.png';
             })
             .error(function(data, status) {
                 modal.hide();
-                $scope.data.errorCode = 'Request failed';
-                modal.show();
+                ons.notification.alert({
+                    message: 'Request Failed, try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
             });
             
             
             myNavigator.pushPage('views/user/voucher_points.html', { animation : 'fade', partnerId : partnerId });
         };
+        
+        
+        // build points redeem name dropdown
+        $scope.pointsRemName = function() {
+            $scope.pointsDD = [];
+            $scope.partnerList = [];
+            $http.get($scope.apiPath+'pointsRemDD.php')
+            .success(function (result, status) {
+                $scope.pointsDD = result;
+                myNavigator.pushPage('views/user/points_rem_name.html', { animation : 'lift' });
+            })
+            .error(function(result, status) {
+                ons.notification.alert({
+                    message: 'Failed to get parter names, please try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            });
+        };
+        
+        // get points redeem name and display list
+        $scope.searchRemPointName = function() {
+            $scope.searchOk = false;
+            $scope.partnerList = [];
+            var partnerName = this.selectPointsName.Name;
+            
+            modal.show();
+            $scope.data.errorCode = 'Processing, please wait...';
+            $http.post($scope.apiPath+'app-results.php', {"reqType" : "PointPartnerName", "partnerName" : partnerName})
+            .success(function(data, status){
+                modal.hide();
+                //console.log(data);
+                $scope.searchOk = true;
+                $scope.partnerList = data;
+            })
+            .error(function(data, status) {
+                modal.hide();
+                ons.notification.alert({
+                    message: 'Request Failed, try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            });
+        };
+        
+        // build points redeem category dropdown
+        $scope.pointsRemCategory = function() {
+            $scope.pointsCatDD = [];
+            $scope.partnerList = [];
+            $http.get($scope.apiPath+'pointsRemCatDD.php')
+            .success(function (result, status) {
+                $scope.pointsCatDD = result;
+                myNavigator.pushPage('views/user/points_rem_cat.html', { animation : 'lift' } );
+            })
+            .error(function(result, status) {
+                ons.notification.alert({
+                    message: 'Failed to get categories, please try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            });
+        };
+        
+        // get points redeem category and display list
+        $scope.searchPointRemCat = function() {
+            $scope.searchOk = false;
+            $scope.partnerList = [];
+            var partnerCat = this.selectPointsCat.Name;
+            
+            modal.show();
+            $scope.data.errorCode = 'Processing, please wait...';
+            $http.post($scope.apiPath+'app-results.php', {"reqType" : "PointPartnerCat", "partnerCat" : partnerCat})
+            .success(function(data, status){
+                modal.hide();
+                console.log(data);
+                $scope.searchOk = true;
+                $scope.partnerList = data;
+            })
+            .error(function(data, status) {
+                modal.hide();
+                ons.notification.alert({
+                    message: 'Request Failed, try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            });
+        };       
+        
+        // build points redeem province dropdown
+        $scope.pointsRemProvince = function() {
+            $scope.pointsProvDD = [];
+            $scope.partnerList = [];
+            $http.get($scope.apiPath+'pointsRemProvDD.php')
+            .success(function (result, status) {
+                $scope.pointsProvDD = result;
+                myNavigator.pushPage('views/user/points_rem_reg.html', { animation : 'lift' } );
+            })
+            .error(function(result, status) {
+                ons.notification.alert({
+                    message: 'Failed to get regions, please try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            });
+        };
+        
+        // get points redeem category and display list
+        $scope.searchPointRemProv = function() {
+            $scope.searchOk = false;
+            $scope.partnerList = [];
+            var partnerProv = this.selectPointsProv.Name;
+            
+            modal.show();
+            $scope.data.errorCode = 'Processing, please wait...';
+            $http.post($scope.apiPath+'pointsRemCityDD.php', {"partnerProv" : partnerProv})
+            .success(function(data, status){
+                modal.hide();
+                //console.log(data);
+                $scope.searchProvOk = true;
+                $scope.pointsCityDD = data;
+            })
+            .error(function(data, status) {
+                modal.hide();
+                ons.notification.alert({
+                    message: 'Request Failed, try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            });
+        }; 
+        
+        // get points redeem city and display list
+        $scope.searchPointRemCity = function() {
+            $scope.searchOk = false;
+            $scope.partnerList = [];
+            var partnerCity = this.selectPointsCity.Name;
+            
+            modal.show();
+            $scope.data.errorCode = 'Processing, please wait...';
+            $http.post($scope.apiPath+'app-results.php', {"reqType" : "PointPartnerCity", "partnerCity" : partnerCity})
+            .success(function(data, status){
+                modal.hide();
+                //console.log(data);
+                $scope.searchOk = true;
+                $scope.partnerList = data;
+            })
+            .error(function(data, status) {
+                modal.hide();
+                ons.notification.alert({
+                    message: 'Request Failed, try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            });
+        }; 
+        
+        //build redeem voucher
+        $scope.pointsRemVoucher = function(partnerId) {
+            console.log(partnerId);
+            $scope.data.errorCode = 'Processing, please wait...';
+            $http.post($scope.apiPath+'app-results.php', {"reqType" : "PartnerVoucher", "partnerId" : partnerId, "cardNum" : $scope.userMpacc})
+            .success(function(data, status){
+                modal.hide();
+                console.log(data);
+                
+                var now = new Date();
+                var day = ("0" + now.getDate()).slice(-2);
+                var month = ("0" + (now.getMonth() + 1)).slice(-2);
+                var today = now.getFullYear() + "-" + (month) + "-" + (day);
+                
+                $scope.partner_id = partnerId;
+                $scope.partner_name = data[0]['partner_name'];
+                $scope.partner_logo = data[0]['partner_logo'];
+                $scope.partner_voucher = data[0]['partner_voucher'];
+                $scope.partner_terms = data[0]['partner_terms'];
+                $scope.partner_tel = data[0]['partner_tel'];
+                $scope.partner_web = data[0]['partner_web'];
+                $scope.partner_address = data[0]['partner_address'];
+                $scope.voucher_date = today;
+                $scope.conImages = 'http://www.mahala.mobi/components/com_jumi/files/mahala_WSDL/partnerLogo.png';
+            })
+            .error(function(data, status) {
+                modal.hide();
+                ons.notification.alert({
+                    message: 'Request Failed, try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            });
+            
+            
+            myNavigator.pushPage('views/user/voucher_rem_points.html', { animation : 'fade', partnerId : partnerId });
+        };
+        
+        //get coms id for redemption and genrate otp
+        $scope.genereateOtp = function () {
+            var cashMpacc = $scope.data.cashierCode;
+            console.log('Cashier code', cashMpacc);
+            if (cashMpacc) {
+                $http.post($scope.apiPath+'generateOTP.php', {"cashierCode" : cashMpacc})
+                .success(function(data, status){
+                    
+                })
+                .error(function(data, status) {
+                    modal.hide();
+                    ons.notification.alert({
+                        message: 'Request Failed, try again.',
+                        title: 'Sorry!',
+                        buttonLabel: 'OK',
+                        animation: 'default'
+                    });
+                });
+            } else {
+                modal.hide();
+                ons.notification.alert({
+                    message: 'No Cashier code entered!',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            }
+        }
         
         // buile discount name dropdown
         $scope.discountName = function () {
@@ -1135,8 +1801,12 @@
             .error(function(result, status) {
                 console.log(result);
                 console.log(status);
-                $scope.data.errorCode = 'Failed to get partner names. Please try again.';
-                modal.show();
+                ons.notification.alert({
+                    message: 'Failed to get partner names. Please try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
             });
         };
         
@@ -1157,8 +1827,12 @@
             })
             .error(function(data, status) {
                 modal.hide();
-                $scope.data.errorCode = 'Request failed';
-                modal.show();
+                ons.notification.alert({
+                    message: 'Request Failed, try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
             });
         };
         
@@ -1172,8 +1846,12 @@
                 myNavigator.pushPage('views/user/dis_cat.html', { animation : 'lift' } );
             })
             .error(function(result, status) {
-                $scope.data.errorCode = 'Failed to get discount cat drop down';
-                modal.show();
+                ons.notification.alert({
+                    message: 'Request Failed, try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
             });
         };
         
@@ -1194,8 +1872,12 @@
             })
             .error(function(data, status) {
                 modal.hide();
-                $scope.data.errorCode = 'Request failed';
-                modal.show();
+                ons.notification.alert({
+                    message: 'Request Failed, try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
             });
         };       
         
@@ -1209,8 +1891,12 @@
                 myNavigator.pushPage('views/user/dis_reg.html', { animation : 'lift' } );
             })
             .error(function(result, status) {
-                $scope.data.errorCode = 'Failed to get discount province drop down';
-                modal.show();
+                ons.notification.alert({
+                    message: 'Request Failed, try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
             });
         };
         
@@ -1231,8 +1917,12 @@
             })
             .error(function(data, status) {
                 modal.hide();
-                $scope.data.errorCode = 'Request failed';
-                modal.show();
+                ons.notification.alert({
+                    message: 'Request Failed, try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
             });
         }; 
         
@@ -1253,8 +1943,12 @@
             })
             .error(function(data, status) {
                 modal.hide();
-                $scope.data.errorCode = 'Request failed';
-                modal.show();
+                ons.notification.alert({
+                    message: 'Request Failed, try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
             });
         }; 
         
@@ -1278,14 +1972,19 @@
                 $scope.partner_voucher = data[0]['partner_voucher'];
                 $scope.partner_terms = data[0]['partner_terms'];
                 $scope.partner_tel = data[0]['partner_tel'];
+                $scope.partner_web = data[0]['partner_web'];
                 $scope.partner_address = data[0]['partner_address'];
                 $scope.voucher_date = today;
                 $scope.conImages = 'http://www.mahala.mobi/components/com_jumi/files/mahala_WSDL/partnerDisLogo.png';
             })
             .error(function(data, status) {
                 modal.hide();
-                $scope.data.errorCode = 'Request failed';
-                modal.show();
+                ons.notification.alert({
+                    message: 'Request Failed, try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
             });
             
             
@@ -1318,27 +2017,44 @@
                 $http.post($scope.apiPath+'app-results.php', { "reqType" : "contactUs", "accountType" : contactAccount, "student" : contactStudent, "perks" : contactPerks, "comments" : contactComments, "cName" : contactName, "cSurname" : contactSurname, "cCell" : contactCell, "cEmail" : contactEmail, 'charity' : contactCharity, 'travel' : contactTravel })
                 .success(function(data, status){
                     if (data['error'] == 0) {
+                        
                         modal.hide();
-                        $scope.data.result = data['html'];
-                        $scope.data.errorCode = data['html'];
-                        modal.show();
-                        $scope.data = [];
-                        myNavigator.pushPage('views/home.html', { animation : 'fade'});
+			ons.notification.alert({
+                            message: data['html'],
+                            title: 'Yay!',
+                            buttonLabel: 'Continue',
+                            animation: 'default',
+                            callback: function() {
+                                $scope.data = [];
+                                myNavigator.resetToPage('views/home.html', { animation : 'fade' });
+                            }
+                        });
                     } else {
                         modal.hide();
-                        $scope.data.result = data['html'];
-                        $scope.data.errorCode = data['html'];
-                        modal.show();
+                        ons.notification.alert({
+                            message: data['html'],
+                            title: 'Sorry!',
+                            buttonLabel: 'OK',
+                            animation: 'default'
+                        });
                     }
                 })
                 .error(function(data, status) {
                     modal.hide();
-                    $scope.data.errorCode = 'Request failed';
-                    modal.show();
+                    ons.notification.alert({
+                        message: 'Request Failed, try again.',
+                        title: 'Sorry!',
+                        buttonLabel: 'OK',
+                        animation: 'default'
+                    });
                 });
             } else {
-                $scope.data.errorCode = 'Please fill in all the fields.';
-                modal.show();
+                ons.notification.alert({
+                    message: 'Please fill in all the fields.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
             }
         };
         
@@ -1354,14 +2070,22 @@
                 if (data) {
                     myNavigator.pushPage('views/partners/discount.html', { animation : 'fade'});
                 } else {
-                    $scope.data.errorCode = 'No Partners were found!';
-                    modal.show();
+                    ons.notification.alert({
+                        message: 'No Partners were found!',
+                        title: 'Sorry!',
+                        buttonLabel: 'OK',
+                        animation: 'default'
+                    });
                 }         
             })
             .error(function(data, status) {
                 modal.hide();
-                $scope.data.errorCode = 'Request failed';
-                modal.show();
+                ons.notification.alert({
+                    message: 'Request Failed, try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
             });
         };
         
@@ -1384,14 +2108,22 @@
                         myNavigator.pushPage('views/partners/list.html', { animation : 'fade'});
                     }
                 } else {
-                    $scope.data.errorCode = 'No Partners were found!';
-                    modal.show();
+                    ons.notification.alert({
+                        message: 'No Partners were found!',
+                        title: 'Sorry!',
+                        buttonLabel: 'OK',
+                        animation: 'default'
+                    });
                 }         
             })
             .error(function(data, status) {
                 modal.hide();
-                $scope.data.errorCode = 'Request failed';
-                modal.show();
+                ons.notification.alert({
+                    message: 'Request Failed, try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
             });
         };
         
@@ -1408,14 +2140,22 @@
                 if (data) {
                     myNavigator.pushPage('views/partners/points.html', { animation : 'fade'});
                 } else {
-                    $scope.data.errorCode = 'No Partners were found!';
-                    modal.show();
+                    ons.notification.alert({
+                        message: 'No Partners were found!',
+                        title: 'Sorry!',
+                        buttonLabel: 'OK',
+                        animation: 'default'
+                    });
                 } 
             })
             .error(function(data, status) {
                 modal.hide();
-                $scope.data.errorCode = 'Request failed';
-                modal.show();
+                ons.notification.alert({
+                    message: 'Request Failed, try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
             });
         };
         
@@ -1438,14 +2178,22 @@
                         myNavigator.pushPage('views/partners/list.html', { animation : 'fade'});
                     }
                 } else {
-                    $scope.data.errorCode = 'No Partners were found!';
-                    modal.show();
+                    ons.notification.alert({
+                        message: 'No Partners were found!',
+                        title: 'Sorry!',
+                        buttonLabel: 'OK',
+                        animation: 'default'
+                    });
                 } 
             })
             .error(function(data, status) {
                 modal.hide();
-                $scope.data.errorCode = 'Request failed';
-                modal.show();
+                ons.notification.alert({
+                    message: 'Request Failed, try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
             });
         };
         
@@ -1455,8 +2203,13 @@
             $scope.couponList = result;
         })
         .error(function(result, status) {
-            $scope.data.errorCode = 'Request failed';
-            modal.show();
+            modal.hide();
+            ons.notification.alert({
+                message: 'Request Failed, try again.',
+                title: 'Sorry!',
+                buttonLabel: 'OK',
+                animation: 'default'
+            });
         });
         
         //Get coupon code
@@ -1472,8 +2225,12 @@
             })
             .error(function(data, status) {
                 modal.hide();
-                $scope.data.errorCode = 'Request failed';
-                modal.show();
+                ons.notification.alert({
+                    message: 'Request Failed, try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
             });
         };
         
@@ -1508,6 +2265,7 @@
                 $scope.partner_voucher = data[0]['partner_voucher'];
                 $scope.partner_terms = data[0]['partner_terms'];
                 $scope.partner_tel = data[0]['partner_tel'];
+                $scope.partner_web = data[0]['partner_web'];
                 $scope.partner_address = data[0]['partner_address'];
                 $scope.voucher_date = today;
                 
@@ -1519,8 +2277,12 @@
             })
             .error(function(data, status) {
                 modal.hide();
-                $scope.data.errorCode = 'Request failed';
-                modal.show();
+                ons.notification.alert({
+                    message: 'Request Failed, try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
             });
             
             if (partnerType === 'Points') {
@@ -1546,8 +2308,12 @@
             })
             .error(function(data, status) {
                 modal.hide();
-                $scope.data.errorCode = 'Request failed';
-                modal.show();
+                ons.notification.alert({
+                    message: 'Request Failed, try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
             });
             
             
@@ -1576,21 +2342,34 @@
             .success(function(data, status){
                 if (data['error'] == 0) {
                     modal.hide();
-                    $scope.data.result = data['html'];
-                    $scope.data.errorCode = data['html'];
-                    modal.show();
-                    myNavigator.pushPage('views/home.html', { animation : 'fade'});
+                    ons.notification.alert({
+                        message: data['html'],
+                        title: 'Yay!',
+                        buttonLabel: 'Continue',
+                        animation: 'default',
+                        callback: function() {
+                            $scope.data = [];
+                            myNavigator.resetToPage('views/home.html', { animation : 'fade' });
+                        }
+                    });
                 } else {
                     modal.hide();
-                    $scope.data.result = data['html'];
-                    $scope.data.errorCode = data['html'];
-                    modal.show();
+                    ons.notification.alert({
+                        message: data['html'],
+                        title: 'Sorry!',
+                        buttonLabel: 'OK',
+                        animation: 'default'
+                    });
                 }
             })
             .error(function(data, status) {
                 modal.hide();
-                $scope.data.errorCode = 'Request failed';
-                modal.show();
+                ons.notification.alert({
+                    message: 'Request Failed, try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
             });
         };
         
@@ -1615,21 +2394,34 @@
             .success(function(data, status){
                 if (data['error'] == 0) {
                     modal.hide();
-                    $scope.data.result = data['html'];
-                    $scope.data.errorCode = data['html'];
-                    modal.show();
-                    myNavigator.pushPage('views/home.html', { animation : 'fade'});
+                    ons.notification.alert({
+                        message: data['html'],
+                        title: 'Yay!',
+                        buttonLabel: 'Continue',
+                        animation: 'default',
+                        callback: function() {
+                            $scope.data = [];
+                            myNavigator.resetToPage('views/home.html', { animation : 'fade' });
+                        }
+                    });
                 } else {
                     modal.hide();
-                    $scope.data.result = data['html'];
-                    $scope.data.errorCode = data['html'];
-                    modal.show();
+                    ons.notification.alert({
+                        message: data['html'],
+                        title: 'Sorry!',
+                        buttonLabel: 'OK',
+                        animation: 'default'
+                    });
                 }
             })
             .error(function(data, status) {
                 modal.hide();
-                $scope.data.errorCode = 'Request failed';
-                modal.show();
+                ons.notification.alert({
+                    message: 'Request Failed, try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
             });
         };
         
@@ -1643,28 +2435,36 @@
             var mpacc = $scope.userMpacc;
             var cardNum = $scope.CardNumber;
             var cashier = $scope.data.cashierCode;
+            var isPoints = $scope.data.isPoints;
             
-            if (transVal && transInv && cashier) {                
+            if (transVal && transInv && cashier && isPoints) {                
                 modal.show();
                 $scope.data.errorCode = 'Processing, please wait...';
 
                 if ((typeof file === 'undefined' || file === null) && $scope.data.pointsTransVal < 501) {
                     
-                    $http.post($scope.apiPath+'uploadPoints.php', {'reqType': "claimPoints", 'transVal': transVal, 'transInv': transInv, 'partName': partName, 'partId': partId, 'mpacc': mpacc, 'cardNum': cardNum, 'cashierCode' : cashier})
+                    $http.post($scope.apiPath+'uploadPoints.php', {'reqType': "claimPoints", 'transVal': transVal, 'transInv': transInv, 'partName': partName, 'partId': partId, 'mpacc': mpacc, 'cardNum': cardNum, 'cashierCode' : cashier, 'isPoints': isPoints})
                     .success(function(data, status){
                         modal.hide();
-                        $scope.data.errorCode = "Thank you!";
-                        modal.show();
-                        $timeout(function(){
-                            modal.hide();
-                            $scope.data = [];
-                            myNavigator.pushPage('views/user/feedback_form.html', { animation : 'fade'});
-                        },'2000');
+                        ons.notification.alert({
+                            message: "Thank you!",
+                            title: 'Yay!',
+                            buttonLabel: 'Continue',
+                            animation: 'default',
+                            callback: function() {
+                                $scope.data = [];
+                                myNavigator.resetToPage('views/user/feedback_form.html', { animation : 'fade' });
+                            }
+                        });
                     })
                     .error(function(data, status) {
                         modal.hide();
-                        $scope.data.errorCode = 'Request failed';
-                        modal.show();
+                        ons.notification.alert({
+                            message: 'Request Failed, try again.',
+                            title: 'Sorry!',
+                            buttonLabel: 'OK',
+                            animation: 'default'
+                        });
                     });
                 } else {
 
@@ -1689,13 +2489,16 @@
                         // file is uploaded successfully
                         console.log('file ' + resp.config.data.file.name + ' is uploaded successfully. Response: ' + resp.data);
                         modal.hide();
-                        $scope.data.errorCode = "Thank you!";
-                        modal.show();
-                        $timeout(function(){
-                            modal.hide();
-                            $scope.data = [];
-                            myNavigator.pushPage('views/user/feedback_form.html', { animation : 'fade'});
-                        },'2000');
+                        ons.notification.alert({
+                            message: "Thank you!",
+                            title: 'Yay!',
+                            buttonLabel: 'Continue',
+                            animation: 'default',
+                            callback: function() {
+                                $scope.data = [];
+                                myNavigator.resetToPage('views/user/feedback_form.html', { animation : 'fade' });
+                            }
+                        });
                     }, function(resp) {
                         if (resp.status > 0) {
                             modal.hide();
@@ -1727,18 +2530,25 @@
                 $http.post($scope.apiPath+'uploadDiscount.php', {"reqType" : "claimDiscount", 'transVal': $scope.data.pointsTransVal, 'transInv': $scope.data.pointsTransInv, 'partName': $scope.partner_name, 'partId': $scope.partner_id, 'mpacc': $scope.userMpacc, 'cardNum': $scope.CardNumber})
                 .success(function(data, status){
                     modal.hide();
-                    $scope.data.errorCode = "Thank you!";
-                    modal.show();
-                    $timeout(function(){
-                        modal.hide();
-                        $scope.data = [];
-                        myNavigator.pushPage('views/user/feedback_form.html', { animation : 'fade'});
-                    },'2000');
+                    ons.notification.alert({
+                        message: "Thank you!",
+                        title: 'Yay!',
+                        buttonLabel: 'Continue',
+                        animation: 'default',
+                        callback: function() {
+                            $scope.data = [];
+                            myNavigator.resetToPage('views/user/feedback_form.html', { animation : 'fade' });
+                        }
+                    });
                 })
                 .error(function(data, status) {
                     modal.hide();
-                    $scope.data.errorCode = 'Request failed';
-                    modal.show();
+                    ons.notification.alert({
+                        message: 'Request Failed, try again.',
+                        title: 'Sorry!',
+                        buttonLabel: 'OK',
+                        animation: 'default'
+                    });
                 });
             } else {
             
@@ -1765,13 +2575,16 @@
                     // file is uploaded successfully
                     console.log('file ' + resp.config.data.file.name + ' is uploaded successfully. Response: ' + resp.data);
                     modal.hide();
-                    $scope.data.errorCode = "Thank you!";
-                    modal.show();
-                    $timeout(function(){
-                        modal.hide();
-                        $scope.data = [];
-                        myNavigator.pushPage('views/user/feedback_form.html', { animation : 'fade'});
-                    },'2000');
+                    ons.notification.alert({
+                        message: "Thank you!",
+                        title: 'Yay!',
+                        buttonLabel: 'Continue',
+                        animation: 'default',
+                        callback: function() {
+                            $scope.data = [];
+                            myNavigator.resetToPage('views/user/feedback_form.html', { animation : 'fade' });
+                        }
+                    });
                 }, function(resp) {
                     if (resp.status > 0) {
                         modal.hide();
@@ -1801,12 +2614,16 @@
                 .success(function(data, status){
                     if (data['error'] == 0) {
                         modal.hide();
-                        $scope.data.errorCode = data['html'];
-                        modal.show();
-                        $timeout(function(){
-                            modal.hide();
-                            myNavigator.pushPage('views/user/welcome.html', { animation : 'fade' });
-                        },'2000');
+                        ons.notification.alert({
+                            message: data['html'],
+                            title: 'Yay!',
+                            buttonLabel: 'Continue',
+                            animation: 'default',
+                            callback: function() {
+                                $scope.data = [];
+                                myNavigator.resetToPage('views/user/welcome.html', { animation : 'fade' });
+                            }
+                        });
                     } else {
                         ons.notification.alert({
                             message: 'Something went worng, please try again.',
@@ -1818,8 +2635,12 @@
                 })
                 .error(function(data, status) {
                     modal.hide();
-                    $scope.data.errorCode = 'Request failed';
-                    modal.show();
+                    ons.notification.alert({
+                        message: 'Request Failed, try again.',
+                        title: 'Oops!',
+                        buttonLabel: 'OK',
+                        animation: 'default'
+                    });
                 });
             } else {
                 ons.notification.alert({
@@ -1851,27 +2672,44 @@
                         
                         $scope.retailName = data['retailName'];
                         $scope.retailID = data['retailID'];
+                        $scope.feedQ1 = data['feedQ1'];
+                        $scope.feedQ2 = data['feedQ2'];
+                        $scope.feedQ3 = data['feedQ3'];
+                        $scope.reprtMonth = data['reprtMonth'];
+                        $scope.newMembers = data['newMembers'];
+                        $scope.totalMembers = data['totalMembers'];
+                        $scope.membersActive = data['membersActive'];
+                        $scope.totalTransactions = data['totalTransactions'];
+                        $scope.avarageSales = data['avarageSales'];
+                        $scope.forMembers = data['forMembers'];
+                        $scope.forTransaction = data['forTransaction'];
+                        $scope.totalSales = data['totalSales'];
+                        $scope.totalMemRedemp = data['totalMemRedemp'];
+                        $scope.totalRedempVal = data['totalRedempVal'];
+                        $scope.totalPendRedemp = data['totalPendRedemp'];
+                        $scope.totalPaidRedemp = data['totalPaidRedemp'];
                         
                         $timeout(function(){
                             modal.hide();
                             myNavigator.pushPage('views/retail/welcome.html', { animation : 'fade' });
                         },'2000');
                     } else {
-                        modal.hide();
-                        $scope.data.result = data['html'];
-                        $scope.data.errorCode = data['html'];
-                        console.log(data['html']);
-                        modal.show();
-                        $timeout(function(){
-                            modal.hide();
-                            myNavigator.pushPage('views/retail/login.html', { animation : 'fade' });
-                        },'1000');
+                        ons.notification.alert({
+                            message: data['html'],
+                            title: 'Oops!',
+                            buttonLabel: 'OK',
+                            animation: 'default'
+                        });
                     }
                 })
                 .error(function(data, status) {
                     modal.hide();
-                    $scope.data.errorCode = 'Request failed';
-                    modal.show();
+                    ons.notification.alert({
+                        message: 'Request Failed, try again.',
+                        title: 'Oops!',
+                        buttonLabel: 'OK',
+                        animation: 'default'
+                    });
                 });
                 
             } else {
@@ -1882,6 +2720,52 @@
                     animation: 'default'
                 });
             }
+        };
+        
+        //retail campaign
+        $scope.retailerCamp = function() {
+            var rereEmail = $scope.data.rereEmail;
+            var rereTel = $scope.data.rereTel;
+            var emailCamp = $scope.data.emailCamp;
+            var smsCamp = $scope.data.smsCamp;
+            var rereCampName = $scope.data.rereCampName;
+            var rereCampMsg = $scope.data.rereCampMsg;
+            var rereCampDate = $scope.data.rereCampDate;
+            modal.show();
+            $scope.data.errorCode = 'Processing, please wait...';
+            $http.post($scope.apiPath+'requestCamp.php', {"reqType" : "camp", "name" : $scope.retailName, "email" : rereEmail, "tel" : rereTel, "doemail" : emailCamp, "dodsms" : smsCamp, "CampName" : rereCampName, "CampMsg" : rereCampMsg, "CampDate" : rereCampDate})
+            .success(function(data, status){
+                if (data['error'] == 0) {
+                    console.log("Data:", data);
+                    modal.hide();
+                    ons.notification.alert({
+                        message: data['html'],
+                        title: 'Yay!',
+                        buttonLabel: 'Continue',
+                        animation: 'default',
+                        callback: function() {
+                            $scope.data = [];
+                            myNavigator.resetToPage('views/retail/welcome.html', { animation : 'fade' });
+                        }
+                    });
+                } else {
+                    ons.notification.alert({
+                        message: data['html'],
+                        title: 'Oops!',
+                        buttonLabel: 'OK',
+                        animation: 'default'
+                    });
+                }
+            })
+            .error(function(data, status) {
+                modal.hide();
+                ons.notification.alert({
+                    message: 'Request Failed, try again.',
+                    title: 'Oops!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            });
         };
         
         // retail logout
@@ -1897,6 +2781,8 @@
             var friendEmail2 = $scope.data.friendEmail2;
             var friendEmail3 = $scope.data.friendEmail3;
             
+            $scope.data.reg_cashierCode = "5000000026";
+            
             if (promoMPacc && friendEmail1) {
                 modal.show();
                 $scope.data.errorCode = 'Processing, please wait...';
@@ -1905,39 +2791,51 @@
                     if (data['error'] == 0) {
                         console.log("Data:", data);
                         modal.hide();
-                        $scope.data.result = data['html'];
-                        $scope.data.errorCode = data['html'];
-                        modal.show();
-                        $timeout(function(){
-                            modal.hide();
-                            myNavigator.pushPage('views/home.html', { animation : 'fade' });
-                        },'2000');
-                        
+                        ons.notification.alert({
+                            message: data['html'],
+                            title: 'Yay!',
+                            buttonLabel: 'Continue',
+                            animation: 'default',
+                            callback: function() {
+                                $scope.data = [];
+                                myNavigator.resetToPage('views/home.html', { animation : 'fade' });
+                            }
+                        });
                     } else if (data['error'] === 2) {    
                         modal.hide();
-                        $scope.data.result = data['html'];
-                        $scope.data.errorCode = data['html'];
-                        modal.show();
-                        $timeout(function(){
-                            modal.hide();
-                            myNavigator.pushPage('views/register.html', { animation : 'fade' });
-                        },'2000');
+                        ons.notification.alert({
+                            message: data['html'],
+                            title: 'Oops!',
+                            buttonLabel: 'Continue',
+                            animation: 'default',
+                            callback: function() {
+                                $scope.data = [];
+                                myNavigator.resetToPage('views/register.html', { animation : 'fade' });
+                            }
+                        });
                     } else {
                         modal.hide();
-                        $scope.data.result = data['html'];
-                        $scope.data.errorCode = data['html'];
                         console.log(data['html']);
-                        modal.show();
-                        $timeout(function(){
-                            modal.hide();
-                            myNavigator.pushPage('views/promotions.html', { animation : 'fade' });
-                        },'1000');
+                        ons.notification.alert({
+                            message: data['html'],
+                            title: 'Oops!',
+                            buttonLabel: 'Continue',
+                            animation: 'default',
+                            callback: function() {
+                                $scope.data = [];
+                                myNavigator.resetToPage('views/promotions.html', { animation : 'fade' });
+                            }
+                        });
                     }
                 })
                 .error(function(data, status) {
                     modal.hide();
-                    $scope.data.errorCode = 'Request failed';
-                    modal.show();
+                    ons.notification.alert({
+                        message: 'Request Failed, try again.',
+                        title: 'Oops!',
+                        buttonLabel: 'OK',
+                        animation: 'default'
+                    });
                 });
                 
             } else {
@@ -1948,6 +2846,16 @@
                     animation: 'default'
                 });
             }
+        };
+        
+        $scope.promoToJoin = function() {
+            $scope.data.reg_cashierCode = '5000000026';
+            myNavigator.resetToPage('views/register.html', { animation : 'fade' });
+        };
+        
+        $scope.regularEnroll = function() {
+            $scope.data.reg_cashierCode = '';
+            myNavigator.resetToPage('views/register.html', { animation : 'fade' });
         };
     }); 
     

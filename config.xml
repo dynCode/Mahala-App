@@ -2,8 +2,8 @@
 <widget xmlns     = "http://www.w3.org/ns/widgets"
         xmlns:gap = "http://phonegap.com/ns/1.0"
         id        = "com.mahala"
-        versionCode = "201" 
-        version   = "2.0.1">
+        versionCode = "202" 
+        version   = "2.0.2">
 
     <name>Mahala</name>
 
@@ -84,6 +84,10 @@
     <!--
         <gap:plugin name="com.phonegap.plugins.barcodescanner" />
     -->
+    <plugin name="cordova-plugin-camera">
+        <param name="CAMERA_USAGE_DESCRIPTION" value="We are using the Camera for uploading your till slip." />
+        <param name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="We are using the Photo Library for uploading your till slip." />
+    </plugin>
     <plugin name="cordova-plugin-device-orientation" />
     <plugin name="cordova-plugin-geolocation" />
     <plugin name="cordova-plugin-whitelist" />

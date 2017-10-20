@@ -3,7 +3,7 @@
         <div class="left">
             <ons-back-button>Back</ons-back-button>
         </div>
-        <div class="center">Points Voucher</div>
+        <div class="center">Redemption Voucher</div>
         <div class="right">
             <ons-toolbar-button ng-click="menu.toggle()">
                 <ons-icon icon="ion-navicon" size="28px" fixed-width="false"></ons-icon>
@@ -14,6 +14,15 @@
         <div class="subImgBlock">
             <img src="images/sub_header.png" style="max-width: 380px; width: 100%;" />
         </div>
+    </div>
+    <div style="padding: 0 20px;">
+        <table>
+            <tr>
+                <td>Your Balance:</td>
+                <td style="border: 1px solid #C82126;"><strong>R {{currentRands}}</strong></td>
+            </tr>
+        </table>
+        <p>To redeem your points, complete the fields below, enter the OTP pin provided by the store and submit. </p>
     </div>
     <div style="padding: 0 20px;">
         <table width='100%' style='border:none'>
@@ -33,9 +42,6 @@
                 <td>Tel:</td><td>{{partner_tel}}</td>
             </tr>
             <tr>
-                <td>Web:</td><td><a href="{{partner_web}}" target="_blank">View Site</a></td>
-            </tr>
-            <tr>
                 <td>Address:</td><td>{{partner_address}}</td>
             </tr>
             <tr>
@@ -47,11 +53,9 @@
         </table>
     </div>
     
-    <div style="margin: 0 20px; text-align: center; background-color: #a9abae;"><h2 style="padding: 5px; color: #fff;">SECURE YOUR POINTS</h2></div>
-    
     <div style="padding: 0 20px;">
         <div class="formListLrg">
-            <div class="formListLable">Transaction Value:</div><div class="formListInputLrg"><input type="number" class="text-input"  placeholder="Transaction Value" ng-model="data.pointsTransVal"></div>
+            <div class="formListLable">Redemption Value:</div><div class="formListInputLrg"><input type="number" class="text-input"  placeholder="Transaction Value" ng-model="data.pointsTransVal"></div>
         </div>
         <div class="formListLrg">
             <div class="formListLable">Invoice No:</div><div class="formListInputLrg"><input type="text" class="text-input"  placeholder="Invoice No" ng-model="data.pointsTransInv"></div>
@@ -66,17 +70,14 @@
             <p>Present your phone to the cashier to approve the transaction.</p>
             <div class="formListLrg">
                 <div class="formListLable">CASHIER CODE:</div>
-                <div class="formListInputLrg"><input type="number" class="text-input"  placeholder="Enter Code" ng-model="data.cashierCode"></div>
+                <div class="formListInputLrg"><input type="number" class="text-input" ng-change="" placeholder="Enter Code" ng-model="data.cashierCode"></div>
             </div>
-            <div class="formListLrg" style="height: 30px;">
-                <div class="formListLable">Points:</div><div class="formListInput" style="width:20%"><label class="radio-button"><input type="radio" ng-model="data.isPoints" value="yes" checked><div class="radio-button__checkmark"></div><span class="ons-checkbox-inner"></span></label></div>
+            <ons-button modifier="large" id="btnLogIn" ng-click="genereateOtp()" style="width:100%">GENERATE OTP</ons-button>  
+            <div class="formListLrg">
+                <div class="formListLable">OTP:</div>
+                <div class="formListInputLrg"><input type="number" class="text-input"  placeholder="Enter Code" ng-model="data.remOTP"></div>
             </div>
-            <div class="formListLrg" style="height: 30px;">
-                <div class="formListLable">Tokens:</div><div class="formListInput" style="width:20%"><label class="radio-button"><input type="radio" ng-model="data.isPoints" value="no"><div class="radio-button__checkmark"></div><span class="ons-checkbox-inner"></span></label></div>
-            </div>
-            <div style="padding: 10px;">
-                <!--<ons-button id="btnLogIn" ng-click="scanCode(data.cashierCode)" style="width:50%">Scan Barcode (on App)</ons-button>-->
-            </div>
+            <p class="location" style='color:#000'><i>Please enter the OTP pin provided by the Store Cashier/Manager</i></p>
         </div>
     </div>
     <div style="padding: 0 20px;">
@@ -85,13 +86,8 @@
         <input type="text" class="text-input" ng-model="data.partName" ng-value="{{partner_name}}">-->
         <img ng-show="data.invoiceSlip.$valid" ngf-thumbnail="data.invoiceSlip" ngf-size="{width: 100, height: 100, quality: 0.9}">
         <br>
-        <ons-button modifier="large" id="btnLogIn" ng-click="claimPoints(data.invoiceSlip)" style="width:100%">SUBMIT</ons-button>
-                
-        <p class="location" style='color:#000'><i>Please ensure that you capture the total transaction value and invoice number correctly, the cashier will approve your transaction by scanning / entering their code. Your points can take up to 7 days to refelct on your points balance.</i></p>
-
-        <p class="location" style='color:#000'><i>When a telephonic booking is made (e.g. Medipost / Funeral Plan), Mahala will interface directly with the Loyalty Partner to register your transaction and no action is reguired from your side.</i></p>
-
+        <ons-button modifier="large" id="btnLogIn" ng-click="redeemPoints(data.invoiceSlip)" style="width:100%">SUBMIT</ons-button>      
+        <p class="location" style='color:#000'><i>Your points redemption cannot exceed your points balance as displayed above. You have to be in-store.</i></p>
         <p style='color:#cd242d'><a href="#" onclick="myNavigator.pushPage('views/TandC.html');" style="text-decoration: none; color: #C82126;">TERMS AND CONDITIONS</a> APPLY.</p>
-        
     </div>
 </ons-page>
