@@ -237,11 +237,30 @@
                         modal.show();
                         $scope.data.errorCode = 'Collecting your data...';
                         
-                        $timeout(function(){
+                        if (user === pass) {
                             modal.hide();
-                            $scope.data = [];
-                            myNavigator.pushPage('views/user/welcome.html', { animation : 'fade' });
-                        },'2000');
+                            ons.notification.confirm({
+                                message: 'Your password is unsecure, click OK to change your password or cancel to continue',
+                                callback: function(idx) {
+                                    switch (idx) {
+                                        case 0:
+                                            $scope.data = [];
+                                            myNavigator.pushPage('views/user/welcome.html', { animation : 'fade' });
+                                            break;
+                                        case 1:
+                                            $scope.data = [];
+                                            myNavigator.pushPage('views/user/updatepassword.html', { animation : 'fade' });
+                                            break;
+                                    }
+                                }
+                            });
+                        } else {
+                            $timeout(function(){
+                                modal.hide();
+                                $scope.data = [];
+                                myNavigator.pushPage('views/user/welcome.html', { animation : 'fade' });
+                            },'2000');
+                        }
                     } else if (data['error'] === 2) {    
                         modal.hide();
                         $scope.data.result = data['html'];
@@ -346,9 +365,9 @@
                 market_y = 'yes';
             }
             
-            if (cardType === 'physical' && (typeof MemberNo === 'undefined' || MemberNo === null)) {
+            if (typeof MemberNo === 'undefined' || MemberNo === null) {
                 ons.notification.alert({
-                    message: 'Please enter the membership number on yout physical card.',
+                    message: 'Please enter the membership number on your physical card.',
                     title: 'Oops!',
                     buttonLabel: 'OK',
                     animation: 'default'
@@ -2445,17 +2464,27 @@
                     
                     $http.post($scope.apiPath+'uploadPoints.php', {'reqType': "claimPoints", 'transVal': transVal, 'transInv': transInv, 'partName': partName, 'partId': partId, 'mpacc': mpacc, 'cardNum': cardNum, 'cashierCode' : cashier, 'isPoints': isPoints})
                     .success(function(data, status){
-                        modal.hide();
-                        ons.notification.alert({
-                            message: "Thank you!",
-                            title: 'Yay!',
-                            buttonLabel: 'Continue',
-                            animation: 'default',
-                            callback: function() {
-                                $scope.data = [];
-                                myNavigator.resetToPage('views/user/feedback_form.html', { animation : 'fade' });
-                            }
-                        });
+                        if (data['code'] == 400) {
+                            modal.hide();
+                            ons.notification.alert({
+                                message: data['message'],
+                                title: 'Sorry!',
+                                buttonLabel: 'OK',
+                                animation: 'default'
+                            });
+                        } else {
+                            modal.hide();
+                            ons.notification.alert({
+                                message: "Thank you!",
+                                title: 'Yay!',
+                                buttonLabel: 'Continue',
+                                animation: 'default',
+                                callback: function() {
+                                    $scope.data = [];
+                                    myNavigator.resetToPage('views/user/feedback_form.html', { animation : 'fade' });
+                                }
+                            });
+                        }
                     })
                     .error(function(data, status) {
                         modal.hide();
@@ -2487,18 +2516,31 @@
                     // returns a promise
                     file.upload.then(function(resp) {
                         // file is uploaded successfully
-                        console.log('file ' + resp.config.data.file.name + ' is uploaded successfully. Response: ' + resp.data);
+                        console.log('file ' + resp.config.data.file.name + ' is uploaded successfully. Response: ' + resp.data.message);
                         modal.hide();
-                        ons.notification.alert({
-                            message: "Thank you!",
-                            title: 'Yay!',
-                            buttonLabel: 'Continue',
-                            animation: 'default',
-                            callback: function() {
-                                $scope.data = [];
-                                myNavigator.resetToPage('views/user/feedback_form.html', { animation : 'fade' });
-                            }
-                        });
+                        
+                        if (resp.data.code == 400) {
+                            modal.hide();
+                            ons.notification.alert({
+                                message: resp.data.message,
+                                title: 'Sorry!',
+                                buttonLabel: 'OK',
+                                animation: 'default'
+                            });
+                        } else {
+                            modal.hide();
+                            ons.notification.alert({
+                                message: "Thank you!",
+                                title: 'Yay!',
+                                buttonLabel: 'Continue',
+                                animation: 'default',
+                                callback: function() {
+                                    $scope.data = [];
+                                    myNavigator.resetToPage('views/user/feedback_form.html', { animation : 'fade' });
+                                }
+                            });
+                        }
+                        
                     }, function(resp) {
                         if (resp.status > 0) {
                             modal.hide();
