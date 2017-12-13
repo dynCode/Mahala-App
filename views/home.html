@@ -18,12 +18,12 @@
             <div class="imgBlock hideable" style="display: none;"><img src="images/app_header6.png" style="max-width: 800px; width: 100%;" /></div>
         </div>
         <ons-list class="dropShadow">
-            <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/enquiery.html', { animation : 'slide' } )">
+            <!--<ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/enquiery.html', { animation : 'slide' } )">
                 ENQUIRE NOW
-            </ons-list-item>
-            <!--<ons-list-item modifier="chevron" ng-click="regularEnroll()">
-                ENROLL
             </ons-list-item>-->
+            <ons-list-item modifier="chevron" ng-click="regularEnroll()">
+                ENROLL
+            </ons-list-item>
             <div ng-hide="loggedIn">
                 <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/login.html', { animation : 'slide' } )">
                     LOYALTY LOGIN

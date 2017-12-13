@@ -1,0 +1,21 @@
+<ons-page>
+    <ons-toolbar>
+        <div class="left">
+            <ons-back-button>Back</ons-back-button>
+        </div>
+        <div class="center">Mahala Health</div>
+        <div class="right">
+            <ons-toolbar-button ng-click="menu.toggle()">
+                <ons-icon icon="ion-navicon" size="28px" fixed-width="false"></ons-icon>
+            </ons-toolbar-button>
+        </div>
+    </ons-toolbar>
+    <img src="images/mahala_health_top.jpg" style="max-width: 800px; width: 100%;" />
+    <img src="images/mahala_health_button.jpg" style="max-width: 800px; width: 100%;"  onclick="window.open('http://mahala.mobi/Mahala Health.pdf','_system','')" />
+    <img src="images/mahala_health_bottom.jpg" style="max-width: 800px; width: 100%;" />
+    <ons-list class="dropShadow">
+        <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/enquiery.html', { animation : 'slide' } )">
+            ENQUIRE NOW
+        </ons-list-item>
+    </ons-list>
+</ons-page>
