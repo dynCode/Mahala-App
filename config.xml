@@ -18,6 +18,7 @@
     </author>
 
     <platform name="ios" >
+        <preference name='phonegap-version' value='cli-7.0.1' />
         <preference name="orientation" value="portrait" />
         <preference name="fullscreen" value="false" />  
         <preference name="target-device" value="universal" />
@@ -66,6 +67,7 @@
         <splash src="res/screen/ios/screen-ipad-portrait.png" width="768" height="1024" />
     </platform>
     <platform name="android" >
+        <preference name='phonegap-version' value='cli-7.0.1' />
         <preference name="orientation" value="portrait" />
         <preference name="fullscreen" value="false" />  
         <icon src="res/icons/android/icon-36-ldpi.png" qualifier="ldpi" />
@@ -76,10 +78,6 @@
         <splash src="res/screen/android/screen-mdpi-portrait.png" qualifier="port-mdpi" />
         <splash src="res/screen/android/screen-hdpi-portrait.png" qualifier="port-hdpi" />
         <splash src="res/screen/android/screen-xhdpi-portrait.png" qualifier="port-xhdpi" />
-    </platform>
-    <platform name="winphone" >
-        <preference name="orientation" value="portrait" />
-        <preference name="fullscreen" value="true" />  
     </platform>
  
     <!-- Third party plugins -->
