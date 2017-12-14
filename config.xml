@@ -18,12 +18,17 @@
     </author>
 
     <platform name="ios" >
+        <preference name="phonegap-version" value="cli-7.0.1" />
         <preference name="orientation" value="portrait" />
         <preference name="fullscreen" value="false" />  
         <preference name="target-device" value="universal" />
         <preference name="prerendered-icon" value="true" />
         <preference name="detect-data-types" value="true" />
         <preference name="exit-on-suspend" value="true" />  
+        
+        <edit-config target="NSCameraUsageDescription" file="*-Info.plist" mode="merge">  
+            <string>e are using the Camera for uploading your till slip.</string>  
+        </edit-config>
         
         <!-- iPhone 6 / 6+ -->
         <icon src="res/icons/ios/icon-60@3x.png" width="180" height="180" />
@@ -66,6 +71,7 @@
         <splash src="res/screen/ios/screen-ipad-portrait.png" width="768" height="1024" />
     </platform>
     <platform name="android" >
+        <preference name="phonegap-version" value="cli-7.0.1" />
         <preference name="orientation" value="portrait" />
         <preference name="fullscreen" value="false" />  
         <icon src="res/icons/android/icon-36-ldpi.png" qualifier="ldpi" />
