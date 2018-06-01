@@ -1,24 +1,20 @@
 <ons-page>
-    <ons-toolbar>
+    <ons-toolbar ng-style="{'background-color':topbarBG}">
         <div class="left">
-            <ons-back-button>Back</ons-back-button>
+            <ons-back-button></ons-back-button>
         </div>
         <div class="center">Load Points</div>
-        <div class="right">
-            <ons-toolbar-button ng-click="menu.toggle()">
-                <ons-icon icon="ion-navicon" size="28px" fixed-width="false"></ons-icon>
-            </ons-toolbar-button>
-        </div>
+        <div class="right"></div>
     </ons-toolbar>
     <div class="topBanner">
         <div class="subImgBlock">
-            <img src="images/sub_header.png" style="max-width: 380px; width: 100%;" />
+            <img src="{{subBanner}}" style="max-width: 380px; width: 100%;" />
         </div>
     </div>
     <div style="padding: 0 20px;">
         <table width='100%' style='border:none'>
             <tr>
-                <td colspan='2' style='border-bottom:2px solid #cd242d;' align='center'><img src="http://www.mahala.mobi/components/com_jumi/files/mahala_WSDL/logos/{{partner_logo}}" style="max-width: 380px; width: 90%;"></td>
+                <td colspan='2' style='border-bottom:2px solid #cd242d;' align='center'><img src="https://www.mahala.mobi/components/com_jumi/files/mahala_WSDL/logos/{{partner_logo}}" style="max-width: 380px; width: 90%;"></td>
             </tr>
         </table>
     </div>

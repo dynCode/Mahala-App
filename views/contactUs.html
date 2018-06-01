@@ -1,46 +1,20 @@
 <ons-page>
-    <ons-toolbar>
+    <ons-toolbar ng-style="{'background-color':topbarBG}">
         <div class="left">
             <ons-back-button>Back</ons-back-button>
         </div>
-        <div class="center">Contact us</div>
-        <div class="right">
-            <ons-toolbar-button ng-click="menu.toggle()">
-                <ons-icon icon="ion-navicon" size="28px" fixed-width="false"></ons-icon>
-            </ons-toolbar-button>
-        </div>
+        <div class="center">Contact Us</div>
+        <div class="right"></div>
     </ons-toolbar>
     <div class="topBanner">
-        <img src="images/contactus_top.jpg" style="max-width: 800px; width: 100%;" />
+        <div><img src="images/contactus_top.jpg" style="max-width: 800px; width: 100%;" /></div>
     </div>
-    <a href="tel:0860624252"><img src="images/contactus_call.jpg" style="max-width: 800px; width: 100%;" /></a>
+    <ons-row align="center">
+        <ons-col size="90%"><div class="formListInputLrg"><input type="search" class="search-input" ng-model="data.quickSearch" placeholder="Quick search for a shop / deal"></div></ons-col>
+        <ons-col size="10%"><ons-button ng-click="quickSearch()"><ons-icon icon="fa-search"></ons-button></ons-col>
+    </ons-row>
+    <h2 class="myHeader"><span>CONTACT US</span></h2>
     <div style="padding: 0 20px 10px 20px;">
-        <img src="images/sub_header.png" style="max-width: 380px; width: 100%;" />
-        <p><strong>Alternate Call Centre Numbers: </strong><br>084 193 3733&nbsp;&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;012 643 0384</p>
-        <p><strong>Email: </strong>info@mahalas.co.za</p>
-        <table>
-            <tr>
-                <td valign="top"><strong>Postal Address:</strong></td>
-                <td>PO Box 9843,<br>Centurion,<br>0046</td>
-            </tr>
-            <tr>
-                <td valign="top"><strong>Physical Address:</strong></td>
-                <td>82 Aspen Crescent,<br>Zwartkops X4,<br>Centurion,<br>0157</td>
-            </tr>
-        </table>
-        <p><strong>GPS: </strong>Latitude: -25.863462 Longitude: 28.184475</p>
+        <div ng-bind-html="cuPage | to_trusted"></div> 
     </div>
-    <ons-list class="dropShadow">
-        <ons-list-item modifier="chevron" onclick="myNavigator.pushPage('views/enquiery.html', { animation : 'slide' } )">
-            ENQUIRE NOW
-        </ons-list-item>
-    </ons-list>
-    <ons-list>
-        <ons-list-item modifier="chevron" onclick="window.open('https://www.facebook.com/mahalaloyalty','_system','')">
-            FACEBOOK
-        </ons-list-item>
-        <ons-list-item modifier="chevron" onclick="window.open('https://twitter.com/mahala_loyalty','_system','')">
-            TWITTER
-        </ons-list-item>
-    </ons-list>
 </ons-page>

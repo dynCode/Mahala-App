@@ -2,9 +2,30 @@
 (function(){
     'use strict';
     
-    var module = angular.module('app', ['onsen', 'ngMap', 'ngFileUpload']);
+    var module = angular.module('app', ['onsen', 'ngMap', 'ngSanitize', 'ngFileUpload']);
+    
+    // angular data filters
+    module.filter('externalLinks', function() {
+        return function(text) {
+            //return String(text).replace(/href=/gm, "class=\"ex-link\" href=");
+            //return String(text).replace(/href=/gm, "ng-click=\"exLink()\" href=");
+            //
+            // NOTE:
+            // can't use ng-click as it is not in Angular Land as $sce and ng-bind-html
+            // ALSO - must do filters in this order 'content | externalLinks | to_trusted'
+            //        so this string stays in content
+            return String(text).replace(/href=/gm, "onclick=\"angular.element(this).scope().exLink(this);return false\" href=");
+        };
+    });
+
+    module.filter('to_trusted', ['$sce', function($sce){
+        return function(text) {
+            return $sce.trustAsHtml(text);
+        };
+    }]);
+    
     module.controller('AppController', function($scope, $http, $window, $timeout, Upload) {
-        $scope.apiPath = 'http://www.mahala.mobi/newApp/api/';
+        $scope.apiPath = 'https://www.mahala.mobi/api/';
         $scope.data = [];
         //points partners name dropdown
         $scope.pointsDD = [];
@@ -24,10 +45,14 @@
         $scope.searchDiscountProvOk = false;
         $scope.discountPartnerList = [];
         
+        // quick search partner list
+        $scope.searchPartnerList = [];
+        
         //Membder Data
         $scope.userMpacc = '';
         $scope.userPass = ''; 
-        $scope.loggedIn = false; 
+        $scope.loggedIn = false;
+        $scope.guest = true;
         $scope.updateDate = '';
         $scope.totalEarned = '';
         $scope.totalBonusEarned = '';
@@ -56,6 +81,7 @@
         $scope.comId = '';
         $scope.commun = '';
         $scope.tokenBalance = '';
+        $scope.totalDiscount = '';
         
         //Partner Data
         $scope.partner_id = '';
@@ -68,6 +94,7 @@
         $scope.partner_manager = '';
         $scope.partner_address = '';
         $scope.voucher_date = '';
+        $scope.voucher_token = '';
         $scope.conImages = '';
         
         //Category Partner Lists
@@ -171,6 +198,8 @@
         $scope.totalPendRedemp = "";
         $scope.totalPaidRedemp = "";
         
+        // redemption authcode
+        $scope.redemAuthCode = "";
         /*
         //partner map matkers
         $scope.partnerMarkers = [];
@@ -183,11 +212,170 @@
         });
         */
        
+        // Page content scopes
+        $scope.homePage = '';
+        $scope.promoPage = '';
+        $scope.psPage = '';
+        $scope.auPage = '';
+        $scope.cuPage = '';
+        $scope.tcPage = '';
+        
+        //Banners
+        $scope.Banner1 = '';
+        $scope.Banner2 = '';
+        $scope.Banner3 = '';
+        $scope.Banner4 = '';
+        $scope.Banner5 = '';
+        $scope.Banner6 = '';
+        $scope.subBanner = '';
+        
+        // topbar and footer colours
+        $scope.topbarBG = '';
+        $scope.footerBG = '';
+       
+        $scope.init = function() {
+            // get page content scope data
+            $http.post($scope.apiPath+'getPageContent.php', {"pageID" : "1"})
+            .success(function(data, status){
+                console.log(data);
+                console.log(status);
+                if (data['error'] == 0) {
+                    $scope.promoPage = data['html'];
+                    
+                    $scope.topbarBG = data['topbarBG'];
+                    $scope.footerBG = data['footerBG'];
+                    
+                    $scope.Banner1 = data['Banner1'];
+                    $scope.Banner2 = data['Banner2'];
+                    $scope.Banner3 = data['Banner3'];
+                    $scope.Banner4 = data['Banner4'];
+                    $scope.Banner5 = data['Banner5'];
+                    $scope.Banner6 = data['Banner6'];
+                    $scope.subBanner = data['subBanner'];
+                } else {
+                    modal.hide();
+                    $scope.data.result = data['html'];
+                    $scope.data.errorCode = data['html'];
+                    modal.show();
+                }
+            })
+            .error(function(data, status) {
+                modal.hide();
+                $scope.data.errorCode = 'Request failed';
+                modal.show();
+            });
+            
+            //ons.createAlertDialog('views/firstLogin.html').then(function(alertDialog) {
+            //    alertDialog.show();
+            //});
+            
+            
+            var user = $window.localStorage.getItem('user'); 
+            var pass = $window.localStorage.getItem('pass'); 
+            var tandc = $window.localStorage.getItem('tandc');
+            var ftime = $window.localStorage.getItem('ftime');
+            
+            if (user && pass) {
+                modal.show();
+                $scope.data.errorCode = 'Checking if you are logged in...';
+                $http.post($scope.apiPath+'login.php', {"reqType" : "login", "user" : user, "pass" : pass})
+                .success(function(data, status){
+                    if (data['error'] == 0) {
+                        console.log("Data:", data);
+                        modal.hide();
+                        $scope.totalEarned = data['totalEarned'];
+                        $scope.totalBonusEarned = data['totalBonusEarned'];
+                        $scope.totalUsed = data['totalUsed'];
+                        $scope.totalBucks = data['totalBucks'];
+                        $scope.currentUnits = data['currentUnits'];
+                        $scope.currentRands = data['currentRands'];
+                        $scope.userMpacc = data['memNum'];
+                        $scope.userPass = pass;
+                        $scope.sessionId = data['sessionId'];
+                        $scope.loggedIn = true;
+                        $scope.guest = false;
+                        $scope.FirstName = data['FirstName'];
+                        $scope.LastName = data['LastName'];
+                        $scope.gender = data['gender'];
+                        $scope.IdNumber = data['IdNumber'];
+                        $scope.dob = data['dob'];
+                        $scope.EmailAddress = data['EmailAddress'];
+                        $scope.ContactNumber = data['ContactNumber'];
+                        $scope.Province = data['Province'];
+                        $scope.City = data['City'];
+                        $scope.Suburb = data['Suburb'];
+                        $scope.Addressline1 = data['Addressline1'];
+                        $scope.Addressline2 = data['Addressline2'];
+                        $scope.Addressline3 = data['Addressline3'];
+                        $scope.postalCode = data['postalCode'];
+                        $scope.Title = data['title'];
+                        $scope.tierDes = data['tierDes'];
+                        $scope.CardNumber = '62786401'+user;
+                        $scope.comId = data['comId'];
+                        $scope.commun = data['commun'];
+                        $scope.tokenBalance = data['tokenBalance'];
+                        $scope.totalDiscount = data['totalDiscount'];
+                    } 
+                })
+                .error(function(data, status) {
+                    modal.hide();
+                });
+            }
+        };
+       
         // load ps page
         $scope.loadpage = function(pageId) {
-            if (pageId === 8) {
-                myNavigator.pushPage('views/TandC.html', { animation : 'slide' });
-            }
+            $http.post($scope.apiPath+'getPageContent.php', {"pageID" : pageId})
+            .success(function(data, status){
+                console.log(data);
+                console.log(status);
+                if (data['error'] == 0) {
+                    if (pageId === 2) {
+                        $scope.psPage = data['html'];
+                        myNavigator.pushPage('views/wantToJoin.html', { animation : 'slide' });
+                    } else if (pageId === 3) {
+                        $scope.auPage = data['html'];
+                        myNavigator.pushPage('views/aboutus.html', { animation : 'slide' });
+                    } else if (pageId === 4) {
+                        $scope.cuPage = data['html'];
+                        myNavigator.pushPage('views/contactUs.html', { animation : 'slide' });
+                    } else if (pageId === 5) {
+                        $scope.tcPage = data['html'];
+                        myNavigator.pushPage('views/TandC.html', { animation : 'slide' });
+                    } 
+                } else {
+                    modal.hide();
+                    $scope.data.result = data['html'];
+                    $scope.data.errorCode = data['html'];
+                    modal.show();
+                }
+            })
+            .error(function(data, status) {
+                modal.hide();
+                $scope.data.errorCode = 'Request failed';
+                modal.show();
+            });
+        };
+        
+        //quick search script
+        $scope.quickSearch = function() {
+            var searchText = $scope.data.quickSearch;
+            modal.show();
+            $scope.data.errorCode = 'Searching, please wait...';
+            $http.post($scope.apiPath+'getSearchResult.php', {"searchText" : searchText})
+            .success(function(data, status){
+                modal.hide();
+                console.log(data);
+                console.log(status);
+                $scope.searchPartnerList = data;
+                $scope.data = [];
+                myNavigator.pushPage('views/quickSearch.html', { animation : 'fade' });
+            })
+            .error(function(data, status) {
+                modal.hide();
+                $scope.data.errorCode = 'Request failed';
+                modal.show();
+            });
         };
         
         // login checker
@@ -209,10 +397,11 @@
                         $scope.totalBucks = data['totalBucks'];
                         $scope.currentUnits = data['currentUnits'];
                         $scope.currentRands = data['currentRands'];
-                        $scope.userMpacc = user;
+                        $scope.userMpacc = data['memNum'];
                         $scope.userPass = pass;
                         $scope.sessionId = data['sessionId'];
                         $scope.loggedIn = true;
+                        $scope.guest = false;
                         $scope.FirstName = data['FirstName'];
                         $scope.LastName = data['LastName'];
                         $scope.gender = data['gender'];
@@ -233,9 +422,13 @@
                         $scope.comId = data['comId'];
                         $scope.commun = data['commun'];
                         $scope.tokenBalance = data['tokenBalance'];
+                        $scope.totalDiscount = data['totalDiscount'];
                         
                         modal.show();
                         $scope.data.errorCode = 'Collecting your data...';
+                        
+                        $window.localStorage.setItem('user',user); 
+                        $window.localStorage.setItem('pass',pass);
                         
                         if (user === pass) {
                             modal.hide();
@@ -287,7 +480,7 @@
                         modal.show();
                         $timeout(function(){
                             modal.hide();
-                            myNavigator.resetToPage('views/login.html', { animation : 'fade' });
+                            myNavigator.pushPage('views/user/welcome.html', { animation : 'fade' });
                         },'1000');
                     }
                 })
@@ -343,6 +536,8 @@
             var y = str.slice(2,4);    
 
             console.log('DOB: '+iddob+' dobYear: '+dobYear+' dobMonth: '+dobMonth+' dobDay: '+dobDay);
+            console.log('Data:', $scope.data);
+            console.log('Card Type', cardType);
 
             if (dobYear >= '00' && dobYear <= y) {
                 dobYear = '20'+dobYear;
@@ -365,7 +560,7 @@
                 market_y = 'yes';
             }
             
-            if (typeof MemberNo === 'undefined' || MemberNo === null) {
+            if (cardType === "physical" && (typeof MemberNo === 'undefined' || MemberNo === null)) {
                 ons.notification.alert({
                     message: 'Please enter the membership number on your physical card.',
                     title: 'Oops!',
@@ -605,6 +800,8 @@
                         $http.post($scope.apiPath+'updatepass.php', {"member" : MPAcc, "password" : password, "oldpassword" : oldPass })
                         .success(function(data, status){
                             if (data['error'] == 0) {
+                                $window.localStorage.setItem('pass',password);
+                                $scope.userPass = password;
                                 modal.hide();
                                 ons.notification.alert({
                                     message: data['html'],
@@ -613,7 +810,7 @@
                                     animation: 'default',
                                     callback: function() {
                                         $scope.data = [];
-                                        myNavigator.resetToPage('views/users/welcome.html', { animation : 'fade' });
+                                        myNavigator.resetToPage('views/home.html', { animation : 'fade' });
                                     }
                                 });
                             } else {
@@ -716,7 +913,7 @@
                             animation: 'default',
                             callback: function() {
                                 $scope.data = [];
-                                myNavigator.resetToPage('views/user/welcome.html', { animation : 'fade' });
+                                myNavigator.resetToPage('views/home.html', { animation : 'fade' });
                             }
                         });
 
@@ -787,6 +984,47 @@
             });
         };
         
+        // send user feedback
+        $scope.sendUserFeedback = function () {
+            var feedback = $scope.data.userFeedback;
+            var contactCell = $scope.data.userFeedbackCell;
+            modal.show();
+            $scope.data.errorCode = 'Processing, please wait...';
+            $http.post($scope.apiPath+'app-results.php', {"reqType" : "sendUserFeedback", "feedback" : feedback, "contactCell" : contactCell})
+            .success(function(data, status){
+                console.log("Data:",data);
+                modal.hide();
+                if (data['error'] == 0) {
+                    ons.notification.alert({
+                        message: data['html'],
+                        title: 'Yay!',
+                        buttonLabel: 'Continue',
+                        animation: 'default',
+                        callback: function() {
+                            $scope.data = [];
+                            myNavigator.popPage();
+                        }
+                    });
+                } else {
+                    ons.notification.alert({
+                        message: data['html'],
+                        title: 'Sorry!',
+                        buttonLabel: 'OK',
+                        animation: 'default'
+                    });
+                }
+            })
+            .error(function(data, status) {
+                modal.hide();
+                ons.notification.alert({
+                    message: 'Request Failed, try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            });
+        };
+        
         // airtime redemption
         $scope.redeemAir = function () {
             var mobile = $scope.data.CellNum;
@@ -808,7 +1046,7 @@
                             animation: 'default',
                             callback: function() {
                                 $scope.data = [];
-                                myNavigator.resetToPage('views/user/welcome.html', { animation : 'fade' });
+                                myNavigator.resetToPage('views/home.html', { animation : 'fade' });
                             }
                         });
 						
@@ -858,7 +1096,7 @@
                             animation: 'default',
                             callback: function() {
                                 $scope.data = [];
-                                myNavigator.resetToPage('views/user/welcome.html', { animation : 'fade' });
+                                myNavigator.resetToPage('views/home.html', { animation : 'fade' });
                             }
                         });
 						
@@ -908,7 +1146,7 @@
                             animation: 'default',
                             callback: function() {
                                 $scope.data = [];
-                                myNavigator.resetToPage('views/user/welcome.html', { animation : 'fade' });
+                                myNavigator.resetToPage('views/home.html', { animation : 'fade' });
                             }
                         });
 						
@@ -958,7 +1196,7 @@
                             animation: 'default',
                             callback: function() {
                                 $scope.data = [];
-                                myNavigator.resetToPage('views/user/welcome.html', { animation : 'fade' });
+                                myNavigator.resetToPage('views/home.html', { animation : 'fade' });
                             }
                         });
 						
@@ -1008,7 +1246,7 @@
                             animation: 'default',
                             callback: function() {
                                 $scope.data = [];
-                                myNavigator.resetToPage('views/user/welcome.html', { animation : 'fade' });
+                                myNavigator.resetToPage('views/home.html', { animation : 'fade' });
                             }
                         });
 						
@@ -1058,7 +1296,7 @@
                             animation: 'default',
                             callback: function() {
                                 $scope.data = [];
-                                myNavigator.resetToPage('views/user/welcome.html', { animation : 'fade' });
+                                myNavigator.resetToPage('views/home.html', { animation : 'fade' });
                             }
                         });
 						
@@ -1108,7 +1346,7 @@
                             animation: 'default',
                             callback: function() {
                                 $scope.data = [];
-                                myNavigator.resetToPage('views/user/welcome.html', { animation : 'fade' });
+                                myNavigator.resetToPage('views/home.html', { animation : 'fade' });
                             }
                         });
 						
@@ -1158,7 +1396,7 @@
                             animation: 'default',
                             callback: function() {
                                 $scope.data = [];
-                                myNavigator.resetToPage('views/user/welcome.html', { animation : 'fade' });
+                                myNavigator.resetToPage('views/home.html', { animation : 'fade' });
                             }
                         });
 						
@@ -1208,7 +1446,7 @@
                             animation: 'default',
                             callback: function() {
                                 $scope.data = [];
-                                myNavigator.resetToPage('views/user/welcome.html', { animation : 'fade' });
+                                myNavigator.resetToPage('views/home.html', { animation : 'fade' });
                             }
                         });
 						
@@ -1258,7 +1496,7 @@
                             animation: 'default',
                             callback: function() {
                                 $scope.data = [];
-                                myNavigator.resetToPage('views/user/welcome.html', { animation : 'fade' });
+                                myNavigator.resetToPage('views/home.html', { animation : 'fade' });
                             }
                         });
 						
@@ -1308,7 +1546,7 @@
                             animation: 'default',
                             callback: function() {
                                 $scope.data = [];
-                                myNavigator.resetToPage('views/user/welcome.html', { animation : 'fade' });
+                                myNavigator.resetToPage('views/home.html', { animation : 'fade' });
                             }
                         });
 						
@@ -1376,6 +1614,40 @@
                     animation: 'default'
                 });
             } 
+        };
+        
+        // setup search fields and redirect to search page
+        $scope.pointsSearch = function() {
+            $scope.partnerList = [];
+            
+            myNavigator.pushPage('views/user/points_search.html', { animation : 'lift' });
+        };
+        
+        // search point partners by name
+        $scope.searchPPName = function() {
+            $scope.searchOk = false;
+            $scope.partnerList = [];
+            var searchField = $scope.data.searchPartName;
+            
+            modal.show();
+            $scope.data.errorCode = 'Processing, please wait...';
+            $http.post($scope.apiPath+'app-results.php', {"reqType" : "SearchPointPartnerName", "searchField" : searchField})
+            .success(function(data, status){
+                modal.hide();
+                $scope.searchOk = true;
+                $scope.partnerList = data;
+                $scope.data.searchPartName = '';
+                myNavigator.pushPage('views/user/points_search.html', { animation : 'lift' });
+            })
+            .error(function(data, status) {
+                modal.hide();
+                ons.notification.alert({
+                    message: 'No partner found, please try again!',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            });            
         };
         
         // build points name dropdown
@@ -1562,6 +1834,7 @@
                 $scope.partner_web = data[0]['partner_web'];
                 $scope.partner_address = data[0]['partner_address'];
                 $scope.voucher_date = today;
+                $scope.voucher_token = data[0]['tokens'];
                 $scope.conImages = 'http://www.mahala.mobi/components/com_jumi/files/mahala_WSDL/partnerLogo.png';
             })
             .error(function(data, status) {
@@ -1578,6 +1851,32 @@
             myNavigator.pushPage('views/user/voucher_points.html', { animation : 'fade', partnerId : partnerId });
         };
         
+        // search redemption partners by name
+        $scope.searchPRName = function() {
+            $scope.searchOk = false;
+            $scope.partnerList = [];
+            var searchField = $scope.data.searchPartName;
+            
+            modal.show();
+            $scope.data.errorCode = 'Processing, please wait...';
+            $http.post($scope.apiPath+'app-results.php', {"reqType" : "SearchPointPartnerName", "searchField" : searchField})
+            .success(function(data, status){
+                modal.hide();
+                $scope.searchOk = true;
+                $scope.partnerList = data;
+                $scope.data.searchPartName = '';
+                myNavigator.pushPage('views/user/points_rem_search.html', { animation : 'lift' });
+            })
+            .error(function(data, status) {
+                modal.hide();
+                ons.notification.alert({
+                    message: 'No partner found, please try again!',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            });            
+        };
         
         // build points redeem name dropdown
         $scope.pointsRemName = function() {
@@ -1763,6 +2062,7 @@
                 $scope.partner_web = data[0]['partner_web'];
                 $scope.partner_address = data[0]['partner_address'];
                 $scope.voucher_date = today;
+                $scope.token = data[0]['token'];
                 $scope.conImages = 'http://www.mahala.mobi/components/com_jumi/files/mahala_WSDL/partnerLogo.png';
             })
             .error(function(data, status) {
@@ -1780,6 +2080,7 @@
         };
         
         //get coms id for redemption and genrate otp
+        /*
         $scope.genereateOtp = function () {
             var cashMpacc = $scope.data.cashierCode;
             console.log('Cashier code', cashMpacc);
@@ -1807,6 +2108,42 @@
                 });
             }
         }
+        */
+        
+        // setup search fields and redirect to search page
+        $scope.discountSearch = function() {
+            $scope.partnerList = [];
+            
+            myNavigator.pushPage('views/user/discount_search.html', { animation : 'lift' });
+        };
+        
+        // search point partners by name
+        $scope.searchDPName = function() {
+            $scope.searchOk = false;
+            $scope.partnerList = [];
+            var searchField = $scope.data.searchPartName;
+            
+            modal.show();
+            $scope.data.errorCode = 'Processing, please wait...';
+            $http.post($scope.apiPath+'app-results.php', {"reqType" : "SearchDiscountPartnerName", "searchField" : searchField})
+            .success(function(data, status){
+                modal.hide();
+                //console.log(data);
+                $scope.searchOk = true;
+                $scope.partnerList = data;
+                $scope.data.searchPartName = '';
+                myNavigator.pushPage('views/user/discount_search.html', { animation : 'lift' });
+            })
+            .error(function(data, status) {
+                modal.hide();
+                ons.notification.alert({
+                    message: 'No partner found, please try again!',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            });            
+        };
         
         // buile discount name dropdown
         $scope.discountName = function () {
@@ -2014,6 +2351,9 @@
         $scope.logout = function(){
             $scope.data = [];
             $scope.loggedIn = false;
+            $scope.guest = true;
+            $window.localStorage.removeItem('user'); 
+            $window.localStorage.removeItem('pass'); 
             myNavigator.resetToPage('views/login.html', { animation : 'fade' });
         };
         
@@ -2216,31 +2556,82 @@
             });
         };
         
-        //Coupons List Builder
-        $http.get($scope.apiPath+'coupon-list.php')
-        .success(function (result, status) {
-            $scope.couponList = result;
-        })
-        .error(function(result, status) {
-            modal.hide();
-            ons.notification.alert({
-                message: 'Request Failed, try again.',
-                title: 'Sorry!',
-                buttonLabel: 'OK',
-                animation: 'default'
-            });
-        });
-        
-        //Get coupon code
-        $scope.getCouponCode = function() {
+        $scope.loadBoxerCoupons = function () {
+            $scope.couponList = [];
             modal.show();
             $scope.data.errorCode = 'Processing, please wait...';
-            $http.post($scope.apiPath+'coupon-code.php', {"userRef" : $scope.userMpacc})
+            $http.post($scope.apiPath+'coupon-list.php', {"couponFor" : "boxer"})
+            .success(function (result, status) {
+                modal.hide();
+                console.log(result);
+                $scope.couponList = result;
+                myNavigator.pushPage('views/user/coupon-boxer.html', { animation : 'fade'});
+            })
+            .error(function(result, status) {
+                modal.hide();
+                ons.notification.alert({
+                    message: 'Request Failed, try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            });
+        };
+        
+        $scope.loadDischemCoupons = function () {
+            $scope.couponList = [];
+            modal.show();
+            $scope.data.errorCode = 'Processing, please wait...';
+            $http.post($scope.apiPath+'coupon-list.php', {"couponFor" : "dischem"})
+            .success(function (result, status) {
+                modal.hide();
+                console.log(result);
+                $scope.couponList = result;
+                myNavigator.pushPage('views/user/coupon-dischem.html', { animation : 'fade'});
+            })
+            .error(function(result, status) {
+                modal.hide();
+                ons.notification.alert({
+                    message: 'Request Failed, try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            });
+        };
+        
+        //Get coupon code
+        $scope.getBoxerCouponCode = function() {
+            $scope.couponCode = "";
+            modal.show();
+            $scope.data.errorCode = 'Processing, please wait...';
+            $http.post($scope.apiPath+'coupon-code.php', {"userRef" : $scope.userMpacc, "couponFor" : "boxer"})
             .success(function(data, status){
                 modal.hide();
                 console.log(data);
                 $scope.couponCode = data['html'];
-                myNavigator.pushPage('views/user/coupon_code.html', { animation : 'fade'});
+                myNavigator.pushPage('views/user/coupon-boxer_code.html', { animation : 'fade'});
+            })
+            .error(function(data, status) {
+                modal.hide();
+                ons.notification.alert({
+                    message: 'Request Failed, try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            });
+        };
+        $scope.getDischemCouponCode = function() {
+            $scope.couponCode = "";
+            modal.show();
+            $scope.data.errorCode = 'Processing, please wait...';
+            $http.post($scope.apiPath+'coupon-code.php', {"userRef" : $scope.userMpacc, "couponFor" : "dischem"})
+            .success(function(data, status){
+                modal.hide();
+                console.log(data);
+                $scope.couponCode = data['html'];
+                myNavigator.pushPage('views/user/coupon-dischem_code.html', { animation : 'fade'});
             })
             .error(function(data, status) {
                 modal.hide();
@@ -2261,6 +2652,11 @@
         //setup map search for discount partenrs close by
         $scope.discountCloseBy = function() {
             myNavigator.pushPage('views/user/discount_close_by.html', {animation : 'lift'} );
+        };
+        
+        //setup map search for discount partenrs close by
+        $scope.pointsRemCloseBy = function() {
+            myNavigator.pushPage('views/user/points_rem_close_by.html', {animation : 'lift'} );
         };
         
         //build map voucher
@@ -2287,6 +2683,7 @@
                 $scope.partner_web = data[0]['partner_web'];
                 $scope.partner_address = data[0]['partner_address'];
                 $scope.voucher_date = today;
+                $scope.token = data[0]['token'];
                 
                 if (partnerType === 'Points') {
                     $scope.conImages = 'http://www.mahala.mobi/components/com_jumi/files/mahala_WSDL/partnerLogo.png';
@@ -2306,6 +2703,8 @@
             
             if (partnerType === 'Points') {
                 myNavigator.pushPage('views/user/voucher_points.html', { animation : 'fade', partnerId : partnerId });
+            } else if(partnerType === 'RemPoints') {
+                myNavigator.pushPage('views/user/voucher_rem_points.html', { animation : 'fade', partnerId : partnerId });
             } else {
                 myNavigator.pushPage('views/user/voucher_discount.html', { animation : 'fade', partnerId : partnerId });
             }
@@ -2642,6 +3041,418 @@
             }
         };
         
+        // redeem Points
+        $scope.genereateOtp = function(file) {
+            var transVal = $scope.data.pointsTransVal;
+            var transInv = $scope.data.pointsTransInv;
+            var partName = $scope.partner_name;
+            var partId = $scope.partner_id;
+            var mpacc = $scope.userMpacc;
+            var cardNum = $scope.CardNumber;
+            var cashier = $scope.data.cashierCode;
+            
+            if (transVal && transInv && cashier) {                
+                modal.show();
+                $scope.data.errorCode = 'Processing, please wait...';
+
+                if ((typeof file === 'undefined' || file === null) && $scope.data.pointsTransVal < 501) {
+                    
+                    $http.post($scope.apiPath+'loadTransOTP.php', {"reqType" : "sendOTP", 'transVal': transVal, 'transInv': transInv, 'partName': partName, 'partId': partId, 'mpacc': mpacc, 'cardNum': cardNum, 'cashierCode' : cashier})
+                    .success(function(data, status){
+                        if (data['code'] == 400) {
+                            modal.hide();
+                            ons.notification.alert({
+                                message: data['message'],
+                                title: 'Sorry!',
+                                buttonLabel: 'OK',
+                                animation: 'default'
+                            });
+                        } else {
+                            $scope.redemAuthCode = data['authCode'];
+                            modal.hide();
+                            ons.notification.alert({
+                                message: "OTP request has been sent. Please wait for SMS and enter OTP pin",
+                                title: 'Success!',
+                                buttonLabel: 'Continue',
+                                animation: 'default'
+                            });
+                        }
+                    })
+                    .error(function(data, status) {
+                        modal.hide();
+                        ons.notification.alert({
+                            message: 'Request Failed, try again.',
+                            title: 'Sorry!',
+                            buttonLabel: 'OK',
+                            animation: 'default'
+                        });
+                    });
+                } else {
+
+                    file.upload = Upload.upload({
+                        url: $scope.apiPath+'loadTransOTP.php',
+                        method: 'POST',
+                        file: file,
+                        data: {
+                            'reqType': "sendOTP", 
+                            'transVal': transVal, 
+                            'transInv': transInv,
+                            'partName': partName,
+                            'partId': partId,
+                            'mpacc': mpacc,
+                            'cardNum': cardNum,
+                            'cashierCode' : cashier
+                        }
+                    });
+
+                    // returns a promise
+                    file.upload.then(function(resp) {
+                        // file is uploaded successfully
+                        console.log('file ' + resp.config.data.file.name + ' is uploaded successfully. Response: ' + resp.data.message);
+                        modal.hide();
+                        
+                        if (resp.data.code == 400) {
+                            modal.hide();
+                            ons.notification.alert({
+                                message: resp.data.message,
+                                title: 'Sorry!',
+                                buttonLabel: 'OK',
+                                animation: 'default'
+                            });
+                        } else {
+                            $scope.redemAuthCode = resp.data.authCode;
+                            modal.hide();
+                            ons.notification.alert({
+                                message: "OTP request has been sent. Please wait for SMS and enter OTP pin",
+                                title: 'Success!',
+                                buttonLabel: 'Continue',
+                                animation: 'default'
+                            });
+                        }
+                        
+                    }, function(resp) {
+                        if (resp.status > 0) {
+                            modal.hide();
+                            $scope.data.result = resp.status + ': ' + resp.data;
+                            $scope.data.errorCode = resp.status + ': ' + resp.data;
+                            modal.show();
+                        }            
+                    }, function(evt) {
+                        // progress notify
+                        console.log('progress: ' + parseInt(100.0 * evt.loaded / evt.total) + '% file :'+ evt.config.data.file.name);
+                        $scope.data.errorCode = 'progress: ' + parseInt(100.0 * evt.loaded / evt.total) + '%';
+                    });
+                }
+            } else {
+                ons.notification.alert({
+                    message: 'Please fill in all the fields.',
+                    title: 'Oops!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            }
+        };
+        
+        // send OTP
+        $scope.sendOtp = function() {
+            modal.show();
+            $scope.data.errorCode = 'Processing, please wait...';
+            $http.post($scope.apiPath+'loadTransOTP.php', {"reqType" : "completeOTP", 'otp': $scope.data.remOTP, 'auth': $scope.redemAuthCode, 'mpacc' : $scope.userMpacc, 'sessionID' : $scope.sessionId })
+            .success(function(data, status){
+                modal.hide();
+                if (data['code'] == 400) {
+                    ons.notification.alert({
+                        message: data['message'],
+                        title: 'Sorry!',
+                        buttonLabel: 'OK',
+                        animation: 'default'
+                    });
+                } else {
+                    ons.notification.alert({
+                        message: "Thank you!",
+                        title: 'Yay!',
+                        buttonLabel: 'Continue',
+                        animation: 'default',
+                        callback: function() {
+                            $scope.data = [];
+                            $scope.redemAuthCode = '';
+                            myNavigator.resetToPage('views/user/feedback_form.html', { animation : 'fade' });
+                        }
+                    });
+                }
+            })
+            .error(function(data, status) {
+                modal.hide();
+                ons.notification.alert({
+                    message: 'Request Failed, try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            });
+        };
+        
+        $scope.retailGenereateOtp = function(file) {
+            var transVal = $scope.data.pointsTransVal;
+            var transInv = $scope.data.pointsTransInv;
+            var partName = $scope.partner_name;
+            var partId = $scope.retailID;
+            var mpacc = $scope.data.memNumber;
+            var cashier = $scope.data.cashierCode;
+            
+            if (transVal && transInv && cashier) {                
+                modal.show();
+                $scope.data.errorCode = 'Processing, please wait...';
+
+                if ((typeof file === 'undefined' || file === null) && $scope.data.pointsTransVal < 501) {
+                    
+                    $http.post($scope.apiPath+'loadTransOTP.php', {"reqType" : "sendOTP", 'transVal': transVal, 'transInv': transInv, 'partName': partName, 'partId': partId, 'mpacc': mpacc, 'cashierCode' : cashier})
+                    .success(function(data, status){
+                        if (data['code'] == 400) {
+                            modal.hide();
+                            ons.notification.alert({
+                                message: data['message'],
+                                title: 'Sorry!',
+                                buttonLabel: 'OK',
+                                animation: 'default'
+                            });
+                        } else {
+                            $scope.redemAuthCode = data['authCode'];
+                            modal.hide();
+                            ons.notification.alert({
+                                message: "OTP request has been sent. Please wait for SMS and enter OTP pin",
+                                title: 'Success!',
+                                buttonLabel: 'Continue',
+                                animation: 'default'
+                            });
+                        }
+                    })
+                    .error(function(data, status) {
+                        modal.hide();
+                        ons.notification.alert({
+                            message: 'Request Failed, try again.',
+                            title: 'Sorry!',
+                            buttonLabel: 'OK',
+                            animation: 'default'
+                        });
+                    });
+                } else {
+
+                    file.upload = Upload.upload({
+                        url: $scope.apiPath+'loadTransOTP.php',
+                        method: 'POST',
+                        file: file,
+                        data: {
+                            'reqType': "sendOTP", 
+                            'transVal': transVal, 
+                            'transInv': transInv,
+                            'partName': partName,
+                            'partId': partId,
+                            'mpacc': mpacc,
+                            'cashierCode' : cashier
+                        }
+                    });
+
+                    // returns a promise
+                    file.upload.then(function(resp) {
+                        // file is uploaded successfully
+                        console.log('file ' + resp.config.data.file.name + ' is uploaded successfully. Response: ' + resp.data.message);
+                        modal.hide();
+                        
+                        if (resp.data.code == 400) {
+                            modal.hide();
+                            ons.notification.alert({
+                                message: resp.data.message,
+                                title: 'Sorry!',
+                                buttonLabel: 'OK',
+                                animation: 'default'
+                            });
+                        } else {
+                            $scope.redemAuthCode = resp.data.authCode;
+                            modal.hide();
+                            ons.notification.alert({
+                                message: "OTP request has been sent. Please wait for SMS and enter OTP pin",
+                                title: 'Success!',
+                                buttonLabel: 'Continue',
+                                animation: 'default'
+                            });
+                        }
+                        
+                    }, function(resp) {
+                        if (resp.status > 0) {
+                            modal.hide();
+                            $scope.data.result = resp.status + ': ' + resp.data;
+                            $scope.data.errorCode = resp.status + ': ' + resp.data;
+                            modal.show();
+                        }            
+                    }, function(evt) {
+                        // progress notify
+                        console.log('progress: ' + parseInt(100.0 * evt.loaded / evt.total) + '% file :'+ evt.config.data.file.name);
+                        $scope.data.errorCode = 'progress: ' + parseInt(100.0 * evt.loaded / evt.total) + '%';
+                    });
+                }
+            } else {
+                ons.notification.alert({
+                    message: 'Please fill in all the fields.',
+                    title: 'Oops!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            }
+        };
+        
+        // send OTP
+        $scope.retailsSendOtp = function() {
+            modal.show();
+            $scope.data.errorCode = 'Processing, please wait...';
+            $http.post($scope.apiPath+'loadTransOTP.php', {"reqType" : "completeOTP", 'otp': $scope.data.remOTP, 'auth': $scope.redemAuthCode, 'mpacc' : $scope.data.memNumber, 'sessionID' : $scope.sessionId })
+            .success(function(data, status){
+                modal.hide();
+                if (data['code'] == 400) {
+                    ons.notification.alert({
+                        message: data['message'],
+                        title: 'Sorry!',
+                        buttonLabel: 'OK',
+                        animation: 'default'
+                    });
+                } else {
+                    ons.notification.alert({
+                        message: "Thank you!",
+                        title: 'Yay!',
+                        buttonLabel: 'Continue',
+                        animation: 'default',
+                        callback: function() {
+                            $scope.data = [];
+                            $scope.redemAuthCode = '';
+                            myNavigator.resetToPage('views/user/feedback_form.html', { animation : 'fade' });
+                        }
+                    });
+                }
+            })
+            .error(function(data, status) {
+                modal.hide();
+                ons.notification.alert({
+                    message: 'Request Failed, try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            });
+        };
+        
+        $scope.redeemPoints = function(file) {
+            if ((typeof file === 'undefined' || file === null) && $scope.data.pointsTransVal < 501) {
+                modal.show();
+                $scope.data.errorCode = 'Processing, please wait...';
+                $http.post($scope.apiPath+'uploadDiscount.php', {"reqType" : "claimDiscount", 'transVal': $scope.data.pointsTransVal, 'transInv': $scope.data.pointsTransInv, 'partName': $scope.partner_name, 'partId': $scope.partner_id, 'mpacc': $scope.userMpacc, 'cardNum': $scope.CardNumber})
+                .success(function(data, status){
+                    modal.hide();
+                    ons.notification.alert({
+                        message: "Thank you!",
+                        title: 'Yay!',
+                        buttonLabel: 'Continue',
+                        animation: 'default',
+                        callback: function() {
+                            $scope.data = [];
+                            myNavigator.resetToPage('views/user/feedback_form.html', { animation : 'fade' });
+                        }
+                    });
+                })
+                .error(function(data, status) {
+                    modal.hide();
+                    ons.notification.alert({
+                        message: 'Request Failed, try again.',
+                        title: 'Sorry!',
+                        buttonLabel: 'OK',
+                        animation: 'default'
+                    });
+                });
+            } else {
+            
+                modal.show();
+                $scope.data.errorCode = 'Processing, please wait...';
+
+                file.upload = Upload.upload({
+                    url: $scope.apiPath+'uploadDiscount.php',
+                    method: 'POST',
+                    file: file,
+                    data: {
+                        'reqType': "claimDiscount", 
+                        'transVal': $scope.data.pointsTransVal, 
+                        'transInv': $scope.data.pointsTransInv,
+                        'partName': $scope.partner_name,
+                        'partId': $scope.partner_id,
+                        'mpacc': $scope.userMpacc,
+                        'cardNum': $scope.CardNumber
+                    }
+                });
+
+                // returns a promise
+                file.upload.then(function(resp) {
+                    // file is uploaded successfully
+                    console.log('file ' + resp.config.data.file.name + ' is uploaded successfully. Response: ' + resp.data);
+                    modal.hide();
+                    ons.notification.alert({
+                        message: "Thank you!",
+                        title: 'Yay!',
+                        buttonLabel: 'Continue',
+                        animation: 'default',
+                        callback: function() {
+                            $scope.data = [];
+                            myNavigator.resetToPage('views/user/feedback_form.html', { animation : 'fade' });
+                        }
+                    });
+                }, function(resp) {
+                    if (resp.status > 0) {
+                        modal.hide();
+                        $scope.data.result = resp.status + ': ' + resp.data;
+                        $scope.data.errorCode = resp.status + ': ' + resp.data;
+                        modal.show();
+                    }            
+                }, function(evt) {
+                    // progress notify
+                    console.log('progress: ' + parseInt(100.0 * evt.loaded / evt.total) + '% file :'+ evt.config.data.file.name);
+                    $scope.data.errorCode = 'progress: ' + parseInt(100.0 * evt.loaded / evt.total) + '%';
+                });
+            }
+        };
+        // create partner feedback form
+        $scope.feedbackQ1 = '';
+        $scope.feedbackQ2 = '';
+        $scope.feedbackQ3 = '';
+        $scope.createFeedbackForm = function() {
+            var partId = $scope.partner_id;
+            modal.show();
+            $scope.data.errorCode = 'Getting the questions ready, please wait...';
+            $http.post($scope.apiPath+'app-results.php', {"reqType" : "setupFeedback", "partId" : partId, "mpacc" : $scope.userMpacc})
+            .success(function(data, status){
+                console.log("Questions:", data);
+                if (data['error'] == 0) {
+                    modal.hide();
+                    $scope.feedbackQ1 = data.question1;
+                    $scope.feedbackQ2 = data.question2;
+                    $scope.feedbackQ3 = data.question3;
+                    $scope.data = [];
+                } else {
+                    ons.notification.alert({
+                        message: 'Something went worng, please try again.',
+                        title: 'Oops!',
+                        buttonLabel: 'OK',
+                        animation: 'default'
+                    });
+                }
+            })
+            .error(function(data, status) {
+                modal.hide();
+                ons.notification.alert({
+                    message: 'Request Failed, try again.',
+                    title: 'Oops!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            });
+        };
+        
         // set partner feedback
         $scope.sendFeedback = function () {
             var question1 = $scope.data.question1;
@@ -2663,7 +3474,7 @@
                             animation: 'default',
                             callback: function() {
                                 $scope.data = [];
-                                myNavigator.resetToPage('views/user/welcome.html', { animation : 'fade' });
+                                myNavigator.pushPage('views/user/welcome.html', { animation : 'fade' });
                             }
                         });
                     } else {
@@ -2899,11 +3710,333 @@
             $scope.data.reg_cashierCode = '';
             myNavigator.resetToPage('views/register.html', { animation : 'fade' });
         };
+        
+        // freebies retailer list
+        $scope.retailerList = [];
+        $scope.retailId = '';
+        $scope.tokenIndicator = '';
+        $scope.tokenList = [];
+        $scope.tokenCode = '';
+        $scope.stampCount = 0;
+        $scope.tokenInfo = [];
+        $scope.stampList = [];
+        $scope.freebiesList = [];
+        $scope.tokenAuthCode = '';
+        $scope.sentOtp = false;
+        
+        $scope.getFreebieRetailList = function() {
+            $scope.retailerList = [];
+            modal.show();
+            $scope.data.errorCode = 'Processing, please wait...';
+            $http.post($scope.apiPath+'freebieRetail.php', {"reqType" : "getList", "mpacc" : $scope.userMpacc, "sessionID" : $scope.sessionId })
+            .success(function(data, status){
+                modal.hide();
+                console.log('Freebie List:', data['html']);
+                $scope.retailerList = data['html'];
+                myNavigator.pushPage('views/user/freebies.html', { animation : 'fade' });
+            })
+            .error(function(data, status) {
+                modal.hide();
+                ons.notification.alert({
+                    message: 'Request Failed, try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            });
+        };
+        
+        $scope.getRetailStamps = function(partnerId,tokenIndicator) {
+            $scope.retailId = partnerId;
+            $scope.tokenIndicator = tokenIndicator;
+            $scope.tokenList = [];
+            modal.show();
+            $scope.data.errorCode = 'Processing, please wait...';
+            $http.post($scope.apiPath+'freebieRetail.php', {"reqType" : "getStampsList", "mpacc" : $scope.userMpacc, "sessionID" : $scope.sessionId, "partnerId" : partnerId, "tokenIndicator" : tokenIndicator })
+            .success(function(data, status){
+                modal.hide();
+                console.log('Token List:', data['html']['tokenItem']);
+                $scope.tokenList = data['html']['tokenItem'];
+                for (var i = 0; i < $scope.tokenList.length; i++) {
+                    var curVal = parseInt($scope.tokenList[i].value);
+                    var total = parseInt($scope.tokenList[i].valueRequired);
+
+                    if (curVal < 5) {
+                        var remainder = curVal;
+                    } else {
+                        var remainder = curVal % total;
+                    }
+                    $scope.tokenList[i].value = remainder;
+                }
+                myNavigator.pushPage('views/user/stampsList.html', { animation : 'fade' });
+            })
+            .error(function(data, status) {
+                modal.hide();
+                ons.notification.alert({
+                    message: 'Request Failed, try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            });
+        };
+        
+        $scope.collectFreeStamps = function(tokenCode) {
+            $scope.tokenCode = tokenCode;
+            $scope.stampList = [];
+            $scope.stampCount = 0;
+            $scope.data = [];
+            modal.show();
+            $scope.data.errorCode = 'Processing, please wait...';
+            $http.post($scope.apiPath+'freebieRetail.php', {"reqType" : "getStampsList", "mpacc" : $scope.userMpacc, "sessionID" : $scope.sessionId, "partnerId" : $scope.retailId, "tokenIndicator" : $scope.tokenIndicator, "tokenCode" : tokenCode })
+            .success(function(data, status){
+                modal.hide();
+                console.log('Token Info:', data['html']);
+                $scope.tokenInfo = data['html'];
+                
+                var curVal = parseInt(data['html']['value']);
+                var total = parseInt(data['html']['valueRequired']);
+                
+                if (curVal < 5) {
+                    var remainder = curVal;
+                } else {
+                    var remainder = curVal % total;
+                }
+                
+                var step;
+                for (step = 1; step <= total; step++) {
+                    if (step <= remainder) {
+                        $scope.stampList.push({"id" : step, "img" : data['html']['image2URL'], "used" : true});
+                    } else {
+                        $scope.stampList.push({"id" : step, "img" : data['html']['image1URL'], "used" : false, "setImg" : data['html']['image2URL'], "active" : false});
+                    }
+                    
+                }
+                console.log("stampList:",$scope.stampList);
+                myNavigator.pushPage('views/user/collectStamps.html', { animation : 'fade' });
+            })
+            .error(function(data, status) {
+                modal.hide();
+                ons.notification.alert({
+                    message: 'Request Failed, try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            });
+        };
+        
+        $scope.countStamps = function(id) {
+            console.log("Select Stamp: ", $scope.stampList[id]);
+            
+            if (!$scope.stampList[id].used) {
+                if ($scope.stampList[id].active) {
+                    var img = $scope.stampList[id].img;
+                    $scope.stampList[id].img = $scope.stampList[id].setImg;
+                    $scope.stampList[id].setImg = img;
+                    $scope.stampCount = $scope.stampCount - 1;
+                    $scope.stampList[id].active = false;
+                } else {
+                    var img = $scope.stampList[id].img;
+                    $scope.stampList[id].img = $scope.stampList[id].setImg;
+                    $scope.stampList[id].setImg = img;
+                    $scope.stampCount = $scope.stampCount + 1;
+                    $scope.stampList[id].active = true;
+                }
+            }
+        };
+        
+        $scope.processStamps = function() {
+            var attendant = $scope.data.cashierCode; 
+            var receiptNumber = $scope.data.invNo;
+            var cardNumber = $scope.userMpacc;
+            var quantity = $scope.stampCount;
+            var productCode = $scope.tokenCode;
+            var partnerId = $scope.retailId;
+            modal.show();
+            $scope.data.errorCode = 'Processing, please wait...';
+            $http.post($scope.apiPath+'freebieRetail.php', {"reqType" : "collectStamps", "cardNumber" : cardNumber, "attendant" : attendant, "receiptNumber" : receiptNumber, "quantity" : quantity, "productCode" : productCode, "partnerId" : partnerId})
+            .success(function(data, status){
+                if (data['code'] == 400) {
+                    modal.hide();
+                    ons.notification.alert({
+                        message: data['message'],
+                        title: 'Sorry!',
+                        buttonLabel: 'OK',
+                        animation: 'default'
+                    });
+                } else {
+                    modal.hide();
+                    ons.notification.alert({
+                        message: "Thank you!",
+                        title: 'Yay!',
+                        buttonLabel: 'Continue',
+                        animation: 'default',
+                        callback: function() {
+                            $scope.data = [];
+                            $scope.retailerList = [];
+                            $scope.retailId = '';
+                            $scope.tokenIndicator = '';
+                            $scope.tokenList = [];
+                            $scope.tokenCode = '';
+                            $scope.stampCount = 0;
+                            $scope.tokenInfo = [];
+                            $scope.stampList = [];
+                            $scope.partner_id = partnerId;
+                            myNavigator.pushPage('views/user/feedback_form.html', { animation : 'fade' });
+                        }
+                    });
+                }
+            })
+            .error(function(data, status) {
+                modal.hide();
+                ons.notification.alert({
+                    message: 'Request Failed, try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            });
+        };
+        
+        $scope.myFreebies = function() {
+            $scope.freebiesList = [];
+            $scope.data = [];
+            modal.show();
+            $scope.data.errorCode = 'Processing, please wait...';
+            $http.post($scope.apiPath+'freebieRetail.php', {"reqType" : "freebiesList", "mpacc" : $scope.userMpacc, "sessionID" : $scope.sessionId, "partnerId" : $scope.retailId })
+            .success(function(data, status){
+                modal.hide();
+                console.log('My Freebie List:', data['html']);
+                $scope.freebiesList = data['html']['tokenFreebieItem'];
+                for (var i = 0; i < $scope.freebiesList.length; i++) {
+                    var newDate = $scope.freebiesList[i].freebieExpiry.slice(0,10);
+
+                    $scope.freebiesList[i].freebieExpiry = newDate;
+                }
+                myNavigator.pushPage('views/user/freebiesList.html', { animation : 'fade' });
+            })
+            .error(function(data, status) {
+                modal.hide();
+                ons.notification.alert({
+                    message: 'Request Failed, try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            });
+        };
+        
+        $scope.markFreebie = function(id) {
+            console.log("Selected Freebie: ", $scope.freebiesList[id]);
+            
+            if ($scope.freebiesList[id].active) {
+                var img = $scope.freebiesList[id].image2URL;
+                $scope.freebiesList[id].image2URL = $scope.freebiesList[id].image3URL;
+                $scope.freebiesList[id].image3URL = img;
+                $scope.freebiesList[id].active = false;
+            } else {
+                var img = $scope.freebiesList[id].image2URL;
+                $scope.freebiesList[id].image2URL = $scope.freebiesList[id].image3URL;
+                $scope.freebiesList[id].image3URL = img;
+                $scope.freebiesList[id].active = true;
+            }
+        };
+        
+        $scope.processFreebies = function() {
+            var attendant = $scope.data.cashierCode; 
+            var receiptNumber = $scope.data.invNo;
+            var cardNumber = $scope.userMpacc;
+            var partnerId = $scope.retailId;
+            $http.post($scope.apiPath+'freebieRetail.php', {"reqType" : "sendOTP", 'attendant': attendant, 'receiptNumber': receiptNumber, 'cardNumber': cardNumber, 'freebieList': $scope.freebiesList, 'partnerId' : partnerId})
+            .success(function(data, status){
+                console.log('Otp request Data:', data);
+                if (data['code'] == 400) {
+                    modal.hide();
+                    ons.notification.alert({
+                        message: data['message'],
+                        title: 'Sorry!',
+                        buttonLabel: 'OK',
+                        animation: 'default'
+                    });
+                } else {
+                    $scope.tokenAuthCode = data['authCode'];
+                    $scope.sentOtp = true;
+                    modal.hide();
+                    ons.notification.alert({
+                        message: "OTP request has been sent. Please wait for SMS and enter OTP pin",
+                        title: 'Success!',
+                        buttonLabel: 'Continue',
+                        animation: 'default'
+                    });
+                }
+            })
+            .error(function(data, status) {
+                modal.hide();
+                ons.notification.alert({
+                    message: 'Request Failed, try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            });
+        };
+        
+        $scope.processFreebiesOtp = function() {
+            modal.show();
+            $scope.data.errorCode = 'Processing, please wait...';
+            console.log($scope.tokenAuthCode);
+            $http.post($scope.apiPath+'freebieRetail.php', {"reqType" : "completeOTP", 'otp' : $scope.data.optPin, 'tokenAuthCode' : $scope.tokenAuthCode, 'mpacc' : $scope.userMpacc, 'sessionID' : $scope.sessionId })
+            .success(function(data, status){
+                console.log('Otp submit Data:', data);
+                modal.hide();
+                if (data['code'] == 400) {
+                    ons.notification.alert({
+                        message: data['message'],
+                        title: 'Sorry!',
+                        buttonLabel: 'OK',
+                        animation: 'default'
+                    });
+                } else {
+                    ons.notification.alert({
+                        message: "Thank you!",
+                        title: 'Yay!',
+                        buttonLabel: 'Continue',
+                        animation: 'default',
+                        callback: function() {
+                            $scope.data = [];
+                            $scope.retailerList = [];
+                            $scope.retailId = '';
+                            $scope.tokenIndicator = '';
+                            $scope.tokenList = [];
+                            $scope.tokenCode = '';
+                            $scope.stampCount = 0;
+                            $scope.tokenInfo = [];
+                            $scope.stampList = [];
+                            $scope.freebiesList = [];
+                            $scope.tokenAuthCode = '';
+                            $scope.sentOtp = false;
+                            myNavigator.resetToPage('views/user/feedback_form.html', { animation : 'fade' });
+                        }
+                    });
+                }
+            })
+            .error(function(data, status) {
+                modal.hide();
+                ons.notification.alert({
+                    message: 'Request Failed, try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            });
+        };
     }); 
     
     // Map Controler
     
-    module.controller('mapController', function($scope, $http, $timeout, StreetView) {
+    module.controller('mapController', function($scope, $http, $timeout, NgMap) {
+        console.log("navigator.geolocation works well");
         $scope.map;
         $scope.stores = [];
         $scope.partnerType;
@@ -2916,63 +4049,49 @@
         };
         
         var onSuccess = function(position) {
-        
-            //Map initialization  
-            $timeout(function(){
-                var map;
-                $scope.$on('mapInitialized', function(event, evtMap) {
-                    map = evtMap;
-                    $scope.map = map;
-                    $scope.myLat = position.coords.latitude;
-                    $scope.myLng = position.coords.longitude;
+            
+            NgMap.getMap().then(function(map) {
+                //console.log('map', map);
+                $scope.map = map;
+                $scope.myLat = position.coords.latitude;
+                $scope.myLng = position.coords.longitude;
 
-                    //console.log($scope.map);
+                //console.log($scope.map);
 
-                    console.log("lat:" + $scope.myLat + " lng:" + $scope.myLng + " radius:" + $scope.mapRadius + " type:" + $scope.partnerType);
+                //console.log("lat:" + $scope.myLat + " lng:" + $scope.myLng + " radius:" + $scope.mapRadius + " type:" + $scope.partnerType);
 
-                    $http.post($scope.apiPath+'pointsPartnerMapList.php', {"lat" : $scope.myLat, "lng" : $scope.myLng, "radius" : $scope.mapRadius, "type" : $scope.partnerType, "cat" : "%"})
-                    .success( function(stores) {
-                        var markers = [];
-                        console.log(stores);
-                        $scope.partnerList = stores;
-                        for (var i=0; i<stores.length; i++) {
-                            var store = stores[i];
-                            store.position = new google.maps.LatLng(store.partner_lat,store.partner_lng);
-                            store.title = store.partner_name;
-                            store.animation = google.maps.Animation.DROP;
-                            markers[i] = new google.maps.Marker(store);
-                            google.maps.event.addListener(markers[i], 'click', function() {
-                                $scope.store = this;
-                                //map.setZoom(18);
-                                map.setCenter(this.getPosition());
-                                $scope.storeInfo.show();
-                            });
-                            google.maps.event.addListener(map, 'click', function() {
-                                $scope.storeInfo.hide();
-                            });
-                            $scope.stores.push(markers[i]); 
-                            markers[i].setPosition(store.position);
-                            markers[i].setMap($scope.map);
-                        }
-                    }).error(function(data, status) {
-                        modal.hide();
-                        $scope.data.errorCode = status;
-                        modal.show();
-                    });
+                $http.post($scope.apiPath+'pointsPartnerMapList.php', {"lat" : $scope.myLat, "lng" : $scope.myLng, "radius" : $scope.mapRadius, "type" : $scope.partnerType, "cat" : "%"})
+                .success( function(stores) {
+                    var markers = [];
+                    console.log("Store Data",stores);
+                    $scope.partnerList = stores;
+                    for (var i=0; i<stores.length; i++) {
+                        var store = stores[i];
+                        store.position = new google.maps.LatLng(store.partner_lat,store.partner_lng);
+                        store.title = store.partner_name;
+                        store.animation = google.maps.Animation.DROP;
+                        markers[i] = new google.maps.Marker(store);
+                        google.maps.event.addListener(markers[i], 'click', function() {
+                            $scope.store = this;
+                            //map.setZoom(18);
+                            map.setCenter(this.getPosition());
+                            $scope.storeInfo.show();
+                        });
+                        google.maps.event.addListener(map, 'click', function() {
+                            $scope.storeInfo.hide();
+                        });
+                        $scope.stores.push(markers[i]); 
+                        markers[i].setPosition(store.position);
+                        markers[i].setMap($scope.map);
+                    }
+                }).error(function(data, status) {
+                    modal.hide();
+                    $scope.data.errorCode = status;
+                    modal.show();
                 });
-            },100);
-        }
-        
-        $scope.showStreetView = function() {
-            StreetView.setPanorama(map, $scope.panoId);
-            $scope.storeInfo.hide();
+            });
         };
         
-        $scope.showHybridView = function() {
-            map.setMapTypeId(google.maps.MapTypeId.HYBRID);
-            map.setTilt(45);
-            $scope.storeInfo.hide();
-        }
         
         // onError Callback receives a PositionError object
         //
@@ -2981,7 +4100,7 @@
                   'message: ' + error.message + '\n');
         }
 
-        navigator.geolocation.getCurrentPosition(onSuccess, onError);
+        navigator.geolocation.getCurrentPosition(onSuccess, onError, { maximumAge: 3000, timeout: 5000, enableHighAccuracy: true });
     });
     
     module.directive('storeInfo', function() {

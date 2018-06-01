@@ -13,6 +13,7 @@
         
         <script src='//maps.googleapis.com/maps/api/js?key=AIzaSyB5G5LWb3yu-EVcRtUGKpr1GPUw5ZvOlHk'></script>
         <script src="lib/onsen/js/angular/angular.js"></script>
+        <script src="lib/onsen/js/angular/sanitize.js"></script>
         <script src="lib/onsen/js/onsenui.js"></script>
         
         
@@ -34,8 +35,9 @@
     </head>
     <body ng-controller="AppController">
         <ons-tabbar>
-            <ons-tab active="true" page="hoge.html" icon="ion-home"></ons-tab>
-            <ons-tab page="views/TandC.html" label="Terms & Conditions"></ons-tab>
+            <ons-tab active="true" page="hoge.html" icon="ion-home" ng-style="{'background-color':footerBG}"></ons-tab>
+            <ons-tab page="views/socialmedia.html" label="" icon="fa-heart" ng-style="{'background-color':footerBG}"></ons-tab>
+            <ons-tab ng-click="loadpage(5)" label="T&C’s" ng-style="{'background-color':footerBG}"></ons-tab>
         </ons-tabbar>
         <script type="text/ons-template" id="hoge.html">
             <ons-sliding-menu main-page="views/home.html" menu-page="views/menu.html" max-slide-distance="260px" type="push" side="right" var="menu">

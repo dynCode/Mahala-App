@@ -1,34 +1,64 @@
 <ons-page>
-    <ons-toolbar>
+    <ons-toolbar ng-style="{'background-color':topbarBG}">
         <div class="left">
-            <ons-back-button>Back</ons-back-button>
+            <ons-back-button></ons-back-button>
         </div>
-        <div class="center">Register</div>
-        <div class="right">
-            <ons-toolbar-button ng-click="menu.toggle()">
-                <ons-icon icon="ion-navicon" size="28px" fixed-width="false"></ons-icon>
-            </ons-toolbar-button>
-        </div>
+        <div class="center">Sign Up</div>
+        <div class="right"></div>
     </ons-toolbar>
     <div class="topBanner">
-        <div class="imgBlock hideableReg" style="display: block;"><img src="images/app_header1.png" style="max-width: 800px; width: 100%;" /></div>
-        <div class="imgBlock hideableReg" style="display: none;"><img src="images/app_header2.png" style="max-width: 800px; width: 100%;" /></div>
-        <div class="imgBlock hideableReg" style="display: none;"><img src="images/app_header3.png" style="max-width: 800px; width: 100%;" /></div>
+        <div><img src="{{Banner2}}" style="max-width: 800px; width: 100%;" /></div>
     </div>
-    <div class="formList"><strong>Cashier / Promo Code:</strong></div>
-    <div style="padding: 0px 20px 20px 10px;">
-        <small>Scan the cashier's code or enter it manually.</small><br />
-        <!--<ons-button id="btnLogIn" onclick="scanBarcodeRegShop()" style="width:100%">SCAN CODE</ons-button>-->
-        <div class="form-row formListInputLrg">
-            <input type="text" class="text-input" id="cashierCode" ng-model="data.reg_cashierCode" value="5000000026" placeholder="Cashier / Promo Code" />
-        </div>
-    </div>
-    <div class="formList"><strong>1. Choose your Card:</strong></div>
+    <ons-row align="center">
+        <ons-col size="90%"><div class="formListInputLrg"><input type="search" class="search-input" ng-model="data.quickSearch" placeholder="Quick search for a shop / deal"></div></ons-col>
+        <ons-col size="10%"><ons-button ng-click="quickSearch()"><ons-icon icon="fa-search"></ons-button></ons-col>
+    </ons-row>
+    <h2 class="myHeader"><span>SIGN UP</span></h2>
+    <div class="formList"><strong>HOW ARE YOU SIGNING UP?</strong></div>
     <div style="padding: 0px 20px 20px 10px;">
         <ons-row>
             <ons-col>
                 <label class="radio-button">
-                    <input type="radio" name="cardType" ng-model="data.cardType" value="digital" onclick="showDivAttid('hide','HideMe')">
+                    <input type="radio" name="signType" id="signType" ng-model="data.cardType" value="cashier">
+                    <div class="radio-button__checkmark"></div>
+                     At A Shop:
+                </label>
+            </ons-col>
+            <ons-col>
+                <div class="formListInputLrg"><input type="text" class="text-input" id="cashierCode" ng-model="data.reg_cashierCode" placeholder="Enter Cashier Code (Ask Cashier)" /></div>
+            </ons-col>
+        </ons-row>
+        <ons-row>
+            <ons-col>
+                <label class="radio-button">
+                    <input type="radio" name="signType" id="signType1" ng-model="data.cardType" value="agent">
+                    <div class="radio-button__checkmark"></div>
+                     Agent / Salesperson:
+                </label>
+            </ons-col>
+            <ons-col>
+                <div class="formListInputLrg"><input type="text" class="text-input" id="cashierCode" ng-model="data.reg_cashierCode" placeholder="Enter Agent Code" /></div>
+            </ons-col>
+        </ons-row>
+        <ons-row>
+            <ons-col>
+                <label class="radio-button">
+                    <input type="radio" name="signType" id="signType2" ng-model="data.cardType" value="promo">
+                    <div class="radio-button__checkmark"></div>
+                     Promotion
+                </label>
+            </ons-col>
+            <ons-col>
+                <div class="formListInputLrg"><input type="text" class="text-input" id="cashierCode" ng-model="data.reg_cashierCode" value="5000000026" placeholder="5000000026" /></div>
+            </ons-col>
+        </ons-row>
+    </div>
+    <div class="formList"><strong>CHOOSE YOUR CARD</strong></div>
+    <div style="padding: 0px 20px 20px 10px;">
+        <ons-row>
+            <ons-col>
+                <label class="radio-button">
+                    <input type="radio" name="cardType" id="cardType1" ng-model="data.cardType" value="digital" onclick="showDivAttid('hide','HideMe')">
                     <div class="radio-button__checkmark"></div>
                      Virtual Card (on your phone)
                 </label>
@@ -37,16 +67,16 @@
         <ons-row>
             <ons-col>
                 <label class="radio-button">
-                    <input type="radio" name="cardType" ng-model="data.cardType" value="physical" onclick="showDivAttid('show','HideMe')">
+                    <input type="radio" name="cardType" id="cardType2" ng-model="data.cardType" value="physical" onclick="showDivAttid('show','HideMe')">
                     <div class="radio-button__checkmark"></div>
                      Plastic Card (in-store, when available)
                 </label>
             </ons-col>
         </ons-row>
-        <p><strong>Please note:</strong> For promotions, please select Virtual Card option.  Not all Retailers issue plastic cards, please ask your Cashier for more info.</p>
+        <p>Note: Ask your Cashier if you are not sure, not all Shops give plastic cards.  For all free trial memberships or promotions, ONLY a Virtual Card option applies.</p>
     </div>
     
-    <div class="formList"><strong>2. Personal Details:</strong></div>
+    <div class="formList"><strong>PERSONAL DETAILS:</strong></div>
     <div style="padding: 0px 20px 20px 20px;">
         <div class="form-row formListInputLrg">
             <input type="text" class="text-input" ng-model="data.reg_FirstName" placeholder="First Name" value="">
@@ -124,21 +154,11 @@
             <input type="text" class="text-input" ng-model="data.reg_Suburb" placeholder="Suburb" value="">
         </div>
     </div>
-    <div id="HideMe">
-        <div class="formList"><strong>ONLY APPLICABLE WHEN A PLASTIC CARD WAS SELECTED:</strong></div>
-        <div style="padding: 0px 20px 20px 10px;">
-            <small>New Plastic Card:</small><br />
-            <!--<ons-button id="btnLogIn" onclick="scanBarcodeRegMem()" style="width:100%">SCAN NO</ons-button>-->
-            <div class="form-row formListInputLrg">
-                <input type="text" class="text-input" id="memberCode" ng-model="data.reg_memberCode" placeholder="ENTER MEMBER CODE" />
-            </div>
-        </div>
-    </div>
     <p></p>
     <div style="padding: 0px 20px 20px 10px;">
-        <div class="formListLable" style="width: 80%;">I have read and accept the terms & conditions.</div><div class="formListInput" style="width:20%"><label class="checkbox"><input type="checkbox" ng-model="data.tc_y" value="yes"><div class="checkbox__checkmark"></div><span class="ons-checkbox-inner"></span></label></div>
+        <div class="formListLable" style="width: 80%; line-height: 20px;">I have read and accept the terms & conditions.</div><div class="formListInput" style="width:20%"><label class="checkbox"><input type="checkbox" ng-model="data.tc_y" value="yes"><div class="checkbox__checkmark"></div><span class="ons-checkbox-inner"></span></label></div>
         <div class="formListLable" style="width: 80%; line-height: 20px;">I would like to receive special deals, products and promotions related to the programme.</div><div class="formListInput" style="width:20%"><label class="checkbox"><input type="checkbox" ng-model="data.market_y" value="yes"><div class="checkbox__checkmark"></div><span class="ons-checkbox-inner"></span></label></div>
     </div>
     <p>&nbsp;</p>
-    <div class="formList"><ons-button modifier="large" class="reg-button" ng-click="registerME()">Register</ons-button></div>
+    <div class="formList"><ons-button modifier="large" class="reg-button" ng-click="registerME()">SUBMIT</ons-button></div>
 </ons-page>

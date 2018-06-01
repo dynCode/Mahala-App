@@ -1,0 +1,48 @@
+<ons-page>
+    <ons-toolbar ng-style="{'background-color':topbarBG}">
+        <div class="left">
+            <ons-back-button>Back</ons-back-button>
+        </div>
+        <div class="center">About Us</div>
+        <div class="right"></div>
+    </ons-toolbar>
+    <div class="topBanner">
+        <div><img src="{{Banner2}}" style="max-width: 800px; width: 100%;" /></div>
+    </div>
+    <ons-row align="center">
+        <ons-col size="90%"><div class="formListInputLrg"><input type="search" class="search-input" ng-model="data.quickSearch" placeholder="Quick search for a shop / deal"></div></ons-col>
+        <ons-col size="10%"><ons-button ng-click="quickSearch()"><ons-icon icon="fa-search"></ons-button></ons-col>
+    </ons-row>
+    <h2 class="myHeader"><span>ABOUT US</span></h2>
+    <hr>
+    <div style="padding:0 20px">
+        <div ng-bind-html="auPage | to_trusted"></div>
+    </div>
+    <hr>
+    <ons-list>
+        <ons-list-item onclick="myNavigator.pushPage('views/join/silver_gold.html', { animation : 'lift' } )">
+            <img src="images/Mahala_funeral.png" style="max-width: 800px; width: 100%;" />
+        </ons-list-item>
+        <ons-list-item onclick="myNavigator.pushPage('views/join/workers.html', { animation : 'lift' } )">
+            <img src="images/Mahala_Workers.png" style="max-width: 800px; width: 100%;" />
+        </ons-list-item>
+        <ons-list-item onclick="myNavigator.pushPage('views/join/health.html', { animation : 'lift' } )">
+            <img src="images/Mahala_health.png" style="max-width: 800px; width: 100%;" />
+        </ons-list-item>
+    </ons-list>
+    <div style="padding:0 20px">
+        <p style="text-align: justify;">Mahala has developed creative lifestyle products for your convenience and protection. Click on the icon below to view our unique solutions to the problems South Africans face every day!</p>
+    </div>
+    <ons-list>
+        <ons-list-item onclick="myNavigator.pushPage('views/join/perks.html', { animation : 'lift' } )">
+            <img src="images/Mahala_Perks.png" style="max-width: 800px; width: 100%;" />
+        </ons-list-item>
+        <ons-list-item onclick="myNavigator.pushPage('views/join/travel.html', { animation : 'lift' } )">
+            <img src="images/Mahala_travel.png" style="max-width: 800px; width: 100%;" />
+        </ons-list-item>
+        <ons-list-item onclick="myNavigator.pushPage('views/join/charity.html', { animation : 'lift' } )">
+            <img src="images/Mahala_Charity.png" style="max-width: 800px; width: 100%;" />
+        </ons-list-item>
+    </ons-list>
+    <div style="padding:0 20px"><a href="#" onclick="myNavigator.pushPage('views/feedback.html', { animation : 'lift' } )">Problems?</a></div>
+</ons-page>

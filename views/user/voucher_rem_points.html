@@ -1,18 +1,14 @@
 <ons-page>
-    <ons-toolbar>
+    <ons-toolbar ng-style="{'background-color':topbarBG}">
         <div class="left">
-            <ons-back-button>Back</ons-back-button>
+            <ons-back-button></ons-back-button>
         </div>
         <div class="center">Redemption Voucher</div>
-        <div class="right">
-            <ons-toolbar-button ng-click="menu.toggle()">
-                <ons-icon icon="ion-navicon" size="28px" fixed-width="false"></ons-icon>
-            </ons-toolbar-button>
-        </div>
+        <div class="right"></div>
     </ons-toolbar>
     <div class="topBanner">
         <div class="subImgBlock">
-            <img src="images/sub_header.png" style="max-width: 380px; width: 100%;" />
+            <img src="{{subBanner}}" style="max-width: 380px; width: 100%;" />
         </div>
     </div>
     <div style="padding: 0 20px;">
@@ -22,18 +18,12 @@
                 <td style="border: 1px solid #C82126;"><strong>R {{currentRands}}</strong></td>
             </tr>
         </table>
-        <p>To redeem your points, complete the fields below, enter the OTP pin provided by the store and submit. </p>
+        <p><strong>To redeem your points, complete the fields below, enter the OTP pin provided by the store and submit.</strong></p>
     </div>
     <div style="padding: 0 20px;">
         <table width='100%' style='border:none'>
             <tr>
-                <td colspan='2' style='border-bottom:2px solid #cd242d;' align='center'><img src="http://www.mahala.mobi/components/com_jumi/files/mahala_WSDL/logos/{{partner_logo}}" style="max-width: 380px; width: 90%;"></td>
-            </tr>
-            <tr>
-                <td colspan="2" align='center'><h3>{{partner_voucher}}</h3></td>
-            </tr>
-            <tr>
-                <td>Terms:</td><td>{{partner_terms}}</td>
+                <td>Partner Name:</td><td>{{partner_name}}</td>
             </tr>
             <tr>
                 <td colspan="2">&nbsp;</td>
@@ -61,7 +51,7 @@
             <div class="formListLable">Invoice No:</div><div class="formListInputLrg"><input type="text" class="text-input"  placeholder="Invoice No" ng-model="data.pointsTransInv"></div>
         </div>
         <div class="formListLrg">
-            <div class="formListLable"><br></div><div class="formListInputLrg"><ons-button ngf-select ng-model="data.invoiceSlip" name="file" ngf-pattern="'image/*'" ngf-capture="'camera'" ngf-resize-if="$width > 800 || $height > 800" ngf-accept="'image/*'" ngf-max-size="20MB" ngf-resize="{width: 800, height: 800}" style="background-color: #ccc; color: #000;"><ons-icon icon="fa fa-camera"></ons-icon> UPLOAD YOUR TILL SLIP</ons-button></div>
+            <div class="formListLable"><br></div><div class="formListInputLrg"><ons-button modifier="large" id="btnLogIn" ngf-select ng-model="data.invoiceSlip" name="file" ngf-pattern="'image/*'" ngf-capture="'camera'" ngf-resize-if="$width > 800 || $height > 800" ngf-accept="'image/*'" ngf-max-size="20MB" ngf-resize="{width: 800, height: 800}">UPLOAD YOUR TILL SLIP</ons-button></div>
         </div>
         <p>If your transaction value exceeds R500, a till slip picture will be required to verify your transaction.</p>
     </div>
@@ -69,24 +59,24 @@
         <div style="padding: 10px;">
             <p>Present your phone to the cashier to approve the transaction.</p>
             <div class="formListLrg">
-                <div class="formListLable">CASHIER CODE:</div>
+                <div class="formListLable">SHOP APPROVAL:</div>
                 <div class="formListInputLrg"><input type="number" class="text-input" ng-change="" placeholder="Enter Code" ng-model="data.cashierCode"></div>
             </div>
-            <ons-button modifier="large" id="btnLogIn" ng-click="genereateOtp()" style="width:100%">GENERATE OTP</ons-button>  
+            <ons-button modifier="large" id="btnLogIn" ng-click="genereateOtp(data.invoiceSlip)" style="width:100%">GENERATE OTP</ons-button>  
             <div class="formListLrg">
                 <div class="formListLable">OTP:</div>
                 <div class="formListInputLrg"><input type="number" class="text-input"  placeholder="Enter Code" ng-model="data.remOTP"></div>
             </div>
-            <p class="location" style='color:#000'><i>Please enter the OTP pin provided by the Store Cashier/Manager</i></p>
+            <p class="location" style='color:#000'><i>Please enter the OTP pin provided by the Store</i></p>
         </div>
     </div>
     <div style="padding: 0 20px;">
-        <div style="text-align: center;"><img src='http://www.mahala.mobi/components/com_jumi/files/mahala_WSDL/test_1D.php?text={{CardNumber}}' width='270px' /></div>
+        <div style="text-align: center;"><img src='https://www.mahala.mobi/components/com_jumi/files/mahala_WSDL/test_1D.php?text={{CardNumber}}' width='270px' /></div>
         <!--<input type="text" class="text-input" ng-model="data.partId" value="{{partner_id}}">
         <input type="text" class="text-input" ng-model="data.partName" ng-value="{{partner_name}}">-->
         <img ng-show="data.invoiceSlip.$valid" ngf-thumbnail="data.invoiceSlip" ngf-size="{width: 100, height: 100, quality: 0.9}">
         <br>
-        <ons-button modifier="large" id="btnLogIn" ng-click="redeemPoints(data.invoiceSlip)" style="width:100%">SUBMIT</ons-button>      
+        <ons-button modifier="large" id="btnLogIn" ng-click="sendOtp()" style="width:100%">SUBMIT</ons-button>      
         <p class="location" style='color:#000'><i>Your points redemption cannot exceed your points balance as displayed above. You have to be in-store.</i></p>
         <p style='color:#cd242d'><a href="#" onclick="myNavigator.pushPage('views/TandC.html');" style="text-decoration: none; color: #C82126;">TERMS AND CONDITIONS</a> APPLY.</p>
     </div>

@@ -1,18 +1,14 @@
 <ons-page>
-    <ons-toolbar>
+    <ons-toolbar ng-style="{'background-color':topbarBG}">
         <div class="left">
-            <ons-back-button>Back</ons-back-button>
+            <ons-back-button></ons-back-button>
         </div>
         <div class="center">Retail Login</div>
-        <div class="right">
-            <ons-toolbar-button ng-click="menu.toggle()">
-                <ons-icon icon="ion-navicon" size="28px" fixed-width="false"></ons-icon>
-            </ons-toolbar-button>
-        </div>
+        <div class="right"></div>
     </ons-toolbar>
     <div class="topBanner">
         <div class="subImgBlock">
-            <img src="images/sub_header.png" style="max-width: 380px; width: 100%;" />
+            <img src="{{subBanner}}" style="max-width: 380px; width: 100%;" />
         </div>
     </div>
     <div class="formShadow">

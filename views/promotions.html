@@ -1,59 +1,24 @@
 <ons-page>
-    <ons-toolbar>
+    <ons-toolbar ng-style="{'background-color':topbarBG}">
         <div class="left">
             <ons-back-button>Back</ons-back-button>
         </div>
-        <div class="center">Enquiry Form</div>
-        <div class="right">
-            <ons-toolbar-button ng-click="menu.toggle()">
-                <ons-icon icon="ion-navicon" size="28px" fixed-width="false"></ons-icon>
-            </ons-toolbar-button>
-        </div>
+        <div class="center">Promotions</div>
+        <div class="right"></div>
     </ons-toolbar>
-    <div class="topBanner">
-        <img src="images/promoTop.jpg" style="max-width: 800px; width: 100%;" />
+    <ons-row align="center">
+        <ons-col size="90%"><div class="formListInputLrg"><input type="search" class="search-input" ng-model="data.quickSearch" placeholder="Quick search for a shop / deal"></div></ons-col>
+        <ons-col size="10%"><ons-button ng-click="quickSearch()"><ons-icon icon="fa-search"></ons-button></ons-col>
+    </ons-row>
+    <div style="padding:0 20px">
+        <p>There are many ways for you to stay on TOP of things @ Mahala or to test drive our deals:</p>
+        <p>
+            <ons-button modifier="quiet" ng-click="promoToJoin()">Sign-up</ons-button> for 1 FREE trial month<br>
+            <ons-button modifier="quiet" onclick="window.open('https://www.facebook.com/mahalaloyalty','_system','')">Like</ons-button> our Facebook Page<br>
+            <ons-button modifier="quiet" ng-click="">Share</ons-button>Share our wonderful news
+        </p>
+        <a href="#" onclick="myNavigator.pushPage('views/feedback.html', { animation : 'lift' } )">Problems?</a>
     </div>
-    <div class="topBanner">
-        <img src="images/promoOpt1.jpg" style="max-width: 800px; width: 100%;" onclick="myNavigator.pushPage('views/promopage1.html', { animation : 'slide' } )" />
-    </div>
-    <div class="topBanner">
-        <img src="images/promoOpt2.jpg" style="max-width: 800px; width: 100%;" onclick="myNavigator.pushPage('views/promopage2.html', { animation : 'slide' } )" />
-    </div>
-    <div class="topBanner">
-        <img src="images/promoBottum.jpg" style="max-width: 800px; width: 100%;" />
-    </div>
-    <div class="formList">
-        1. Like our Facebook
-    </div>
-    <div class="form-row formListInputLrg">
-        <img src="images/Promotions_fb.png" onclick="window.open('https://www.facebook.com/mahalaloyalty','_system','')" style="height: 95%;" />
-    </div>
-    <div class="formList">
-        2. Enter your Loyalty Number:
-    </div>
-    <div class="form-row formListInputLrg">
-        <input ng-model="data.promoMPacc" type="text" class="text-input" placeholder="Enter your loyalty number" />
-    </div>
-    <div style="padding:20px">
-        <ons-button modifier="large" id="btnLogIn" ng-click="promoToJoin()" style="width:100%">ENROLL</ons-button>
-    </div>
-    <div class="formList">
-        3. Refer a friend
-    </div>
-    <div class="form-row formListInputLrg">
-        <input ng-model="data.friendEmail1" type="text" class="text-input" placeholder="Email address" />
-    </div>
-    <div class="form-row formListInputLrg">
-        <input ng-model="data.friendEmail2" type="text" class="text-input" value="" placeholder="Email address" />
-    </div>
-    <div class="form-row formListInputLrg">
-        <input ng-model="data.friendEmail3" type="text" class="text-input" value="" placeholder="Email address" />
-    </div>
-    <div style="padding:20px">
-        <ons-button modifier="large" id="btnLogIn" ng-click="promoMe()" style="width:100%">SUBMIT</ons-button>
-    </div>
-    <!--<div style="text-align: center">
-        <p><strong>Prizes generously sponsored by:</strong></p>
-        <img src="images/mahala_promo_sponsers.jpg" style="max-width: 800px; width: 100%;" />
-    </div>-->
+    <h2 class="myHeader"><span>PROMOTIONS</span></h2>
+    <div ng-bind-html="promoPage"></div>
 </ons-page>
