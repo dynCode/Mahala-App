@@ -1,25 +1,41 @@
-<ons-alert-dialog var="alertDialog" style="height: 85%;width: 95%;">
-    <div class="alert-dialog-content" style="height: 90%;">
-        <ons-carousel style="height: 100%; width: 100%" swipeable overscrollable auto-scroll>
+<ons-alert-dialog var="alertDialog">
+    <div class="alert-dialog-content">
+        <ons-carousel var="carousel" style="height: 100%; width: 100%" swipeable overscrollable auto-scroll>
             <ons-carousel-item>
                <img src="images/fi1.jpg" style="width: 100%;" />
+               <button class="alert-dialog-button" ng-click="carousel.next()">Next <ons-icon icon="md-chevron-right"></ons-icon></button>
             </ons-carousel-item>
             <ons-carousel-item>
                <img src="images/fi2.jpg" style="width: 100%;" />
+               <button class="alert-dialog-button" ng-click="carousel.next()">Next <ons-icon icon="md-chevron-right"></ons-icon></button>
             </ons-carousel-item>
             <ons-carousel-item>
                <img src="images/fi3.jpg" style="width: 100%;" />
+               <button class="alert-dialog-button" ng-click="carousel.next()">Next <ons-icon icon="md-chevron-right"></ons-icon></button>
             </ons-carousel-item>
             <ons-carousel-item>
                <img src="images/fi4.jpg" style="width: 100%;" />
+               <button class="alert-dialog-button" ng-click="carousel.next()">Next <ons-icon icon="md-chevron-right"></ons-icon></button>
             </ons-carousel-item>
             <ons-carousel-item>
                <img src="images/fi5.jpg" style="width: 100%;" />
+               
+               <button class="alert-dialog-button" ng-click="carousel.next()">Next <ons-icon icon="md-chevron-right"></ons-icon></button>
+            </ons-carousel-item>
+            <ons-carousel-item>
+                <p>Please see our <a onclick="myNavigator.pushPage('views/privacy.html', { animation : 'slide' } )">privacy policy here</a></p>
+                <ons-list>
+                    <ons-list-item tappable>
+                        <label class="left">
+                            <ons-checkbox input-id="check-1" ng-model="privacy.accept"></ons-checkbox>
+                        </label>
+                        <label for="check-1" class="center">
+                            I accept the <a onclick="myNavigator.pushPage('views/privacy.html', { animation : 'slide' } )">Privacy Policy</a>
+                        </label>
+                      </ons-list-item>
+                </ons-list>
+                <button class="alert-dialog-button" ng-click="alertDialog.hide();">Close</button>
             </ons-carousel-item>
         </ons-carousel>
-    </div>
-    
-    <div class="alert-dialog-footer">
-        <button class="alert-dialog-button" ng-click="alertDialog.hide();">OK</button>
     </div>
 </ons-alert-dialog>

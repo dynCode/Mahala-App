@@ -1,7 +1,7 @@
 <ons-page>
     <ons-toolbar ng-style="{'background-color':topbarBG}">
         <div class="left">
-            <ons-back-button></ons-back-button>
+            <ons-back-button>Back</ons-back-button>
         </div>
         <div class="center">Points Voucher</div>
         <div class="right"></div>
@@ -58,10 +58,7 @@
                 <div class="formListInputLrg"><input type="number" class="text-input"  placeholder="Enter Code" ng-model="data.cashierCode"></div>
             </div>
             <div class="formListLrg" style="height: 30px;">
-                <div class="formListLable">Points:</div><div class="formListInput" style="width:20%"><label class="radio-button"><input type="radio" ng-model="data.isPoints" value="yes" checked><div class="radio-button__checkmark"></div><span class="ons-checkbox-inner"></span></label></div>
-            </div>
-            <div class="formListLrg" style="height: 30px;" ng-if="voucher_token == 'Y'">
-                <div class="formListLable">Tokens:</div><div class="formListInput" style="width:20%"><label class="radio-button"><input type="radio" ng-model="data.isPoints" value="no"><div class="radio-button__checkmark"></div><span class="ons-checkbox-inner"></span></label></div>
+                <div class="formListLable">Points:</div><div class="formListInput" style="width:20%"><label class="radio-button"><ons-radio ng-model="data.isPoints" value="yes" checked></ons-radio></label></div>
             </div>
             <div style="padding: 10px;">
                 <!--<ons-button id="btnLogIn" ng-click="scanCode(data.cashierCode)" style="width:50%">Scan Barcode (on App)</ons-button>-->
@@ -83,4 +80,11 @@
         <p><a href="#" onclick="myNavigator.pushPage('views/TandC.html');" style="text-decoration: none;">TERMS AND CONDITIONS</a> APPLY.</p>
         <a href="#" onclick="myNavigator.pushPage('views/feedback.html', { animation : 'lift' } )">Problems?</a>
     </div>
+    <ons-bottom-toolbar ng-style="{'background-color':footerBG}">
+        <ons-row vertical-align="center" style="height: 44px">
+            <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 25px;" onclick="myNavigator.pushPage('views/home.html', { animation : 'slide' } )"><ons-icon icon="ion-home"></ons-icon></ons-col>
+            <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 25px;" onclick="myNavigator.pushPage('views/socialmedia.html', { animation : 'slide' } )"><ons-icon icon="ion-heart"></ons-icon></ons-col>
+            <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 15px;" ng-click="loadpage(5)">T&C’s</ons-col>
+        </ons-row>
+    </ons-bottom-toolbar>
 </ons-page>

@@ -10,16 +10,22 @@
         <div><img src="{{Banner3}}" style="max-width: 800px; width: 100%;" /></div>
     </div>
     <ons-row align="center">
-        <ons-col size="90%"><div class="formListInputLrg"><input type="search" class="search-input" ng-model="data.quickSearch" placeholder="Quick search for a shop / deal"></div></ons-col>
-        <ons-col size="10%"><ons-button ng-click="quickSearch()"><ons-icon icon="fa-search"></ons-button></ons-col>
+        <ons-col width="90%"><div class="formListInputLrg"><input type="search" class="search-input" ng-model="data.quickSearch" placeholder="Quick search for a shop / deal"></div></ons-col>
+        <ons-col width="10%"><ons-button ng-click="quickSearch()"><ons-icon icon="fa-search"></ons-button></ons-col>
     </ons-row>
     <h2 class="myHeader"><span>CONTACT US</span></h2>
-    <div class="formShadow">
-        <div class="formList">
-            <div class="formListLable">I want to know more about these deals</div><div class="formListInput" style="width:20%"><label class="checkbox"><input type="checkbox" ng-model="data.contactDeals" value="yes"><div class="checkbox__checkmark"></div><span class="ons-checkbox-inner"></span></label></div>
-        </div>
-        <small class="red"><i>PS. We’ll call you back!</i></small>
-    </div>
+    <ons-list>
+        <ons-list-item tappable>
+            <label class="left">
+                <ons-checkbox input-id="check-mi" ng-model="data.contactDeals" value="yes"></ons-checkbox>
+            </label>
+            <label for="check-mi" class="center">
+                <span class="list-item__title">I want to know more about these deals</span>
+                <span class="list-item__subtitle red"><i>PS. We’ll call you back!</i></span>
+                
+            </label>
+        </ons-list-item>
+    </ons-list>
     <div class="formList"><strong>WHO ARE YOU?</strong></div>
     <div class="formShadow">
         <div class="formList">
@@ -36,33 +42,70 @@
         </div>
     </div>
     <div class="formList"><strong>CONTACT ME ABOUT OUR PRODUCTS:</strong></div>
-    <div class="formShadow">
-        <div class="formList">
-            <div class="formListLable">M Health</div><div class="formListInput" style="width:20%"><label class="checkbox"><input type="checkbox" ng-model="data.contactHealth" value="yes"><div class="checkbox__checkmark"></div><span class="ons-checkbox-inner"></span></label></div>
-        </div>
-        <small>Affordable health care to all South Africans from only R248 pm.</small>
-        <div class="formList">
-            <div class="formListLable">PERKS!</div><div class="formListInput" style="width:20%"><label class="checkbox"><input type="checkbox" ng-model="data.contactPerks" value="yes"><div class="checkbox__checkmark"></div><span class="ons-checkbox-inner"></span></label></div>
-        </div>
-        <small>Funeral Cover with many added benefits from only R88 pm.</small>
-        <div class="formList">
-            <div class="formListLable">M Travel</div><div class="formListInput" style="width:20%"><label class="checkbox"><input type="checkbox" ng-model="data.contactTravel" value="yes"><div class="checkbox__checkmark"></div><span class="ons-checkbox-inner"></span></label></div>
-        </div>
-        <small>One stop travel shop that gives you up to 30% discount on all travel, only R50 pm.</small>
-        <div class="formList">
-            <div class="formListLable">M Charity</div><div class="formListInput" style="width:20%"><label class="checkbox"><input type="checkbox" ng-model="data.contactCharity" value="yes"><div class="checkbox__checkmark"></div><span class="ons-checkbox-inner"></span></label></div>
-        </div>
-        <small>Fortified meals delivered to anyone, anywhere in SA, only R99 pm.</small>
-        <div class="formList">
-            <div class="formListLable">Mahala Silver & Gold</div><div class="formListInput" style="width:20%"><label class="checkbox"><input type="checkbox" ng-model="data.contactAccount" value="yes"><div class="checkbox__checkmark"></div><span class="ons-checkbox-inner"></span></label></div>
-        </div>
-        <small>Funeral Cover with many added benefits from only R88 pm.</small>
-        <div class="formList">
-            <div class="formListLable">Mahala Workers Plan</div><div class="formListInput" style="width:20%"><label class="checkbox"><input type="checkbox" ng-model="data.contactStudent" value="yes"><div class="checkbox__checkmark"></div><span class="ons-checkbox-inner"></span></label></div>
-        </div>
-        <small>Family Funeral Cover with unique benefits for employees, from only R99 pm.</small>
-    </div>
+    <ons-list>
+        <ons-list-item tappable>
+            <label class="left">
+                <ons-checkbox input-id="check-h" ng-model="data.contactHealth" value="yes"></ons-checkbox>
+            </label>
+            <label for="check-h" class="center">
+                <span class="list-item__title">M Health</span>
+                <span class="list-item__subtitle">Affordable health care to all South Africans from only R248 pm.</span>
+            </label>
+        </ons-list-item>
+        <ons-list-item tappable>
+            <label class="left">
+                <ons-checkbox input-id="check-p" ng-model="data.contactPerks" value="yes"></ons-checkbox>
+            </label>
+            <label for="check-p" class="center">
+                <span class="list-item__title">PERKS!</span>
+                <span class="list-item__subtitle">Funeral Cover with many added benefits from only R88 pm.</span>
+            </label>
+        </ons-list-item>
+        <ons-list-item tappable>
+            <label class="left">
+                <ons-checkbox input-id="check-t" ng-model="data.contactTravel" value="yes"></ons-checkbox>
+            </label>
+            <label for="check-t" class="center">
+                <span class="list-item__title">M Travel</span>
+                <span class="list-item__subtitle">One stop travel shop that gives you up to 30% discount on all travel, only R50 pm.</span>
+            </label>
+        </ons-list-item>
+        <ons-list-item tappable>
+            <label class="left">
+                <ons-checkbox input-id="check-c" ng-model="data.contactCharity" value="yes"></ons-checkbox>
+            </label>
+            <label for="check-c" class="center">
+                <span class="list-item__title">M Charity</span>
+                <span class="list-item__subtitle">Fortified meals delivered to anyone, anywhere in SA, only R99 pm.</span>
+            </label>
+        </ons-list-item>
+        <ons-list-item tappable>
+            <label class="left">
+                <ons-checkbox input-id="check-sg" ng-model="data.contactAccount" value="yes"></ons-checkbox>
+            </label>
+            <label for="check-sg" class="center">
+                <span class="list-item__title">Mahala Silver & Gold</span>
+                <span class="list-item__subtitle">Funeral Cover with many added benefits from only R88 pm.</span>
+            </label>
+        </ons-list-item>
+        <ons-list-item tappable>
+            <label class="left">
+                <ons-checkbox input-id="check-w" ng-model="data.contactStudent" value="yes"></ons-checkbox>
+            </label>
+            <label for="check-w" class="center">
+                <span class="list-item__title">Mahala Workers Plan</span>
+                <span class="list-item__subtitle">Family Funeral Cover with unique benefits for employees, from only R99 pm.</span>
+            </label>
+        </ons-list-item>
+    </ons-list>
     <div style="padding:20px">
         <ons-button modifier="large" id="btnLogIn" ng-click="contactMe()" style="width:100%">SUBMIT</ons-button>
     </div>
+    <ons-bottom-toolbar ng-style="{'background-color':footerBG}">
+        <ons-row vertical-align="center" style="height: 44px">
+            <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 25px;" onclick="myNavigator.pushPage('views/home.html', { animation : 'slide' } )"><ons-icon icon="ion-home"></ons-icon></ons-col>
+            <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 25px;" onclick="myNavigator.pushPage('views/socialmedia.html', { animation : 'slide' } )"><ons-icon icon="ion-heart"></ons-icon></ons-col>
+            <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 15px;" ng-click="loadpage(5)">T&C’s</ons-col>
+        </ons-row>
+    </ons-bottom-toolbar>
 </ons-page>

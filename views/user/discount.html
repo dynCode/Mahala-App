@@ -1,7 +1,7 @@
 <ons-page>
     <ons-toolbar ng-style="{'background-color':topbarBG}">
         <div class="left">
-            <ons-back-button></ons-back-button>
+            <ons-back-button>Back</ons-back-button>
         </div>
         <div class="center">Search for a deal</div>
         <div class="right"></div>
@@ -10,8 +10,8 @@
         <div><img src="{{Banner3}}" style="max-width: 800px; width: 100%;" /></div>
     </div>
     <ons-row align="center">
-        <ons-col size="90%"><div class="formListInputLrg"><input type="search" class="search-input" ng-model="data.quickSearch" placeholder="Quick search for a shop / deal"></div></ons-col>
-        <ons-col size="10%"><ons-button ng-click="quickSearch()"><ons-icon icon="fa-search"></ons-button></ons-col>
+        <ons-col width="90%"><div class="formListInputLrg"><input type="search" class="search-input" ng-model="data.quickSearch" placeholder="Quick search for a shop / deal"></div></ons-col>
+        <ons-col width="10%"><ons-button ng-click="quickSearch()"><ons-icon icon="fa-search"></ons-button></ons-col>
     </ons-row>
     <!--<h2 class="myHeader"><span>SEARCH FOR A DEAL</span></h2>
     <div style="padding:20px">
@@ -23,17 +23,24 @@
     <div class="search">
         <ons-list>
             <ons-list-item modifier="chevron" ng-click="discountName()">
-                <strong>Name:</strong><br>Shop listed Alphabetically
+                <span class="list-item__title">Name:</span><span class="list-item__subtitle">Shop listed Alphabetically</span>
             </ons-list-item>
             <ons-list-item modifier="chevron" ng-click="discountCategory()">
-               <strong>Category:</strong><br>Shop listed by Category
+                <span class="list-item__title">Category:</span><span class="list-item__subtitle">Shop listed by Category</span>
             </ons-list-item>
             <ons-list-item modifier="chevron" ng-click="discountProvine()">
-                <strong>Region:</strong><br>Shop listed by Region
+                <span class="list-item__title">Region:</span><span class="list-item__subtitle">Shop listed by Region</span>
             </ons-list-item>
             <ons-list-item modifier="chevron" ng-click="discountCloseBy()">
-                <strong>Close By:</strong><br>Shop close to you (GPS location)
+                <span class="list-item__title">Close By:</span><span class="list-item__subtitle">Shop close to you (GPS location)</span>
             </ons-list-item>
         </ons-list>
     </div>
+    <ons-bottom-toolbar ng-style="{'background-color':footerBG}">
+        <ons-row vertical-align="center" style="height: 44px">
+            <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 25px;" onclick="myNavigator.pushPage('views/home.html', { animation : 'slide' } )"><ons-icon icon="ion-home"></ons-icon></ons-col>
+            <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 25px;" onclick="myNavigator.pushPage('views/socialmedia.html', { animation : 'slide' } )"><ons-icon icon="ion-heart"></ons-icon></ons-col>
+            <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 15px;" ng-click="loadpage(5)">T&C’s</ons-col>
+        </ons-row>
+    </ons-bottom-toolbar>
 </ons-page>

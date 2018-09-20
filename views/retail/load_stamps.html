@@ -1,0 +1,37 @@
+<ons-page>
+    <ons-toolbar ng-style="{'background-color':topbarBG}">
+        <div class="left">
+            <ons-back-button>Back</ons-back-button>
+        </div>
+        <div class="center">Stamps</div>
+        <div class="right"></div>
+    </ons-toolbar>
+    <div class="topBanner">
+        <div><img src="{{subBanner}}" style="max-width: 800px; width: 100%;" /></div>
+    </div>
+    <h2 class="myHeader"><span>STAMPS</span></h2>
+    <div style="padding: 0 20px;">
+        <p>Enter member number to continue</p>
+        <div class="formListLrg">
+            <div class="formListLable">Member Number:</div><div class="formListInputLrg"><input type="number" class="text-input"  placeholder="Member Number" ng-model="data.retailMemNumber"></div>
+        </div>
+        <br>
+        <ons-button modifier="large" id="btnLogIn" ng-click="retailMemStamps();" style="width:100%">CONTINUE</ons-button>
+    </div>
+    
+    
+    <!--<div class="retail">
+        <ons-list>
+            <ons-list-item modifier="chevron" ng-repeat="list in retailerList" ng-click="getRetailStamps(list.partnerId,list.tokenIndicator)">
+                <strong>{{list.partnerDescr}}</strong>
+            </ons-list-item>
+        </ons-list>
+    </div>-->
+    <ons-bottom-toolbar ng-style="{'background-color':footerBG}">
+        <ons-row vertical-align="center" style="height: 44px">
+            <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 25px;" onclick="myNavigator.pushPage('views/home.html', { animation : 'slide' } )"><ons-icon icon="ion-home"></ons-icon></ons-col>
+            <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 25px;" onclick="myNavigator.pushPage('views/socialmedia.html', { animation : 'slide' } )"><ons-icon icon="ion-heart"></ons-icon></ons-col>
+            <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 15px;" ng-click="loadpage(5)">T&C’s</ons-col>
+        </ons-row>
+    </ons-bottom-toolbar>
+</ons-page>

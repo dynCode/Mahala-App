@@ -1,7 +1,7 @@
 <ons-page>
     <ons-toolbar ng-style="{'background-color':topbarBG}">
         <div class="left">
-            <ons-back-button></ons-back-button>
+            <ons-back-button>Back</ons-back-button>
         </div>
         <div class="center">Search for a deal</div>
         <div class="right"></div>
@@ -21,7 +21,7 @@
     </div>-->
     <div style="padding:20px">
         Your e-Wallet Balance:
-        <h3 style="border: 1px solid #C82126; background-color: #d1d4da">R {{currentRands}}</h3>
+        <h3 style="border: 1px solid #C82126; background-color: #d1d4da">{{currentUnits}} points equivalent to R{{currentRands}}</h3>
         <p>Your e-Wallet contains all your points that is converted to Rands. You can spend your e-Wallet on anything your heart desires, simply phone us on 0860 62 42 52 or quick shop below:<br><a href="#" onclick="myNavigator.pushPage('views/feedback.html', { animation : 'lift' } )">Problems?</a></p>
     </div>
     <h2 class="myHeader">SEARCH FOR A DEAL</h2>
@@ -41,4 +41,11 @@
             </ons-list-item>
         </ons-list>
     </div>
+    <ons-bottom-toolbar ng-style="{'background-color':footerBG}">
+        <ons-row vertical-align="center" style="height: 44px">
+            <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 25px;" onclick="myNavigator.pushPage('views/home.html', { animation : 'slide' } )"><ons-icon icon="ion-home"></ons-icon></ons-col>
+            <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 25px;" onclick="myNavigator.pushPage('views/socialmedia.html', { animation : 'slide' } )"><ons-icon icon="ion-heart"></ons-icon></ons-col>
+            <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 15px;" ng-click="loadpage(5)">T&C’s</ons-col>
+        </ons-row>
+    </ons-bottom-toolbar>
 </ons-page>

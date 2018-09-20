@@ -1,7 +1,7 @@
 <ons-page>
     <ons-toolbar ng-style="{'background-color':topbarBG}">
         <div class="left">
-            <ons-back-button></ons-back-button>
+            <ons-back-button>Back</ons-back-button>
         </div>
         <div class="center">Discount Voucher</div>
         <div class="right"></div>
@@ -39,7 +39,7 @@
     <div style="margin: 0; text-align: center; background-color: #a9abae;"><h2 style="padding: 5px; color: #606062;">RECORD YOUR DISCOUNT</h2></div>
     
     <div style="padding: 0 20px;">
-        <p><strong>Note:</strong> This is optional, if you record your discount, Mahala can add up all your discount savings. You can view your total discount savings on your E-Wallet Balance page.  Mahala accept no liability or responsibility when a member fails to record their discount.</p>
+        <p><strong>Note:</strong> This is optional, if you record your discount, Mahala can add up all your discount savings. You can view your total discount savings on your Profile Balance page.  Mahala accept no liability or responsibility when a member fails to record their discount.</p>
         <div class="formListLrg">
             <div class="formListLable">Transaction Value:</div><div class="formListInputLrg"><input type="number" class="text-input"  placeholder="Transaction Value" ng-model="data.pointsTransVal"></div>
         </div>
@@ -49,6 +49,7 @@
         <div class="formListLrg">
             <div class="formListLable"><br></div><div class="formListInputLrg"><ons-button modifier="large" id="btnLogIn" ngf-select ng-model="data.invoiceSlip" name="file" ngf-pattern="'image/*'" ngf-capture="'camera'" ngf-resize-if="$width > 800 || $height > 800" ngf-accept="'image/*'" ngf-max-size="20MB" ngf-resize="{width: 800, height: 800}" > UPLOAD YOUR TILL SLIP</ons-button></div>
         </div>
+        <p>&nbsp;</p>
         <div style="text-align: center;"><img src='https://www.mahala.mobi/components/com_jumi/files/mahala_WSDL/test_1D.php?text={{CardNumber}}' width='270px' /></div>
         <!--<input type="text" class="text-input" ng-model="data.partId" value="{{partner_id}}">
         <input type="text" class="text-input" ng-model="data.partName" ng-value="{{partner_name}}">-->
@@ -60,4 +61,11 @@
         <p><a href="#" onclick="myNavigator.pushPage('views/TandC.html');" style="text-decoration: none;">TERMS AND CONDITIONS</a> APPLY.</p>
         <a href="#" onclick="myNavigator.pushPage('views/feedback.html', { animation : 'lift' } )">Problems?</a>
     </div>
+    <ons-bottom-toolbar ng-style="{'background-color':footerBG}">
+        <ons-row vertical-align="center" style="height: 44px">
+            <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 25px;" onclick="myNavigator.pushPage('views/home.html', { animation : 'slide' } )"><ons-icon icon="ion-home"></ons-icon></ons-col>
+            <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 25px;" onclick="myNavigator.pushPage('views/socialmedia.html', { animation : 'slide' } )"><ons-icon icon="ion-heart"></ons-icon></ons-col>
+            <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 15px;" ng-click="loadpage(5)">T&C’s</ons-col>
+        </ons-row>
+    </ons-bottom-toolbar>
 </ons-page>

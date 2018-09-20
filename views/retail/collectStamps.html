@@ -1,0 +1,43 @@
+<ons-page>
+    <ons-toolbar ng-style="{'background-color':topbarBG}">
+        <div class="left">
+            <ons-back-button>Back</ons-back-button>
+        </div>
+        <div class="center">Collect Stamps</div>
+        <div class="right"></div>
+    </ons-toolbar>
+    <div class="topBanner">
+        <div><img src="images/{{partnerID}}.jpg" style="max-width: 800px; width: 100%;" /></div>
+    </div>
+    <h2 class="myHeader"><span>COLLECT STAMPS</span></h2>
+    <div style="padding:5px 20px;">Click on the icon below to collect your stamps</div>
+    <div class="stamps">
+        <div ng-repeat="list in stampList track by $index" style="text-align: center;" ng-click="countStamps($index)">
+            <img src="{{list.img}}" width="99%">
+        </div>
+    </div>
+    <div class="formListLrg">
+        <div class="formListLable">You have Selected  #</div>
+        <div class="formListInputLrg"><input type="number" class="text-input"  placeholder="Stamp Count" ng-model="stampCount"></div>
+    </div>
+    <p>&nbsp;</p>
+    <div style="padding:0px 20px;">Fill in the Shop Approval Code and the Invoice No. to collect your Stamps!</div>
+    <div class="formListLrg">
+        <div class="formListLable">Shop Approval Code:</div>
+        <div class="formListInputLrg"><input type="text" class="text-input"  placeholder="Enter Code" ng-model="data.cashierCode"></div>
+    </div>
+    <div class="formListLrg">
+        <div class="formListLable">Invoice No:</div>
+        <div class="formListInputLrg"><input type="text" class="text-input"  placeholder="Invoice No" ng-model="data.invNo"></div>
+    </div>
+    <p>&nbsp;</p>
+    <ons-button modifier="large" class="reg-button" ng-click="processRetailStamps()">SUBMIT</ons-button>
+    <div style="padding:20px;">Terms & Conditions apply.</div>
+    <ons-bottom-toolbar ng-style="{'background-color':footerBG}">
+        <ons-row vertical-align="center" style="height: 44px">
+            <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 25px;" onclick="myNavigator.pushPage('views/home.html', { animation : 'slide' } )"><ons-icon icon="ion-home"></ons-icon></ons-col>
+            <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 25px;" onclick="myNavigator.pushPage('views/socialmedia.html', { animation : 'slide' } )"><ons-icon icon="ion-heart"></ons-icon></ons-col>
+            <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 15px;" ng-click="loadpage(5)">T&C’s</ons-col>
+        </ons-row>
+    </ons-bottom-toolbar>
+</ons-page>

@@ -1,7 +1,7 @@
 <ons-page>
     <ons-toolbar ng-style="{'background-color':topbarBG}">
         <div class="left">
-            <ons-back-button></ons-back-button>
+            <ons-back-button>Back</ons-back-button>
         </div>
         <div class="center">Redemption Voucher</div>
         <div class="right"></div>
@@ -15,7 +15,7 @@
         <table>
             <tr>
                 <td>Your Balance:</td>
-                <td style="border: 1px solid #C82126;"><strong>R {{currentRands}}</strong></td>
+                <td style="border: 1px solid #C82126;"><strong>{{currentUnits}} points equivalent to R{{currentRands}}</strong></td>
             </tr>
         </table>
         <p><strong>To redeem your points, complete the fields below, enter the OTP pin provided by the store and submit.</strong></p>
@@ -80,4 +80,11 @@
         <p class="location" style='color:#000'><i>Your points redemption cannot exceed your points balance as displayed above. You have to be in-store.</i></p>
         <p style='color:#cd242d'><a href="#" onclick="myNavigator.pushPage('views/TandC.html');" style="text-decoration: none; color: #C82126;">TERMS AND CONDITIONS</a> APPLY.</p>
     </div>
+    <ons-bottom-toolbar ng-style="{'background-color':footerBG}">
+        <ons-row vertical-align="center" style="height: 44px">
+            <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 25px;" onclick="myNavigator.pushPage('views/home.html', { animation : 'slide' } )"><ons-icon icon="ion-home"></ons-icon></ons-col>
+            <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 25px;" onclick="myNavigator.pushPage('views/socialmedia.html', { animation : 'slide' } )"><ons-icon icon="ion-heart"></ons-icon></ons-col>
+            <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 15px;" ng-click="loadpage(5)">T&C’s</ons-col>
+        </ons-row>
+    </ons-bottom-toolbar>
 </ons-page>
