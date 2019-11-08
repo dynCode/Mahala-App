@@ -32,8 +32,10 @@
             Check your BENEFITS
         </ons-list-item>
     </ons-list>
-    <h2 class="myHeader"><span>GET FREEBIES</span></h2>
-    <ons-button modifier="large" class="reg-button" ng-click="myFreebies()">Check your Freebies</ons-button>
+    <div ng-if="!hasBenefits">
+        <h2 class="myHeader"><span>GET FREEBIES</span></h2>
+        <ons-button modifier="large" class="reg-button" ng-click="myFreebies()">Check your Freebies</ons-button>
+    </div>
     <div style="padding:20px;">Terms & Conditions apply.</div>
     <ons-bottom-toolbar ng-style="{'background-color':footerBG}">
         <ons-row vertical-align="center" style="height: 44px">

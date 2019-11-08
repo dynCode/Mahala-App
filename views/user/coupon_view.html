@@ -17,7 +17,8 @@
     </ons-row>
      <h2 class="myHeader"><span>COUPON INFO</span></h2>
     <div style="padding: 0 20px;">
-        <img src="images/eeziCoupons.png" style="max-width: 380px; width: 100%;" />
+		<span ng-if="topCoupBan"><img src="{{topCoupBan}}" style="max-width: 380px; width: 100%;" /></span>
+        <span ng-if="!topCoupBan"><img src="images/Dischem.jpg" style="max-width: 380px; width: 100%;" /></span>
     </div>
     <div style="padding: 0 20px;">
         <table width='100%' style='border:none'>

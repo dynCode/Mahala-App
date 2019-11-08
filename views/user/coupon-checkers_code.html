@@ -1,0 +1,65 @@
+<ons-page>
+    <ons-toolbar ng-style="{'background-color':topbarBG}">
+        <div class="left">
+            <ons-back-button>Back</ons-back-button>
+        </div>
+        <div class="center">Coupons</div>
+        <div class="right"></div>
+    </ons-toolbar>
+    <div class="topBanner">
+        <div class="subImgBlock">
+            <img src="{{subBanner}}" style="max-width: 380px; width: 100%;" />
+        </div>
+    </div>
+    <ons-row align="center">
+        <ons-col width="90%"><div class="formListInputLrg"><input type="search" class="search-input" ng-model="data.quickSearch" placeholder="Quick search for a shop / deal"></div></ons-col>
+        <ons-col width="10%"><ons-button ng-click="quickSearch()"><ons-icon icon="fa-search"></ons-button></ons-col>
+    </ons-row>
+    <h2 class="myHeader"><span>COUPONS</span></h2>
+    <div style="padding: 0 20px;">
+        <img src="{{topCoupBan}}" style="max-width: 380px; width: 100%;" />
+        <h3 style="text-align: center">MY COUPON CODES</h3>
+        <p>Present these Coupon Codes to the cashier before you pay and your savings will be deducted from your basket / total bill.</p>
+        <p>Your selected Coupon Codes are valid for a full calendar month and will remain in your basket for the entire month. New coupon codes will be issued on your request every month. If you want to save your Coupon Codes, take a screenshot or e-mail them to your e-mail and present when you pay.</p>
+        <ons-list-item modifier="couponList" class="list-item-container list__item--tappable" ng-repeat="(key,value) in couponCodeList | groupBy:'coupon_date'">
+            <h4>Coupons on: {{key}}</h4>
+            <ons-row>
+                <ons-col width="160px">
+                    Code
+                </ons-col>
+                <ons-col>
+                    Description
+                </ons-col>
+                <ons-col width="35px">
+                    Limit
+                </ons-col>
+            </ons-row>
+            <ons-row ng-repeat="couponCode in value">
+                <ons-col width="160px">
+                    {{couponCode.coupon_code}}
+                </ons-col>
+                <ons-col>
+                    <small>{{couponCode.coupon_name}}</small>
+                </ons-col>
+                <ons-col width="35px">
+                    <span style="color: #ce282c;">{{couponCode.code_issue_limit}}</span>
+                </ons-col>
+            </ons-row>
+        </ons-list-item>
+        <!--<h1 modifier="large outline" id="btnLogIn" style="text-align: center">{{couponCode.coupon_code}}</h1>
+        <p><strong>{{couponCode.message}}</strong></p>
+        <p>Coupons available: {{couponCode.code_total_available}}</p>
+        <p>Present this Coupon Code to the cashier before you pay and your savings will be deducted from your basket / total bill.</p>-->
+        <div style="padding:20px">
+            <ons-button modifier="large" id="btnLogIn" ng-click="emailCouponCode()" style="width:100%">E-mail to yourself / friend</ons-button>
+        </div>
+        <p><strong>Terms and conditions apply.</strong></p>
+    </div>
+    <ons-bottom-toolbar ng-style="{'background-color':footerBG}">
+        <ons-row vertical-align="center" style="height: 44px">
+            <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 25px;" onclick="myNavigator.pushPage('views/home.html', { animation : 'slide' } )"><ons-icon icon="ion-home"></ons-icon></ons-col>
+            <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 25px;" onclick="myNavigator.pushPage('views/socialmedia.html', { animation : 'slide' } )"><ons-icon icon="ion-heart"></ons-icon></ons-col>
+            <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 15px;" ng-click="loadpage(5)">T&C’s</ons-col>
+        </ons-row>
+    </ons-bottom-toolbar>
+</ons-page>

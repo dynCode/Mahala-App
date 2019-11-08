@@ -15,12 +15,15 @@
     <div style="padding: 0 20px">
         <p>With your Virtual Card you’ll never leave home without missing a deal! </p>
     </div>
-    <div ons-if-orientation="portrait" style="text-align: center; width: 100%;">
+    <div style="text-align: center; width: 100%;">
+        <img ng-src='{{virtualCard}}' style="margin: auto; width: 100%;" />
+    </div>
+    <!--<div ons-if-orientation="portrait" style="text-align: center; width: 100%;">
         <img src='https://www.mahala.mobi/api/class/test_1D.php?text={{CardNumber}}&rotate=270&comid={{comId}}' style="margin: auto; width: 100%;" />
     </div>
     <div ons-if-orientation="landscape" style="text-align: center; width: 100%;">
         <img src='https://www.mahala.mobi/api/class/test_1D.php?text={{CardNumber}}&rotate=0&comid={{comId}}' style="margin: auto; width: 100%;" />
-    </div>
+    </div>-->
     <ons-bottom-toolbar ng-style="{'background-color':footerBG}">
         <ons-row vertical-align="center" style="height: 44px">
             <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 25px;" onclick="myNavigator.pushPage('views/home.html', { animation : 'slide' } )"><ons-icon icon="ion-home"></ons-icon></ons-col>

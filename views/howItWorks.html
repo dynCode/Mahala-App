@@ -14,7 +14,7 @@
         <ons-col width="10%"><ons-button ng-click="quickSearch()"><ons-icon icon="fa-search"></ons-button></ons-col>
     </ons-row>
     <h2 class="myHeader"><span>TUTORIAL</span></h2>
-    <img src="images/Tutorial_Video.png" style="max-width: 800px; width: 100%;" onclick="window.open('https://youtu.be/CmPbFxai6aw','_system','')" />
+    <img src="images/Tutorial_Video.png" style="max-width: 800px; width: 100%;" onclick="myNavigator.pushPage('views/tutorial_vids.html', { animation : 'slide' } )" />
     <br />
     <img src="images/Tutorial_Cartoon.jpg" style="max-width: 800px; width: 100%;" onclick="myNavigator.pushPage('views/tutorial.html', { animation : 'slide' } )" />
     <ons-bottom-toolbar ng-style="{'background-color':footerBG}">

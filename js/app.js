@@ -1,4 +1,4 @@
-var module = angular.module('app', ['onsen', 'ngMap', 'ngSanitize', 'ngFileUpload','720kb.socialshare']);
+var module = angular.module('app', ['onsen', 'ngMap', 'ngSanitize', 'ngFileUpload','720kb.socialshare','angular.filter']);
 
 // angular data filters
 module.filter('externalLinks', function() {
@@ -78,6 +78,7 @@ module.controller('AppController', function($scope, $http, $window, $timeout, Up
     $scope.commun = '';
     $scope.tokenBalance = '';
     $scope.totalDiscount = '';
+    $scope.virtualCard = '';
 
     //Partner Data
     $scope.partner_id = '';
@@ -102,7 +103,8 @@ module.controller('AppController', function($scope, $http, $window, $timeout, Up
 
     //Coupon Code
     $scope.couponCode = '';
-
+    $scope.couponCodeList = [];
+    
     //Coupon Data
     $scope.couponimageUrl = "";
     $scope.couponname = "";
@@ -113,6 +115,7 @@ module.controller('AppController', function($scope, $http, $window, $timeout, Up
     //tranaction fields
     $scope.transList = "";
     $scope.discountList = "";
+    $scope.shellCardNum = "";
 
     // Airtime Options
     $scope.selectedAir = [];
@@ -195,6 +198,8 @@ module.controller('AppController', function($scope, $http, $window, $timeout, Up
     $scope.totalPaidRedemp = "";
     $scope.retailMemNumber = "";
     $scope.retailMemSID = "";
+    $scope.totalTokenCol = "";
+    $scope.totalTokenRem = "";
     // redemption authcode
     $scope.redemAuthCode = "";
     /*
@@ -315,7 +320,7 @@ module.controller('AppController', function($scope, $http, $window, $timeout, Up
                     $scope.commun = data['commun'];
                     $scope.tokenBalance = data['tokenBalance'];
                     $scope.totalDiscount = data['totalDiscount'];
-                    
+                    $scope.virtualCard = data['virtualCard'];
                 } 
             })
             .error(function(data, status) {
@@ -427,7 +432,7 @@ module.controller('AppController', function($scope, $http, $window, $timeout, Up
                     $scope.commun = data['commun'];
                     $scope.tokenBalance = data['tokenBalance'];
                     $scope.totalDiscount = data['totalDiscount'];
-
+                    $scope.virtualCard = data['virtualCard'];
                     modal.show();
                     $scope.data.errorCode = 'Collecting your data...';
 
@@ -509,6 +514,10 @@ module.controller('AppController', function($scope, $http, $window, $timeout, Up
     };
     //register me
     $scope.registerME = function () {
+        $scope.data.regBusy = true;
+        modal.show();
+        $scope.data.errorCode = 'Processing, please wait...';
+        
         var cashierCode = $scope.data.reg_cashierCode;
         var cardType = $scope.data.cardType;
         var FirstName = $scope.data.reg_FirstName;
@@ -565,6 +574,8 @@ module.controller('AppController', function($scope, $http, $window, $timeout, Up
         }
 
         if (cardType === "physical" && (typeof MemberNo === 'undefined' || MemberNo === null)) {
+            modal.hide();
+            $scope.data.regBusy = false;
             ons.notification.alert({
                 message: 'Please enter the membership number on your physical card.',
                 title: 'Oops!',
@@ -572,6 +583,8 @@ module.controller('AppController', function($scope, $http, $window, $timeout, Up
                 animation: 'default'
             });
         } else if (tc_y === 'no') {
+            modal.hide();
+            $scope.data.regBusy = false;
             ons.notification.alert({
                 message: 'Please accept the terms and conditions to continue.',
                 title: 'Oops!',
@@ -579,8 +592,6 @@ module.controller('AppController', function($scope, $http, $window, $timeout, Up
                 animation: 'default'
             });
         } else {
-            modal.show();
-            $scope.data.errorCode = 'Processing, please wait...';
             $http.post($scope.apiPath+'register.php', {"reqType" : "register", "cashierCode" : cashierCode, "cardType" : cardType, "FirstName" : FirstName, "LastName" : LastName, "gender" : gender, "title" : title, "IDNum" : IDNum, "dob" : dob, "CellNumber" : CellNumber, "EmailAddress" : EmailAddress, "Address1" : Address1, "Address2" : Address2, "PostCode" : PostCode, "Suburb" : Suburb, "City" : City, "Province" : Province, "MemberNo" : MemberNo, "Terms" : tc_y, "Market" : market_y})
             .success(function(data, status){
                 console.log("Data:", data);
@@ -601,6 +612,7 @@ module.controller('AppController', function($scope, $http, $window, $timeout, Up
 
                 } else {
                     modal.hide();
+                    $scope.data.regBusy = false;
                     ons.notification.alert({
                         message: data['html'],
                         title: 'Error',
@@ -611,6 +623,7 @@ module.controller('AppController', function($scope, $http, $window, $timeout, Up
             })
             .error(function(data, status) {
                 modal.hide();
+                $scope.data.regBusy = false;
                 ons.notification.alert({
                     message: 'There was a problem processing your request, please try again!',
                     title: 'Oops!',
@@ -2560,16 +2573,39 @@ module.controller('AppController', function($scope, $http, $window, $timeout, Up
         });
     };
 
-    $scope.loadBoxerCoupons = function () {
+    $scope.loadCheckersCoupons = function (num) {
+        
+        // check date and reset list
+        var dateObj = new Date();
+        var day = dateObj.getUTCDate();
+        if (day === 1) {
+            $window.localStorage.setItem('couponList',''); 
+        } else {
+            var ccl = $window.localStorage.getItem('couponList');
+            console.log('CCL:', ccl);
+            if (ccl) {
+                $scope.couponCodeList = JSON.parse($window.localStorage.getItem('couponList')); 
+                console.log('LS Coupon List:', $scope.couponCodeList);
+            }
+        }
+        
+        $scope.topCoupBan = '';
+        if (num === 1) {
+            $scope.topCoupBan = 'images/Checkers.jpg';
+        } else if (num === 2) {
+            $scope.topCoupBan = 'images/CheckersHyper.jpg';
+        } else if (num === 3) {
+            $scope.topCoupBan = 'images/Shoprite.jpg';
+        }
         $scope.couponList = [];
         modal.show();
         $scope.data.errorCode = 'Processing, please wait...';
-        $http.post($scope.apiPath+'coupon-list.php', {"couponFor" : "boxer"})
+        $http.post($scope.apiPath+'coupon-list.php', {"couponFor" : "checkers"})
         .success(function (result, status) {
             modal.hide();
             console.log(result);
             $scope.couponList = result;
-            myNavigator.pushPage('views/user/coupon-boxer.html', { animation : 'fade'});
+            myNavigator.pushPage('views/user/coupon-checkers.html', { animation : 'fade'});
         })
         .error(function(result, status) {
             modal.hide();
@@ -2605,27 +2641,93 @@ module.controller('AppController', function($scope, $http, $window, $timeout, Up
     };
 
     //Get coupon code
-    $scope.getBoxerCouponCode = function() {
-        $scope.couponCode = "";
-        modal.show();
-        $scope.data.errorCode = 'Processing, please wait...';
-        $http.post($scope.apiPath+'coupon-code.php', {"userRef" : $scope.userMpacc, "couponFor" : "boxer"})
-        .success(function(data, status){
-            modal.hide();
-            console.log(data);
-            $scope.couponCode = data['html'];
-            myNavigator.pushPage('views/user/coupon-boxer_code.html', { animation : 'fade'});
+    $scope.getCheckersCouponCode = function(cid) {
+        
+        var cellNum = $window.localStorage.getItem('cell') !== "" ? $window.localStorage.getItem('cell') : $scope.ContactNumber; 
+        
+        ons.notification.prompt({
+            message: 'What is your cell number?', 
+            defaultValue: cellNum
         })
-        .error(function(data, status) {
-            modal.hide();
-            ons.notification.alert({
-                message: 'Request Failed, try again.',
-                title: 'Sorry!',
-                buttonLabel: 'OK',
-                animation: 'default'
-            });
+        .then(function(cell) {
+            if (typeof cell === 'undefined' || cell === null || cell.length < 10) {
+                ons.notification.alert({
+                    message: 'Please enter a cell number or valid cell number',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            } else {
+                modal.show();
+                $window.localStorage.setItem('cell',cell);
+                $scope.data.errorCode = 'Processing, please wait...';
+                $http.post($scope.apiPath+'coupon-code.php', {"userRef" : $scope.userMpacc, "couponFor" : "checkers", "msisdn" : cell, "coupon_id" : cid })
+                .success(function(data, status){
+                    modal.hide();
+                    console.log('Coupon Data recieved:', data);
+                    $scope.couponCodeList.push(data);
+                    console.log($scope.couponCodeList);
+                    $window.localStorage.setItem('couponList',JSON.stringify($scope.couponCodeList)); 
+                    //myNavigator.pushPage('views/user/coupon-checkers_code.html', { animation : 'fade'});
+                    ons.notification.toast({
+                        message: 'Coupon added to list',
+                        timeout: 1000
+                    });
+                })
+                .error(function(data, status) {
+                    modal.hide();
+                    ons.notification.alert({
+                        message: 'Request Failed, try again.',
+                        title: 'Sorry!',
+                        buttonLabel: 'OK',
+                        animation: 'default'
+                    });
+                });
+            }
         });
     };
+    
+    $scope.showCheckersCouponCodes = function() {
+        myNavigator.pushPage('views/user/coupon-checkers_code.html', { animation : 'fade'});
+    };
+    
+    $scope.emailCouponCode = function() {
+        ons.notification.prompt({
+            message: 'What is your friend\'s email address?', 
+            defaultValue: $scope.EmailAddress
+        })
+        .then(function(email) {
+            if (typeof email === 'undefined' || email === null) {
+                ons.notification.alert({
+                    message: 'Please enter a email address',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            } else {
+                modal.show();
+                $scope.data.errorCode = 'Processing, please wait...';
+                $http.post($scope.apiPath+'coupon-code.php', {"userRef" : $scope.userMpacc, "couponFor" : "emailcheckers", "email" : email, "from" : $scope.FirstName+' '+$scope.LastName, "couponList" : $scope.couponCodeList})
+                .success(function(data, status){
+                    modal.hide();
+                    ons.notification.toast({
+                        message: 'Coupons emailed to '+email,
+                        timeout: 1000
+                    });
+                })
+                .error(function(data, status) {
+                    modal.hide();
+                    ons.notification.alert({
+                        message: 'Request Failed, try again.',
+                        title: 'Sorry!',
+                        buttonLabel: 'OK',
+                        animation: 'default'
+                    });
+                });
+            }
+        });
+    };
+    
     $scope.getDischemCouponCode = function() {
         $scope.couponCode = "";
         modal.show();
@@ -3547,6 +3649,8 @@ module.controller('AppController', function($scope, $http, $window, $timeout, Up
                     $scope.totalPendRedemp = data['totalPendRedemp'];
                     $scope.totalPaidRedemp = data['totalPaidRedemp'];
                     $scope.partner_logo = data['partner_logo'];
+                    $scope.totalTokenCol = data['totalTokenCol'];
+                    $scope.totalTokenRem = data['totalTokenRem'];
 
                     $timeout(function(){
                         modal.hide();
@@ -3777,7 +3881,7 @@ module.controller('AppController', function($scope, $http, $window, $timeout, Up
         $scope.data.errorCode = 'Processing, please wait...';
         $http.post($scope.apiPath+'retailStamps.php', {"reqType" : "collectStamps", "cardNumber" : cardNumber, "attendant" : attendant, "receiptNumber" : receiptNumber, "quantity" : quantity, "productCode" : productCode, "partnerId" : partnerId})
         .success(function(data, status){
-            if (data['code'] == 400) {
+            if (data['code'] === 400) {
                 modal.hide();
                 ons.notification.alert({
                     message: data['message'],
@@ -4112,13 +4216,80 @@ module.controller('AppController', function($scope, $http, $window, $timeout, Up
         }
     };
 
-    $scope.processStamps = function() {
+    $scope.processStamps = function(file) {
         var attendant = $scope.data.cashierCode; 
         var receiptNumber = $scope.data.invNo;
         var cardNumber = $scope.userMpacc;
         var quantity = $scope.stampCount;
         var productCode = $scope.tokenCode;
         var partnerId = $scope.retailId;
+        
+        if (typeof file !== 'undefined' || file !== null) {
+            modal.show();
+            $scope.data.errorCode = 'Processing, please wait...';
+
+            file.upload = Upload.upload({
+                //url: $scope.apiPath+'uploadDiscount.php',
+                url: $scope.apiPath+'freebieRetail.php',
+                method: 'POST',
+                file: file,
+                data: {
+                    "reqType": "collectStamps", 
+                    "cardNumber" : cardNumber, 
+                    "attendant" : attendant, 
+                    "receiptNumber" : receiptNumber, 
+                    "quantity" : quantity, 
+                    "productCode" : productCode, 
+                    "partnerId" : partnerId
+                }
+            });
+
+            // returns a promise
+            file.upload.then(function(resp) {
+                // file is uploaded successfully
+                console.log('file ' + resp.config.data.file.name + ' is uploaded successfully. Response: ' + resp.data);
+                modal.hide();
+                ons.notification.alert({
+                    message: "Thank you!",
+                    title: 'Yay!',
+                    buttonLabel: 'Continue',
+                    animation: 'default',
+                    callback: function() {
+                        $scope.data = [];
+                        $scope.retailerList = [];
+                        $scope.retailId = '';
+                        $scope.tokenIndicator = '';
+                        $scope.tokenList = [];
+                        $scope.tokenCode = '';
+                        $scope.stampCount = 0;
+                        $scope.tokenInfo = [];
+                        $scope.stampList = [];
+                        $scope.partner_id = partnerId;
+                        myNavigator.pushPage('views/user/feedback_form.html', { animation : 'fade' });
+                    }
+                });
+            }, function(resp) {
+                if (resp.status > 0) {
+                    modal.hide();
+                    $scope.data.result = resp.status + ': ' + resp.data;
+                    $scope.data.errorCode = resp.status + ': ' + resp.data;
+                    modal.show();
+                }            
+            }, function(evt) {
+                // progress notify
+                console.log('progress: ' + parseInt(100.0 * evt.loaded / evt.total) + '% file :'+ evt.config.data.file.name);
+                $scope.data.errorCode = 'progress: ' + parseInt(100.0 * evt.loaded / evt.total) + '%';
+            });
+        } else {
+            modal.hide();
+            ons.notification.alert({
+                message: "Please upload your till slip.",
+                title: 'Sorry!',
+                buttonLabel: 'OK',
+                animation: 'default'
+            });
+        }
+        /* Old process
         modal.show();
         $scope.data.errorCode = 'Processing, please wait...';
         $http.post($scope.apiPath+'freebieRetail.php', {"reqType" : "collectStamps", "cardNumber" : cardNumber, "attendant" : attendant, "receiptNumber" : receiptNumber, "quantity" : quantity, "productCode" : productCode, "partnerId" : partnerId})
@@ -4163,6 +4334,7 @@ module.controller('AppController', function($scope, $http, $window, $timeout, Up
                 animation: 'default'
             });
         });
+        */
     };
 
     $scope.myFreebies = function() {
@@ -4226,7 +4398,7 @@ module.controller('AppController', function($scope, $http, $window, $timeout, Up
         $http.post($scope.apiPath+'freebieRetail.php', {"reqType" : "sendOTP", 'attendant': attendant, 'receiptNumber': receiptNumber, 'cardNumber': cardNumber, 'freebieList': $scope.freebiesList, 'partnerId' : partnerId})
         .success(function(data, status){
             console.log('Otp request Data:', data);
-            if (data['code'] == 400) {
+            if (data['code'] === 400) {
                 modal.hide();
                 ons.notification.alert({
                     message: data['message'],
@@ -4265,7 +4437,7 @@ module.controller('AppController', function($scope, $http, $window, $timeout, Up
         .success(function(data, status){
             console.log('Otp submit Data:', data);
             modal.hide();
-            if (data['code'] == 400) {
+            if (data['code'] === 400) {
                 ons.notification.alert({
                     message: data['message'],
                     title: 'Sorry!',
@@ -4328,6 +4500,69 @@ module.controller('AppController', function($scope, $http, $window, $timeout, Up
                 animation: 'default'
             });
         });
+    };
+	
+	
+    // check if shell t card is active
+    $scope.checkShellCard = function () {
+        $scope.shelltcard = false;
+        $scope.nextpage = false;
+        modal.show();
+        $scope.data.errorCode = 'Processing, please wait...';
+        $http.post($scope.apiPath+'shellTCard.php', {"reqType" : "checkCard", "mpacc" : $scope.userMpacc})
+        .success(function(data, status){
+            modal.hide();
+            console.log("Check Card:", data);
+            if(data['error'] == 0) {
+                $scope.shellCardNum = data['html'];
+                $scope.shelltcard = true;
+            }
+        })
+        .error(function(data, status) {
+            modal.hide();
+            ons.notification.alert({
+                message: 'Request Failed, try again.',
+                title: 'Sorry!',
+                buttonLabel: 'OK',
+                animation: 'default'
+            });
+        });
+    };
+    
+    $scope.gtcTonext = function () {
+        $scope.nextpage = true;
+    };
+    
+    // active shell t card
+    $scope.activateShellT = function () {
+        if ($scope.data.tc_y !== 'undefined' || $scope.data.tc_y !== null) {
+            modal.show();
+            $scope.data.errorCode = 'Processing, please wait...';
+            $http.post($scope.apiPath+'shellTCard.php', {"reqType" : "activateCard", "mpacc" : $scope.userMpacc})
+            .success(function(data, status){
+                modal.hide();
+                if(data['error'] == 0) {
+                    $scope.shellCardNum = data['html'];
+                    $scope.shelltcard = true;
+                }
+            })
+            .error(function(data, status) {
+                modal.hide();
+                ons.notification.alert({
+                    message: 'Request Failed, try again.',
+                    title: 'Sorry!',
+                    buttonLabel: 'OK',
+                    animation: 'default'
+                });
+            });
+        } else {
+            ons.notification.alert({
+                message: 'Please read and accept the T\'s & C\'s before you can activate your card.',
+                title: 'Warning!',
+                buttonLabel: 'OK',
+                animation: 'default'
+            });
+        }
     };
 }); 
 

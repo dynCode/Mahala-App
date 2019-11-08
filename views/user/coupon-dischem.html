@@ -24,11 +24,17 @@
             <li>Show unique code to Cashier when you pay.</li>
         </ol>
         <div><a href="#" onclick="myNavigator.pushPage('views/feedback.html', { animation : 'lift' } )">Problems?</a></div>
-        <img src="images/Dischem.jpg" style="max-width: 380px; width: 100%;" />
-        <ons-button modifier="large" id="btnLogIn" ng-click="getDischemCouponCode()" style="width:100%">MY COUPON CODE<br><small>Click here to generate your unique Coupon Code,<br>display this code to your cashier when you pay.</small></ons-button>
+        
+        <!--<ons-button modifier="large" id="btnLogIn" ng-click="getDischemCouponCode()" style="width:100%">MY COUPON CODE<br><small>Click here to generate your unique Coupon Code,<br>display this code to your cashier when you pay.</small></ons-button>-->
     </div>
+    <img src="images/Dischem.jpg" style="max-width: 380px; width: 100%;" />
     <ons-list>
-        <ons-list-item modifier="couponList" class="list-item-container list__item--tappable" ng-repeat="coupon in couponList" ng-click="showCoupon(coupon.id)">
+        <ons-list-item modifier="chevron" ng-click="getDischemCouponCode()"  style="background-color: #ce282c; color: #fff; text-align: center;">
+            <span class="list-item__title">MY COUPON CODE</span><span class="list-item__subtitle">Click here to generate your unique Coupon Code,<br>display this code to your cashier when you pay.</span>
+        </ons-list-item>
+    </ons-list>
+    <ons-list>
+        <ons-list-item modifier="couponList" class="list-item-container list__item--tappable" ng-repeat="coupon in couponList.couponCampaigns">
             <ons-row>
                 <ons-col width="95px">
                     <img src="{{coupon.imageUrl}}" class="thumbnail">
@@ -38,7 +44,7 @@
                         {{coupon.name}}
                     </div>
                     <div style="text-align: left;">
-                        <span style="font-size: 18px; font-weight: bold; color: #c82126;">Save {{coupon.discount}}</span>
+                        <span style="font-size: 18px; font-weight: bold; color: #c82126;">Save R {{coupon.maxRedemptionRuleAmount/100}}</span>
                     </div>
                     <div class="desc" style="text-align: left;">
                         <small>{{coupon.description}}</small>
@@ -48,9 +54,11 @@
             </ons-row>
         </ons-list-item>
     </ons-list>
-    <div style="padding:20px">
-        <ons-button modifier="large" id="btnLogIn" ng-click="getDischemCouponCode()" style="width:100%">MY COUPON CODE<br><small>Click here to generate your unique Coupon Code,<br>display this code to your cashier when you pay.</small></ons-button>
-    </div>
+    <ons-list>
+        <ons-list-item modifier="chevron" ng-click="getDischemCouponCode()"  style="background-color: #ce282c; color: #fff; text-align: center;">
+            <span class="list-item__title">MY COUPON CODE</span><span class="list-item__subtitle">Click here to generate your unique Coupon Code,<br>display this code to your cashier when you pay.</span>
+        </ons-list-item>
+    </ons-list>
     <ons-bottom-toolbar ng-style="{'background-color':footerBG}">
         <ons-row vertical-align="center" style="height: 44px">
             <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 25px;" onclick="myNavigator.pushPage('views/home.html', { animation : 'slide' } )"><ons-icon icon="ion-home"></ons-icon></ons-col>

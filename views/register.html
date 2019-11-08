@@ -203,7 +203,8 @@
         </label>
     </div>
     <p>&nbsp;</p>
-    <div class="formList"><ons-button modifier="large" class="reg-button" ng-click="registerME()">SUBMIT</ons-button></div>
+    <div class="formList" ng-if="!data.regBusy"><ons-button modifier="large" class="reg-button" ng-click="registerME()">SUBMIT</ons-button></div>
+    <div class="formList" ng-if="data.regBusy"><ons-button modifier="large" class="reg-button">Processing Request</ons-button></div>
     <ons-bottom-toolbar ng-style="{'background-color':footerBG}">
         <ons-row vertical-align="center" style="height: 44px">
             <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 25px;" onclick="myNavigator.pushPage('views/home.html', { animation : 'slide' } )"><ons-icon icon="ion-home"></ons-icon></ons-col>

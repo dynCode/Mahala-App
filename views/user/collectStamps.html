@@ -34,8 +34,13 @@
         <div class="formListLable">Invoice No:</div>
         <div class="formListInputLrg"><input type="text" class="text-input"  placeholder="Invoice No" ng-model="data.invNo"></div>
     </div>
+    <div class="formListLrg">
+        <div class="formListLable">&nbsp;</div>
+        <div class="formListInputLrg"><ons-button modifier="large" id="btnLogIn" ngf-select ng-model="data.invoiceSlip" name="file" ngf-pattern="'image/*'" ngf-capture="'camera'" ngf-resize-if="$width > 800 || $height > 800" ngf-accept="'image/*'" ngf-max-size="20MB" ngf-resize="{width: 800, height: 800}">UPLOAD YOUR TILL SLIP</ons-button></div>
+    </div>
     <p>&nbsp;</p>
-    <ons-button modifier="large" class="reg-button" ng-click="processStamps()">SUBMIT</ons-button>
+    <div style="padding:20px;"><img ng-show="data.invoiceSlip.$valid" ngf-thumbnail="data.invoiceSlip" ngf-size="{width: 100, height: 100, quality: 0.9}"></div>
+    <ons-button modifier="large" class="reg-button" ng-click="processStamps(data.invoiceSlip)">SUBMIT</ons-button>
     <div style="padding:20px;">Terms & Conditions apply.</div>
     <ons-bottom-toolbar ng-style="{'background-color':footerBG}">
         <ons-row vertical-align="center" style="height: 44px">

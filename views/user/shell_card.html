@@ -1,0 +1,80 @@
+<ons-page>
+    <ons-toolbar ng-style="{'background-color':topbarBG}">
+        <div class="left">
+            <ons-back-button>Back</ons-back-button>
+        </div>
+        <div class="center">My Loyalty Cards</div>
+        <div class="right"></div>
+    </ons-toolbar>
+    <div class="topBanner">
+        <div class="subImgBlock">
+            <img src="https://www.mahala.mobi/images/SHELLT.png" style="max-width: 340px; width: 100%;" />
+        </div>
+    </div>
+    <ons-row align="center">
+        <ons-col width="90%"><div class="formListInputLrg"><input type="search" class="search-input" ng-model="data.quickSearch" placeholder="Quick search for a shop / deal"></div></ons-col>
+        <ons-col width="10%"><ons-button ng-click="quickSearch()"><ons-icon icon="fa-search"></ons-button></ons-col>
+    </ons-row>
+    <h2 class="myHeader" ng-init="checkShellCard()"><span>SHELL T CARD</span></h2>
+    <div ng-if="shelltcard">
+        <div ons-if-orientation="portrait" style="text-align: center; width: 100%;">
+            <img src='https://www.mahala.mobi/api/class/shellCard.php?text={{shellCardNum}}&rotate=270' style="margin: auto; width: 100%;" />
+        </div>
+        <div ons-if-orientation="landscape" style="text-align: center; width: 100%;">
+            <img src='https://www.mahala.mobi/api/class/shellCard.php?text={{shellCardNum}}&rotate=0' style="margin: auto; width: 100%;" />
+        </div>
+    </div>
+    <div ng-if="!shelltcard">
+        <div style="padding:0 20px">
+            <div ng-if="!nextpage">
+                <p>ACTIVATE your SHELL T CARD and earn points every time you fill up at a participtating SHELL garage nationwide. Generate & present your SHELL T CARD when you fill up to earn your points.</p>
+                <p><strong>Administration Fee:</strong><br>An amount of R5 will be deducted from your fuel reward before the points are allocated in your e-Wallet for the first 6 months as an administration fee. This fee will be implemented annually (R5 x 6 = R30 per annum).</p>
+                <p><strong>Inactive Cards:</strong><br>Cards not in-use for a period longer than 30 days will be considered inactive. Members will have to reactivate their Shell T Card when renewing their Shell T Card benefit. All accumulated points previously earned will still be available in your e-Wallet.</p>
+                <div class="formList"><ons-button modifier="large" class="reg-button" ng-click="gtcTonext()">Activate My Shell T Card</ons-button></div>
+            </div>
+            <div ng-if="nextpage">
+                1.1.	U-Benefit (Pty)Ltd, through One Loyalty (Pty)Ltd provides Mahala Loyalty Programme (PTY) Ltd a fuel rewards programme. U-Benefits (Pty)Ltd is an associate company of Bion Investments (Pty) Ltd, the holder of the Shell Fuel Rewards Program re-seller contract, as well as the unique e-card numbering system hereinafter referred to as “The Service Provider”.<br>
+                1.2.	I confirm that the unique Shell fuel 16-digit number has been issued to myself, as the “ELECTRONIC CARD Holder” by “The Service Provider”.<br>
+                1.3.	I confirm that the unique 16 digit e-card numbering system is not transferrable and is issued to an individual for their sole use after the first transaction; Note: if the e-card is not used for the first transaction within 4 (four) weeks I acknowledge that my unique number associated with my involvement with the Shell Fuel Rewards Program plan will be recycled back into stock. <br>
+                1.4.	By using the Shell Fuel Rewards Program 16-digit ELECTONIC CARD number I, as the ELECTONIC CARD Holder agrees to abide by the standard 16-page SHELL Terms and Conditions (T&C) “AGREEMENT FOR SHELL FUEL CARD”, copy attached for ease of reference, and the Service Providers Special Terms and Conditions for the Shell Fuel Rewards Program; Shells Terms of Use:  click here (https://www.shell.co.za/terms-of-use.html) <br>
+                1.5.	Such Terms and Conditions include:<br>
+                1.5.1.	All Shell Fuel Rewards ELECTONIC CARD holders must be 18 years of age or older;<br>
+                1.5.2.	The ELECTONIC CARD Holder will receive a monthly report, indicating fuel purchased and his/her fuel reward due;<br>
+                1.5.3.	Each ELECTRONIC CARD Holder will receive points for every litre of Petrol / Diesel pumped into their vehicles (and paid for) as a reward, for as long as the Shell Fuel Reward programme is in place;<br>
+                1.5.4.	The fuel reward will be paid to the member’s e-wallet after the administration fee has been deducted as long as the member present their virtual Shell T card including the allocated 16-digit ELECTONIC CARD number;<br>
+                1.5.5.	The ELECTONIC CARD Holder agrees to allow the Service Provider to deduct a monthly administration fee of R5.00 (Five Rand incl. VAT) for a period of 6 (six) months per year from the User’s accrued loyalty rewards; this being an annual service charge levied off the fuel rewards; <br>
+                1.5.6.	Participating Shell fuel outlets may be added (or removed) in the future and in such cases the fuel loyalty ELECTONIC CARD Holders will be displayed on the Mahala mobile platform.<br>
+                1.5.7.	Mahala / The Service Provider and / or Shell, at its sole discretion, reserves the right to terminate the use of any of their fuel reward ELECTONIC CARD numbers if there is mis-use of an ELECTRONIC CARD number or by a user operating the electronic CARD in a manner which is deemed to be a breach of the Terms and Conditions.<br>
+                1.5.8.	An ELECTRONIC CARD Holder whose electronic CARD and account are terminated per clause 7.5.5.7 will forfeit any points accumulated in his/her e-Wallet still due at the time, due to breach of Terms and Conditions<br>
+                1.5.9.	30 days’ notice, or close as possible thereto, will be provided to Shell Fuel Reward ELECTRONIC CARD Holders should Shell or its affiliates decide to terminate or change the terms of the fuel rewards programme. ELECTRONIC CARD Holders will be notified via SMS / E-mail on displayed on the Mobile Platform.<br>
+                1.5.10.	The Service Provider may always deduct from the points balance of an ELECTRONIC CARD Holder’s account any fuel bonus credited in error and any fuel bonus relating to a purchase which is cancelled or reversed for whatever reason;<br>
+                1.5.11.	The ELECTRONIC CARD is valid at all participating Shell Fuel Stations located in the Republic of South Africa.<br>
+                1.6	Indemnity:<br>
+                1.6.1	Mahala / The Service Provider is not responsible for any loss or damage, including consequential loss or damage (Loss), due to your membership or cancellation of your membership or your participation in Shell fuel Rewards. <br>
+                1.6.2	Mahala/The Service Provider is not responsible for any Loss due to any failure or malfunction of electronic systems or facilities or delay in a point-of-sale device or our supporting or shared networks, where applicable, resulting from circumstances beyond our reasonable control.<br>
+                1.6.3	Except as required by any applicable laws, the Service Provider makes no representations or warranties about Shell Fuel Rewards of any kind, express or implied, including any warranties as to fitness for a particular purpose.<br>
+                1.6.4	You agree to indemnify us against any loss or damage you may suffer as a result of our reliance on any warranty, representation or information given by you in relation to these Terms and your membership of the Shell fuel Rewards programme or your breach of any of these Terms or any applicable laws.<br>
+                1.6.5	You are responsible for any Tax chargeable and/or declared as a result of any points accumulated, transferred, ceded or redeemed by you.<br>
+                1.6.6	Please note that the Service Provider does not give any Tax advice. The contents of these Terms and the contents on the Website do not constitute Tax advice.<br>
+                1.6.7	You are responsible for getting Tax advice from an independent, professional Tax advisor about any Tax chargeable or due to be levied and/or declared as a result of any Rewards Points Collected, transferred, ceded or redeemed by you or a person that you represent as a result of your participating.<br>
+                1.6.8	By taking part in Shell Fuel Rewards program, you acknowledge that Mahala/ the Service Provider is not responsible for any damages suffered or that may be suffered as a result of a Tax due by you in your personal or representative capacity, whether in common law or otherwise, including any legal practitioner and client fees, whether agreed to or as a result of a court order.<br>
+                1.7	Severance:  Each of the Clauses or sub-clauses of these Terms and Conditions of Use operates separately. If any court or relevant authority decides that any of them are unlawful or unenforceable, the remaining Clauses or sub-clauses will remain in full force and effect.
+                <p>&nbsp;</p>
+                <label class="left">
+                    <ons-checkbox input-id="check-1" ng-model="data.tc_y" value="yes"></ons-checkbox>
+                </label>
+                <label for="check-1" class="center">
+                    I have read and accept the <span ng-click="loadpage(5)"> terms & conditions</span>.
+                </label>
+                <div class="formList"><ons-button modifier="large" class="reg-button" ng-click="activateShellT()">Activate My Shell T Card</ons-button></div>
+            </div>
+        </div>
+    </div>
+    <ons-bottom-toolbar ng-style="{'background-color':footerBG}">
+        <ons-row vertical-align="center" style="height: 44px">
+            <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 25px;" onclick="myNavigator.pushPage('views/home.html', { animation : 'slide' } )"><ons-icon icon="ion-home"></ons-icon></ons-col>
+            <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 25px;" onclick="myNavigator.pushPage('views/socialmedia.html', { animation : 'slide' } )"><ons-icon icon="ion-heart"></ons-icon></ons-col>
+            <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 15px;" ng-click="loadpage(5)">T&C’s</ons-col>
+        </ons-row>
+    </ons-bottom-toolbar>
+</ons-page>

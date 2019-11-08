@@ -13,9 +13,9 @@
     <div style="padding:0 20px">
         <p>There are many ways for you to stay on TOP of things @ Mahala or to test drive our deals:</p>
         <p>
-            <ons-button modifier="quiet" >Sign-up</ons-button> for 1 FREE trial month<br>
+            <ons-button modifier="quiet" ng-click="promoToJoin()">Sign-up</ons-button> for 1 FREE trial month<br>
             <ons-button modifier="quiet" onclick="window.open('https://www.facebook.com/mahalaloyalty','_system','')">Like</ons-button> our Facebook Page<br>
-            <ons-button modifier="quiet" ng-click="">Share</ons-button>Share our wonderful news
+            <ons-button modifier="quiet" onclick="myNavigator.pushPage('views/socialmedia.html', { animation : 'slide' } )">Share</ons-button>Share our wonderful news
         </p>
         <a href="#" onclick="myNavigator.pushPage('views/feedback.html', { animation : 'lift' } )">Problems?</a>
     </div>
