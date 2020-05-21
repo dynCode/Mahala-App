@@ -84,16 +84,15 @@
         <gap:plugin name="com.phonegap.plugins.barcodescanner" />
     -->
     
-    <plugin name="cordova-plugin-camera" spec="~2.4.1">
+    <plugin name="cordova-plugin-camera">
         <variable name="CAMERA_USAGE_DESCRIPTION" value="We are using the Camera for uploading your till slip." />
         <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="We are using the Camera for uploading your till slip." />
     </plugin>
-    <plugin name="cordova-plugin-ios-camera-permissions" spec="1.0.3" >
+    <plugin name="cordova-plugin-ios-camera-permissions">
         <variable name="CAMERA_USAGE_DESCRIPTION" value="We are using the Camera for uploading your till slip." />
         <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="We are using the Camera for uploading your till slip." />
     </plugin>
     
-    <plugin name="cordova-plugin-device-orientation" />
     <plugin name="cordova-plugin-geolocation" />
     <plugin name="cordova-plugin-whitelist" />
     <plugin name="cordova-plugin-x-socialsharing" source="npm" />
