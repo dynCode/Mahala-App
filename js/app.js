@@ -173,6 +173,7 @@ module.controller('AppController', function($scope, $http, $window, $timeout, Up
     // distName drop down for registration
     $scope.searchOk = false;
     $scope.regCityDD = [];
+    $scope.regSubDD = [];
 
     // set member reg field to false
     $scope.cardReg = false;
@@ -536,6 +537,7 @@ module.controller('AppController', function($scope, $http, $window, $timeout, Up
         var MemberNo = $scope.data.reg_memberCode;
         var tc_y = $scope.data.tc_y;
         var market_y = $scope.data.market_y;
+		var coms_pref = $scope.data.coms_pref;
 
         // set dob
         var iddob = IDNum.slice(0,6);
@@ -573,6 +575,10 @@ module.controller('AppController', function($scope, $http, $window, $timeout, Up
             market_y = 'yes';
         }
 
+		if (!cashierCode) {
+			cashierCode = '5000000026';
+		}
+
         if (cardType === "physical" && (typeof MemberNo === 'undefined' || MemberNo === null)) {
             modal.hide();
             $scope.data.regBusy = false;
@@ -592,7 +598,7 @@ module.controller('AppController', function($scope, $http, $window, $timeout, Up
                 animation: 'default'
             });
         } else {
-            $http.post($scope.apiPath+'register.php', {"reqType" : "register", "cashierCode" : cashierCode, "cardType" : cardType, "FirstName" : FirstName, "LastName" : LastName, "gender" : gender, "title" : title, "IDNum" : IDNum, "dob" : dob, "CellNumber" : CellNumber, "EmailAddress" : EmailAddress, "Address1" : Address1, "Address2" : Address2, "PostCode" : PostCode, "Suburb" : Suburb, "City" : City, "Province" : Province, "MemberNo" : MemberNo, "Terms" : tc_y, "Market" : market_y})
+            $http.post($scope.apiPath+'register.php', {"reqType" : "register", "cashierCode" : cashierCode, "cardType" : cardType, "FirstName" : FirstName, "LastName" : LastName, "gender" : gender, "title" : title, "IDNum" : IDNum, "dob" : dob, "CellNumber" : CellNumber, "EmailAddress" : EmailAddress, "Address1" : Address1, "Address2" : Address2, "PostCode" : PostCode, "Suburb" : Suburb, "City" : City, "Province" : Province, "MemberNo" : MemberNo, "Terms" : tc_y, "Market" : market_y, "coms_pref" : coms_pref})
             .success(function(data, status){
                 console.log("Data:", data);
                 if (data['error'] == 0) {
@@ -658,12 +664,45 @@ module.controller('AppController', function($scope, $http, $window, $timeout, Up
 
         modal.show();
         $scope.data.errorCode = 'Processing, please wait...';
-        $http.post($scope.apiPath+'provlist.php', {"provCode" : provCode})
+        $http.post($scope.apiPath+'provlist.php', {"type": "cityLookup", "provCode" : provCode})
         .success(function(data, status){
             modal.hide();
             console.log('City Data',data);
             $scope.searchOk = true;
             $scope.regCityDD = data;
+        })
+        .error(function(data, status) {
+            modal.hide();
+            ons.notification.alert({
+                message: 'Request failed. Try Again!',
+                title: 'Oops!',
+                buttonLabel: 'OK',
+                animation: 'default'
+            });
+        });
+    };
+    // get suburd drop down data
+    $scope.getSubCode = function () {
+        $scope.searchOk = false;
+        $scope.regSubDD = [];
+        var cityCode;
+
+        if (undefined != this.data.reg_City) {
+            console.log('Province',this.data.reg_City);
+            var cityCode = this.data.reg_City;
+        } else {
+            console.log('Province',this.data.up_City);
+            var cityCode = this.data.up_City;
+        }
+
+        modal.show();
+        $scope.data.errorCode = 'Processing, please wait...';
+        $http.post($scope.apiPath+'provlist.php', {"type": "suburbLookup", "cityCode" : cityCode})
+        .success(function(data, status){
+            modal.hide();
+            console.log('Suburb Data',data);
+            $scope.searchOk = true;
+            $scope.regSubDD = data;
         })
         .error(function(data, status) {
             modal.hide();
@@ -930,7 +969,62 @@ module.controller('AppController', function($scope, $http, $window, $timeout, Up
                         animation: 'default',
                         callback: function() {
                             $scope.data = [];
-                            myNavigator.resetToPage('views/home.html', { animation : 'fade' });
+                            //myNavigator.resetToPage('views/home.html', { animation : 'fade' });
+                            
+                            var user = $window.localStorage.getItem('user'); 
+                            var pass = $window.localStorage.getItem('pass'); 
+
+                            if (user && pass) {
+                                modal.show();
+                                $scope.data.errorCode = 'Please wait, we are quickly loading your new details...';
+                                $http.post($scope.apiPath+'login.php', {"reqType" : "login", "user" : user, "pass" : pass})
+                                .success(function(data, status){
+                                    if (data['error'] == 0) {
+                                        console.log("Data:", data);
+                                        //modal.hide();
+                                        $scope.totalEarned = data['totalEarned'];
+                                        $scope.totalBonusEarned = data['totalBonusEarned'];
+                                        $scope.totalUsed = data['totalUsed'];
+                                        $scope.totalBucks = data['totalBucks'];
+                                        $scope.currentUnits = data['currentUnits'];
+                                        $scope.currentRands = data['currentRands'];
+                                        $scope.userMpacc = data['memNum'];
+                                        $scope.userPass = pass;
+                                        $scope.sessionId = data['sessionId'];
+                                        $scope.loggedIn = true;
+                                        $scope.guest = false;
+                                        $scope.FirstName = data['FirstName'];
+                                        $scope.LastName = data['LastName'];
+                                        $scope.gender = data['gender'];
+                                        $scope.IdNumber = data['IdNumber'];
+                                        $scope.dob = data['dob'];
+                                        $scope.EmailAddress = data['EmailAddress'];
+                                        $scope.ContactNumber = data['ContactNumber'];
+                                        $scope.Province = data['Province'];
+                                        $scope.City = data['City'];
+                                        $scope.Suburb = data['Suburb'];
+                                        $scope.Addressline1 = data['Addressline1'];
+                                        $scope.Addressline2 = data['Addressline2'];
+                                        $scope.Addressline3 = data['Addressline3'];
+                                        $scope.postalCode = data['postalCode'];
+                                        $scope.Title = data['title'];
+                                        $scope.tierDes = data['tierDes'];
+                                        $scope.CardNumber = '62786401'+user;
+                                        $scope.comId = data['comId'];
+                                        $scope.commun = data['commun'];
+                                        $scope.tokenBalance = data['tokenBalance'];
+                                        $scope.totalDiscount = data['totalDiscount'];
+                                        $scope.virtualCard = data['virtualCard'];
+                                    } 
+                                })
+                                .error(function(data, status) {
+                                    //modal.hide();
+                                });
+                            }
+                            $timeout(function(){
+                                modal.hide();
+                                myNavigator.pushPage('views/home.html', { animation : 'fade' });
+                            },'2000');
                         }
                     });
 
@@ -2578,16 +2672,16 @@ module.controller('AppController', function($scope, $http, $window, $timeout, Up
         // check date and reset list
         var dateObj = new Date();
         var day = dateObj.getUTCDate();
-        if (day === 1) {
+        //if (day === 1) {
             $window.localStorage.setItem('couponList',''); 
-        } else {
-            var ccl = $window.localStorage.getItem('couponList');
-            console.log('CCL:', ccl);
-            if (ccl) {
-                $scope.couponCodeList = JSON.parse($window.localStorage.getItem('couponList')); 
-                console.log('LS Coupon List:', $scope.couponCodeList);
-            }
-        }
+        //} else {
+        //    var ccl = $window.localStorage.getItem('couponList');
+        //    console.log('CCL:', ccl);
+        //    if (ccl) {
+        //        $scope.couponCodeList = JSON.parse($window.localStorage.getItem('couponList')); 
+        //        console.log('LS Coupon List:', $scope.couponCodeList);
+        //    }
+        //}
         
         $scope.topCoupBan = '';
         if (num === 1) {
@@ -2969,7 +3063,7 @@ module.controller('AppController', function($scope, $http, $window, $timeout, Up
 
                 $http.post($scope.apiPath+'uploadPoints.php', {'reqType': "claimPoints", 'transVal': transVal, 'transInv': transInv, 'partName': partName, 'partId': partId, 'mpacc': mpacc, 'cardNum': cardNum, 'cashierCode' : cashier, 'isPoints': isPoints})
                 .success(function(data, status){
-                    if (data['code'] == 400) {
+                    if (data['code'] === 400) {
                         modal.hide();
                         ons.notification.alert({
                             message: data['message'],
@@ -3165,7 +3259,7 @@ module.controller('AppController', function($scope, $http, $window, $timeout, Up
 
                 $http.post($scope.apiPath+'loadTransOTP.php', {"reqType" : "sendOTP", 'transVal': transVal, 'transInv': transInv, 'partName': partName, 'partId': partId, 'mpacc': mpacc, 'cardNum': cardNum, 'cashierCode' : cashier})
                 .success(function(data, status){
-                    if (data['code'] == 400) {
+                    if (data['code'] === 400) {
                         modal.hide();
                         ons.notification.alert({
                             message: data['message'],
@@ -3217,7 +3311,7 @@ module.controller('AppController', function($scope, $http, $window, $timeout, Up
                     console.log('file ' + resp.config.data.file.name + ' is uploaded successfully. Response: ' + resp.data.message);
                     modal.hide();
 
-                    if (resp.data.code == 400) {
+                    if (resp.data.code === 400) {
                         modal.hide();
                         ons.notification.alert({
                             message: resp.data.message,
@@ -3266,7 +3360,7 @@ module.controller('AppController', function($scope, $http, $window, $timeout, Up
         $http.post($scope.apiPath+'loadTransOTP.php', {"reqType" : "completeOTP", 'otp': $scope.data.remOTP, 'auth': $scope.redemAuthCode, 'mpacc' : $scope.userMpacc, 'sessionID' : $scope.sessionId })
         .success(function(data, status){
             modal.hide();
-            if (data['code'] == 400) {
+            if (data['code'] === 400) {
                 ons.notification.alert({
                     message: data['message'],
                     title: 'Sorry!',
@@ -3314,7 +3408,7 @@ module.controller('AppController', function($scope, $http, $window, $timeout, Up
 
                 $http.post($scope.apiPath+'loadTransOTP.php', {"reqType" : "sendOTP", 'transVal': transVal, 'transInv': transInv, 'partName': partName, 'partId': partId, 'mpacc': mpacc, 'cashierCode' : cashier})
                 .success(function(data, status){
-                    if (data['code'] == 400) {
+                    if (data['code'] === 400) {
                         modal.hide();
                         ons.notification.alert({
                             message: data['message'],
@@ -3414,7 +3508,7 @@ module.controller('AppController', function($scope, $http, $window, $timeout, Up
         $http.post($scope.apiPath+'loadTransOTP.php', {"reqType" : "completeOTP", 'otp': $scope.data.remOTP, 'auth': $scope.redemAuthCode, 'mpacc' : $scope.data.memNumber, 'sessionID' : $scope.sessionId })
         .success(function(data, status){
             modal.hide();
-            if (data['code'] == 400) {
+            if (data['code'] === 400) {
                 ons.notification.alert({
                     message: data['message'],
                     title: 'Sorry!',
@@ -4217,6 +4311,9 @@ module.controller('AppController', function($scope, $http, $window, $timeout, Up
     };
 
     $scope.processStamps = function(file) {
+		
+		console.log("File DATA", file);
+		
         var attendant = $scope.data.cashierCode; 
         var receiptNumber = $scope.data.invNo;
         var cardNumber = $scope.userMpacc;
@@ -4224,7 +4321,7 @@ module.controller('AppController', function($scope, $http, $window, $timeout, Up
         var productCode = $scope.tokenCode;
         var partnerId = $scope.retailId;
         
-        if (typeof file !== 'undefined' || file !== null) {
+        if (file) {
             modal.show();
             $scope.data.errorCode = 'Processing, please wait...';
 
@@ -4345,14 +4442,23 @@ module.controller('AppController', function($scope, $http, $window, $timeout, Up
         $http.post($scope.apiPath+'freebieRetail.php', {"reqType" : "freebiesList", "mpacc" : $scope.userMpacc, "sessionID" : $scope.sessionId, "partnerId" : $scope.retailId })
         .success(function(data, status){
             modal.hide();
-            console.log('My Freebie List:', data['html']);
-            $scope.freebiesList = data['html']['tokenFreebieItem'];
+			
+			console.log('My Freebie List Lebgth:', data['html']['tokenFreebieItem'].length);
+			
+			if (data['html']['tokenFreebieItem'].length > 0) {
+				$scope.freebiesList = data['html']['tokenFreebieItem'];
+			} else {
+				$scope.freebiesList[0] = data['html']['tokenFreebieItem'];
+            }
+			
             if ($scope.freebiesList) {
+				
                 for (var i = 0; i < $scope.freebiesList.length; i++) {
                     var newDate = $scope.freebiesList[i].freebieExpiry.slice(0,10);
 
                     $scope.freebiesList[i].freebieExpiry = newDate;
                 }
+				console.log('My Freebie List:', $scope.freebiesList);
                 myNavigator.pushPage('views/user/freebiesList.html', { animation : 'fade' });
             } else {
                 ons.notification.alert({

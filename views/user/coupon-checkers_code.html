@@ -31,7 +31,7 @@
                     Description
                 </ons-col>
                 <ons-col width="35px">
-                    Limit
+                    Available
                 </ons-col>
             </ons-row>
             <ons-row ng-repeat="couponCode in value">
@@ -42,7 +42,7 @@
                     <small>{{couponCode.coupon_name}}</small>
                 </ons-col>
                 <ons-col width="35px">
-                    <span style="color: #ce282c;">{{couponCode.code_issue_limit}}</span>
+                    <span style="color: #ce282c;">{{couponCode.code_total_available}}</span>
                 </ons-col>
             </ons-row>
         </ons-list-item>

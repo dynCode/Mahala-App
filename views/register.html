@@ -19,7 +19,7 @@
         <ons-row vertical-align="center">
             <ons-col vertical-align="center">
                 <label class="left">
-                    <ons-radio name="signType" input-id="signType" ng-model="data.cardType" value="cashier"></ons-radio>
+                    <ons-radio name="signType" input-id="signType" ng-model="data.signType" value="cashier"></ons-radio>
                 </label>
                 <label for="signType" class="center">
                     At A Shop:
@@ -32,7 +32,7 @@
         <ons-row vertical-align="center">
             <ons-col vertical-align="center">
                 <label class="left">
-                    <ons-radio name="signType" input-id="signType1" ng-model="data.cardType" value="agent"></ons-radio>
+                    <ons-radio name="signType" input-id="signType1" ng-model="data.signType" value="agent"></ons-radio>
                 </label>
                 <label for="signType1" class="center">
                     Agent / Salesperson:
@@ -45,7 +45,7 @@
         <ons-row vertical-align="center">
             <ons-col vertical-align="center">
                 <label class="left">
-                    <ons-radio name="signType" input-id="signType2" ng-model="data.cardType" value="promo"></ons-radio>
+                    <ons-radio name="signType" input-id="signType2" ng-model="data.signType" value="promo"></ons-radio>
                 </label>
                 <label for="signType2" class="center">
                     Promotion
@@ -162,14 +162,18 @@
             </select>
         </div>
 
-        <div class="form-row formListInputLrg">
-            <select ng-model="data.reg_City" ng-options="regCity.distname for regCity in regCityDD track by regCity.distcode" style="width:100%;">
+		<div class="form-row formListInputLrg">
+            <select ng-model="data.reg_City" ng-options="regCity.distname for regCity in regCityDD track by regCity.distcode" ng-change="getSubCode()" style="width:100%;">
                 <option value="">Select a City</option>
             </select>
         </div>
         <div class="form-row formListInputLrg">
-            <input type="text" class="text-input" ng-model="data.reg_Suburb" placeholder="Suburb" value="">
+            <select ng-model="data.reg_Suburb" ng-options="regSub.placename for regSub in regSubDD track by regSub.placecode" style="width:100%;">
+                <option value="">Select a Suburb</option>
+            </select>
+            <!--<input type="text" class="text-input" ng-model="data.up_Sub" placeholder="Suburb" value="">-->
         </div>
+
     </div>
     <div id="HideMe">
         <div class="formList"><strong>Enter Member No:</strong></div>
@@ -178,6 +182,38 @@
                 <input type="text" class="text-input" id="memberCode" ng-model="data.reg_memberCode" placeholder="Member No" />
             </div>
         </div>
+    </div>
+    <p></p>
+    <div style="padding: 0px 20px 20px 10px;">
+		<label class="left">
+            <ons-checkbox input-id="check-2" ng-model="data.market_y" value="yes"></ons-checkbox>
+        </label>
+        <label for="check-2" class="center">
+            I would like to receive special deals, products and promotions related to the programme.
+        </label>
+		<div ng-if="data.market_y">
+			<div class="formList"><strong>How would you like to communicate?</strong></div>
+				<label class="left">
+				<ons-radio name="coms_pref" input-id="coms_pref-sms" ng-model="data.coms_pref" value="sms"></ons-radio>
+			</label>		
+			<label for="coms_pref-sms" class="center">		
+				SMS
+			</label>	
+			<br><br>
+			<label class="left">
+				<ons-radio name="coms_pref" input-id="coms_pref-mail" ng-model="data.coms_pref" value="email"></ons-checkbox>
+			</label>
+			<label for="coms_pref-mail" class="center">		
+				e-mail
+			</label>
+			<br><br>
+			<label class="left">
+				<ons-radio name="coms_pref" input-id="coms_pref-both" ng-model="data.coms_pref" value="both"></ons-checkbox>
+			</label>
+			<label for="coms_pref-both" class="center">		
+				both
+			</label>
+		</div>
     </div>
     <p></p>
     <div style="padding: 0px 20px 20px 10px;">
@@ -195,12 +231,7 @@
             I accept the <a onclick="myNavigator.pushPage('views/privacy.html', { animation : 'slide' } )">Privacy Policy</a>
         </label>
         <br><br>
-        <label class="left">
-            <ons-checkbox input-id="check-2" ng-model="data.market_y" value="yes"></ons-checkbox>
-        </label>
-        <label for="check-2" class="center">
-            I would like to receive special deals, products and promotions related to the programme.
-        </label>
+        
     </div>
     <p>&nbsp;</p>
     <div class="formList" ng-if="!data.regBusy"><ons-button modifier="large" class="reg-button" ng-click="registerME()">SUBMIT</ons-button></div>

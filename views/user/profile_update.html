@@ -46,9 +46,6 @@
         <div class="form-row formListInputLrg">
             <input type="text" class="text-input" ng-model="data.up_Addline2" placeholder="Address Line 2" value="">
         </div>
-        <div class="form-row formListInputLrg">
-            <input type="text" class="text-input" ng-model="data.up_pCode" placeholder="Postal Code" value="">
-        </div>
         
         <div class="form-row formListInputLrg">
             <select ng-model="data.up_Prov" ng-change="getDistCode()" style="width:100%;">
@@ -67,12 +64,18 @@
         </div>
 
         <div class="form-row formListInputLrg">
-            <select ng-model="data.up_City" ng-options="regCity.distname for regCity in regCityDD track by regCity.distcode" style="width:100%;">
+            <select ng-model="data.up_City" ng-options="regCity.distname for regCity in regCityDD track by regCity.distcode" ng-change="getSubCode()" style="width:100%;">
                 <option value="">Select a City</option>
             </select>
         </div>
         <div class="form-row formListInputLrg">
-            <input type="text" class="text-input" ng-model="data.up_Sub" placeholder="Suburb" value="">
+            <select ng-model="data.up_Sub" ng-options="regSub.placename for regSub in regSubDD track by regSub.placecode" style="width:100%;">
+                <option value="">Select a Suburb</option>
+            </select>
+            <!--<input type="text" class="text-input" ng-model="data.up_Sub" placeholder="Suburb" value="">-->
+        </div>
+        <div class="form-row formListInputLrg">
+            <input type="text" class="text-input" ng-model="data.up_pCode" placeholder="Postal Code" value="">
         </div>
         <p>&nbsp;</p>
         <ons-button modifier="large" id="btnLogIn" ng-click="updateProfile()" style="width:100%">SUBMIT</ons-button>
