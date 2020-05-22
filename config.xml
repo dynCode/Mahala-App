@@ -64,6 +64,14 @@
         <splash src="res/screen/ios/screen-iphone-portrait-2x.png" width="640" height="960" />
         <splash src="res/screen/ios/screen-iphone-portrait-568h-2x.png" width="640" height="1136" />
         <splash src="res/screen/ios/screen-ipad-portrait.png" width="768" height="1024" />
+		
+		<!-- Permission Config -->
+		<edit-config target="NSPhotoLibraryUsageDescription" file="*-Info.plist" mode="merge">
+            <string>We are using the Camera for uploading your till slip.</string>
+        </edit-config>
+        <edit-config target="NSCameraUsageDescription" file="*-Info.plist" mode="merge">
+            <string>We are using the Camera for uploading your till slip.</string>
+        </edit-config>
     </platform>
     <platform name="android" >
         <preference name="orientation" value="portrait" />
@@ -95,7 +103,7 @@
     
     <plugin name="cordova-plugin-geolocation" />
     <plugin name="cordova-plugin-whitelist" />
-    <plugin name="cordova-plugin-x-socialsharing" source="npm" />
+    <plugin name="cordova-plugin-x-socialsharing" source="npm" version="6.0.0"/>
 
     <!-- Define app icon for each platform. -->
     <icon src="icon.png" />
@@ -116,15 +124,5 @@
     <allow-intent href="geo:*" />
     <!-- Allow links to web pages to open in a browser -->
     <allow-intent href="http://*/*" />
-    <allow-intent href="https://*/*" />
-
-    <platform name="ios">
-        <edit-config target="NSPhotoLibraryUsageDescription" file="*-Info.plist" mode="merge">
-            <string>We are using the Camera for uploading your till slip.</string>
-        </edit-config>
-        <edit-config target="NSCameraUsageDescription" file="*-Info.plist" mode="merge">
-            <string>We are using the Camera for uploading your till slip.</string>
-        </edit-config>
-   </platform>
-    
+    <allow-intent href="https://*/*" />    
 </widget>
