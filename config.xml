@@ -103,7 +103,7 @@
     
     <plugin name="cordova-plugin-geolocation" />
     <plugin name="cordova-plugin-whitelist" />
-    <plugin name="cordova-plugin-x-socialsharing" source="npm" version="6.0.0"/>
+    <!--<plugin name="cordova-plugin-x-socialsharing" source="npm" version="6.0.0"/>-->
 
     <!-- Define app icon for each platform. -->
     <icon src="icon.png" />
