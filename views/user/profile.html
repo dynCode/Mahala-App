@@ -7,12 +7,7 @@
         <div class="right"></div>
     </ons-toolbar>
     <div class="topBanner">
-        <div class="imgBlock hideableW" style="display: block;"><img src="images/app_header1.png" style="max-width: 800px; width: 100%;" /></div>
-        <div class="imgBlock hideableW" style="display: none;"><img src="images/app_header2.png" style="max-width: 800px; width: 100%;" /></div>
-        <div class="imgBlock hideableW" style="display: none;"><img src="images/app_header3.png" style="max-width: 800px; width: 100%;" /></div>
-        <div class="imgBlock hideableW" style="display: none;"><img src="images/app_header4.png" style="max-width: 800px; width: 100%;" /></div>
-        <div class="imgBlock hideableW" style="display: none;"><img src="images/app_header5.png" style="max-width: 800px; width: 100%;" /></div>
-        <div class="imgBlock hideableW" style="display: none;"><img src="images/app_header6.png" style="max-width: 800px; width: 100%;" /></div>
+        <div><img src="{{Banner1}}" style="max-width: 800px; width: 100%;" /></div>
     </div>
     <ons-row align="center">
         <ons-col width="90%"><div class="formListInputLrg"><input type="search" class="search-input" ng-model="data.quickSearch" placeholder="Quick search for a shop / deal"></div></ons-col>
@@ -45,7 +40,7 @@
     </ons-row>
     <ons-bottom-toolbar ng-style="{'background-color':footerBG}">
         <ons-row vertical-align="center" style="height: 44px">
-            <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 25px;" onclick="myNavigator.pushPage('views/home.html', { animation : 'slide' } )"><ons-icon icon="ion-home"></ons-icon></ons-col>
+            <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 25px;" onclick="myNavigator.resetToPage('views/home.html', { animation : 'slide' } )"><ons-icon icon="ion-home"></ons-icon></ons-col>
             <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 25px;" onclick="myNavigator.pushPage('views/socialmedia.html', { animation : 'slide' } )"><ons-icon icon="ion-heart"></ons-icon></ons-col>
             <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 15px;" ng-click="loadpage(5)">T&C’s</ons-col>
         </ons-row>

@@ -19,8 +19,8 @@
     <div style="padding: 0 20px;">
         <img src="{{topCoupBan}}" style="max-width: 380px; width: 100%;" />
         <h3 style="text-align: center">MY COUPON CODES</h3>
-        <p>Present these Coupon Codes to the cashier before you pay and your savings will be deducted from your basket / total bill.</p>
-        <p>Your selected Coupon Codes are valid for a full calendar month and will remain in your basket for the entire month. New coupon codes will be issued on your request every month. If you want to save your Coupon Codes, take a screenshot or e-mail them to your e-mail and present when you pay.</p>
+        <!--<p>Present these Coupon Codes to the cashier before you pay and your savings will be deducted from your basket / total bill.</p>
+        <p>Your selected Coupon Codes are valid for a full calendar month and will remain in your basket for the entire month. New coupon codes will be issued on your request every month. If you want to save your Coupon Codes, take a screenshot and present when you pay.</p>-->
         <ons-list-item modifier="couponList" class="list-item-container list__item--tappable" ng-repeat="(key,value) in couponCodeList | groupBy:'coupon_date'">
             <h4>Coupons on: {{key}}</h4>
             <ons-row>
@@ -30,9 +30,6 @@
                 <ons-col>
                     Description
                 </ons-col>
-                <ons-col width="35px">
-                    Available
-                </ons-col>
             </ons-row>
             <ons-row ng-repeat="couponCode in value">
                 <ons-col width="160px">
@@ -41,24 +38,32 @@
                 <ons-col>
                     <small>{{couponCode.coupon_name}}</small>
                 </ons-col>
-                <ons-col width="35px">
-                    <span style="color: #ce282c;">{{couponCode.code_total_available}}</span>
-                </ons-col>
             </ons-row>
         </ons-list-item>
         <!--<h1 modifier="large outline" id="btnLogIn" style="text-align: center">{{couponCode.coupon_code}}</h1>
         <p><strong>{{couponCode.message}}</strong></p>
         <p>Coupons available: {{couponCode.code_total_available}}</p>
         <p>Present this Coupon Code to the cashier before you pay and your savings will be deducted from your basket / total bill.</p>-->
-		<img src="images/hiwCoupons.png" style="max-width: 380px; width: 100%;">
-        <div style="padding:20px">
-            <ons-button modifier="large" id="btnLogIn" ng-click="emailCouponCode()" style="width:100%">E-mail to yourself / friend</ons-button>
-        </div>
+        <p><strong>How to redeem your discounted coupon codes:</strong></p>
+        <ol>
+            <li>We suggest that you take a screenshot of the products and coupons listed above. It will make things a lot easier for you and the cashier.</li>
+            <li>Be sure to pick exactly the same item from the shelves to what is defined on the list (check that the weight etc is not different).</li>
+            <li>Present your list of coupon codes to the cashier when you pay.</li>
+            <li>The cashier must enter the coupon codes like a product barcode that does not scan - each coupon code can be used to claim the discount on any products with the same value eg the cashier will only need to enter ONE code for all R3 coupons and ONE code for all R20 coupons when you check out. They will not need to enter multiple codes for the same discount value.</li>
+            <li>The cashier must press “enter” and then “total” after each coupon code entered.</li>
+            <li>If you have any difficulty redeeming your discount codes in store, please sms the word “Gymco” to 31239 for an agent to call you back - this is a FREE sms service.</li>
+        </ol>
         <p><strong>Terms and conditions apply.</strong></p>
+        <ol>
+            <li>Your coupon codes are valid for 30 days from coupon selection as reflected in the coupon check out section.</li>
+            <li>Your coupon codes will remain in your basket for as long as they are valid.</li>
+            <li>All discounts are guaranteed for all products you selected and present in store, subject to stock availability.</li>
+
+        </ol>
     </div>
     <ons-bottom-toolbar ng-style="{'background-color':footerBG}">
         <ons-row vertical-align="center" style="height: 44px">
-            <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 25px;" onclick="myNavigator.pushPage('views/home.html', { animation : 'slide' } )"><ons-icon icon="ion-home"></ons-icon></ons-col>
+            <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 25px;" onclick="myNavigator.resetToPage('views/home.html', { animation : 'slide' } )"><ons-icon icon="ion-home"></ons-icon></ons-col>
             <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 25px;" onclick="myNavigator.pushPage('views/socialmedia.html', { animation : 'slide' } )"><ons-icon icon="ion-heart"></ons-icon></ons-col>
             <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 15px;" ng-click="loadpage(5)">T&C’s</ons-col>
         </ons-row>

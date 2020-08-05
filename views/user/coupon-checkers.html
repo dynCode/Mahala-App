@@ -15,14 +15,14 @@
         <ons-col width="90%"><div class="formListInputLrg"><input type="search" class="search-input" ng-model="data.quickSearch" placeholder="Quick search for a shop / deal"></div></ons-col>
         <ons-col width="10%"><ons-button ng-click="quickSearch()"><ons-icon icon="fa-search"></ons-button></ons-col>
     </ons-row>
-    <h2 class="myHeader"><span>COUPONS</span></h2>
+    <h2 class="myHeader"><span>AVAILABLE DISCOUNTED PRODUCTS</span></h2>
     <div style="padding: 0 20px;">
         <p><strong>How to use your Coupons:</strong></p>
         <ol>
-            <li>Scroll down and view the Coupons available.</li>
-            <li>Select the desired Coupons.</li>
-            <li>Click on the icon in the bottom right to view your Coupon Codes.</li>
-            <li>Your Coupons Codes will display for each product to show the Cashier when you pay.</li>
+            <li>Scroll down and view all the discounted products available to you.</li>
+            <li>Select the product(s) you want - you will be prompted to confirm your cellphone number for each one selected.</li>
+            <li>Each product you select will be added to your product discount basket with the corresponding savings value and Coupon code.</li>
+            <li>Click on the red icon in the bottom right of your screen to view all your selected products, saving value and Coupon codes that are loaded to your product discount basket.</li>
         </ol>
         <div><a href="#" onclick="myNavigator.pushPage('views/feedback.html', { animation : 'lift' } )">Problems?</a></div>
         <img src="{{topCoupBan}}" style="max-width: 380px; width: 100%;" />
@@ -56,7 +56,7 @@
     </div>-->
     <ons-bottom-toolbar ng-style="{'background-color':footerBG}">
         <ons-row vertical-align="center" style="height: 44px">
-            <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 25px;" onclick="myNavigator.pushPage('views/home.html', { animation : 'slide' } )"><ons-icon icon="ion-home"></ons-icon></ons-col>
+            <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 25px;" onclick="myNavigator.resetToPage('views/home.html', { animation : 'slide' } )"><ons-icon icon="ion-home"></ons-icon></ons-col>
             <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 25px;" onclick="myNavigator.pushPage('views/socialmedia.html', { animation : 'slide' } )"><ons-icon icon="ion-heart"></ons-icon></ons-col>
             <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 15px;" ng-click="loadpage(5)">T&C’s</ons-col>
         </ons-row>

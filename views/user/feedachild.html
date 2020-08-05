@@ -37,7 +37,7 @@
     </div>
     <ons-bottom-toolbar ng-style="{'background-color':footerBG}">
         <ons-row vertical-align="center" style="height: 44px">
-            <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 25px;" onclick="myNavigator.pushPage('views/home.html', { animation : 'slide' } )"><ons-icon icon="ion-home"></ons-icon></ons-col>
+            <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 25px;" onclick="myNavigator.resetToPage('views/home.html', { animation : 'slide' } )"><ons-icon icon="ion-home"></ons-icon></ons-col>
             <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 25px;" onclick="myNavigator.pushPage('views/socialmedia.html', { animation : 'slide' } )"><ons-icon icon="ion-heart"></ons-icon></ons-col>
             <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 15px;" ng-click="loadpage(5)">T&C’s</ons-col>
         </ons-row>

@@ -448,7 +448,7 @@ module.controller('AppController', function($scope, $http, $window, $timeout, Up
                                 switch (idx) {
                                     case 0:
                                         $scope.data = [];
-                                        myNavigator.pushPage('views/home.html', { animation : 'fade' });
+                                        myNavigator.resetToPage('views/home.html', { animation : 'fade' });
                                         break;
                                     case 1:
                                         $scope.data = [];
@@ -461,7 +461,7 @@ module.controller('AppController', function($scope, $http, $window, $timeout, Up
                         $timeout(function(){
                             modal.hide();
                             $scope.data = [];
-                            myNavigator.pushPage('views/home.html', { animation : 'fade' });
+                            myNavigator.resetToPage('views/home.html', { animation : 'fade' });
                         },'2000');
                     }
                 } else if (data['error'] === 2) {    
@@ -490,7 +490,7 @@ module.controller('AppController', function($scope, $http, $window, $timeout, Up
                     modal.show();
                     $timeout(function(){
                         modal.hide();
-                        myNavigator.pushPage('views/home.html', { animation : 'fade' });
+                        myNavigator.resetToPage('views/home.html', { animation : 'fade' });
                     },'1000');
                 }
             })
@@ -1023,7 +1023,7 @@ module.controller('AppController', function($scope, $http, $window, $timeout, Up
                             }
                             $timeout(function(){
                                 modal.hide();
-                                myNavigator.pushPage('views/home.html', { animation : 'fade' });
+                                myNavigator.resetToPage('views/home.html', { animation : 'fade' });
                             },'2000');
                         }
                     });

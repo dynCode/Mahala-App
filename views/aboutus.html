@@ -47,7 +47,7 @@
                 <img src="images/Mahala_health.jpg">
             </div>
             <div class="center">
-                <span class="list-item__subtitle">Affordable health care to all South Africans from only R248 pm.</span>
+                <span class="list-item__subtitle">Affordable Medical Insurance to all South Africans from only R322 pm.</span>
             </div>
             <div class="right">
                 <ons-icon icon="md-caret-right" class="list-item__icon" style="color:rgb(206, 40, 44);"></ons-icon>
@@ -58,17 +58,6 @@
         <p style="text-align: justify;">Mahala has developed creative lifestyle products for your convenience and protection. Click on the icon below to view our unique solutions to the problems South Africans face every day!</p>
     </div>
     <ons-list>
-        <ons-list-item onclick="myNavigator.pushPage('views/join/perks.html', { animation : 'lift' } )">
-            <div class="left">
-                <img src="images/Mahala_Perks.jpg">
-            </div>
-            <div class="center">
-                <span class="list-item__subtitle">SOS services for convenience & safety for you and your family, from only R59 pm.</span>
-            </div>
-            <div class="right">
-                <ons-icon icon="md-caret-right" class="list-item__icon" style="color:rgb(206, 40, 44);"></ons-icon>
-            </div>
-        </ons-list-item>
         <ons-list-item onclick="myNavigator.pushPage('views/join/travel.html', { animation : 'lift' } )">
             <div class="left">
                 <img src="images/Mahala_travel.jpg">
@@ -85,7 +74,7 @@
                 <img src="images/Mahala_Charity.jpg">
             </div>
             <div class="center">
-                <span class="list-item__subtitle">Fortified meals delivered to anyone, anywhere in South Africa, from only R99 pm.</span>
+                <span class="list-item__subtitle">EMERGENCY FOOD RELIEF delivered to anyone, anywhere in South Africa</span>
             </div>
             <div class="right">
                 <ons-icon icon="md-caret-right" class="list-item__icon" style="color:rgb(206, 40, 44);"></ons-icon>
@@ -95,7 +84,7 @@
     <div style="padding:0 20px"><a href="#" onclick="myNavigator.pushPage('views/feedback.html', { animation : 'lift' } )">Problems?</a></div>
     <ons-bottom-toolbar ng-style="{'background-color':footerBG}">
         <ons-row vertical-align="center" style="height: 44px">
-            <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 25px;" onclick="myNavigator.pushPage('views/home.html', { animation : 'slide' } )"><ons-icon icon="ion-home"></ons-icon></ons-col>
+            <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 25px;" onclick="myNavigator.resetToPage('views/home.html', { animation : 'slide' } )"><ons-icon icon="ion-home"></ons-icon></ons-col>
             <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 25px;" onclick="myNavigator.pushPage('views/socialmedia.html', { animation : 'slide' } )"><ons-icon icon="ion-heart"></ons-icon></ons-col>
             <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 15px;" ng-click="loadpage(5)">T&C’s</ons-col>
         </ons-row>

@@ -14,18 +14,6 @@
         <ons-col width="10%"><ons-button ng-click="quickSearch()"><ons-icon icon="fa-search"></ons-button></ons-col>
     </ons-row>
     <h2 class="myHeader"><span>CONTACT US</span></h2>
-    <ons-list>
-        <ons-list-item tappable>
-            <label class="left">
-                <ons-checkbox input-id="check-mi" ng-model="data.contactDeals" value="yes"></ons-checkbox>
-            </label>
-            <label for="check-mi" class="center">
-                <span class="list-item__title">I want to know more about these deals</span>
-                <span class="list-item__subtitle red"><i>PS. We’ll call you back!</i></span>
-                
-            </label>
-        </ons-list-item>
-    </ons-list>
     <div class="formList"><strong>WHO ARE YOU?</strong></div>
     <div class="formShadow">
         <div class="formList">
@@ -48,17 +36,8 @@
                 <ons-checkbox input-id="check-h" ng-model="data.contactHealth" value="yes"></ons-checkbox>
             </label>
             <label for="check-h" class="center">
-                <span class="list-item__title">M Health</span>
-                <span class="list-item__subtitle">Affordable health care to all South Africans from only R248 pm.</span>
-            </label>
-        </ons-list-item>
-        <ons-list-item tappable>
-            <label class="left">
-                <ons-checkbox input-id="check-p" ng-model="data.contactPerks" value="yes"></ons-checkbox>
-            </label>
-            <label for="check-p" class="center">
-                <span class="list-item__title">PERKS!</span>
-                <span class="list-item__subtitle">SOS services for convenience & safety for you and your family, from only R59 pm.</span>
+                <span class="list-item__title">GetSavvi</span>
+                <span class="list-item__subtitle">Affordable health care to all South Africans from only R322 pm.</span>
             </label>
         </ons-list-item>
         <ons-list-item tappable>
@@ -84,7 +63,7 @@
                 <ons-checkbox input-id="check-sg" ng-model="data.contactAccount" value="yes"></ons-checkbox>
             </label>
             <label for="check-sg" class="center">
-                <span class="list-item__title">Mahala Silver & Gold</span>
+                <span class="list-item__title">M Funeral</span>
                 <span class="list-item__subtitle">Funeral Cover with many added benefits from only R88 pm.</span>
             </label>
         </ons-list-item>
@@ -103,7 +82,7 @@
     </div>
     <ons-bottom-toolbar ng-style="{'background-color':footerBG}">
         <ons-row vertical-align="center" style="height: 44px">
-            <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 25px;" onclick="myNavigator.pushPage('views/home.html', { animation : 'slide' } )"><ons-icon icon="ion-home"></ons-icon></ons-col>
+            <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 25px;" onclick="myNavigator.resetToPage('views/home.html', { animation : 'slide' } )"><ons-icon icon="ion-home"></ons-icon></ons-col>
             <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 25px;" onclick="myNavigator.pushPage('views/socialmedia.html', { animation : 'slide' } )"><ons-icon icon="ion-heart"></ons-icon></ons-col>
             <ons-col vertical-align="center" style="text-align: center; line-height: 44px; font-size: 15px;" ng-click="loadpage(5)">T&C’s</ons-col>
         </ons-row>
